@@ -8,7 +8,7 @@ namespace TimeTracker.GraphQL
 : base(provider)
         {
             Query = timeTrackerQuery;
-            Mutation = timeTrackerMutation;
+            //Mutation = timeTrackerMutation;
         }
     }
 }

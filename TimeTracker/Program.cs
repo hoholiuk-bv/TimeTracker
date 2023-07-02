@@ -1,6 +1,14 @@
+using GraphQL;
+using DataLayer.Providers;
+using TimeTracker.GraphQL;
+using TimeTracker.GraphQL.Users;
+using TimeTracker.GraphQL.Users.Types;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddTransient<IUserProvider, UserProvider>();
+builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddCors(options =>
 {
@@ -14,6 +22,16 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddTransient<UserType>();
+
+builder.Services.AddTransient<UsersQuery>();
+builder.Services.AddTransient<TimeTrackerQuery>();
+
+//builder.Services.AddTransient<UsersMutation>();
+//builder.Services.AddTransient<TimeTrackerMutation>();
+
+builder.Services.AddGraphQL(a => a.AddSchema<TimeTrackerSchema>().AddSystemTextJson());
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,8 +42,10 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseGraphQL();
 
 app.MapControllerRoute(
     name: "default",
