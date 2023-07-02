@@ -11,4 +11,16 @@ export const receiveUserList = (users: User[]) => ({
   payload: { users },
 });
 
-export type UsersReceivedAction = ReturnType<typeof receiveUserList>;
+export const TOTAL_USERS_COUNT_REQUESTED = 'TOTAL_USERS_COUNT_REQUESTED' as const;
+export const requestTotalUsersCount = () => ({
+  type: TOTAL_USERS_COUNT_REQUESTED,
+});
+
+export const TOTAL_USERS_COUNT_RECEIVED = 'TOTAL_USERS_COUNT_RECEIVED' as const;
+export const receiveTotalUsersCount = (totalUsersCount: number) => ({
+  type: TOTAL_USERS_COUNT_RECEIVED,
+  payload: { totalUsersCount },
+});
+
+export type UserListReceivedAction = ReturnType<typeof receiveUserList>;
+export type TotalUsersCountReceivedAction = ReturnType<typeof receiveTotalUsersCount>;
