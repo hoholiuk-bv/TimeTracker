@@ -9,8 +9,8 @@ namespace TimeTracker.GraphQL.Users
     {
         public UsersQuery(IUserProvider userProvider) 
         {
-            Field<ListGraphType<UserType>>("users")
-                .Description("Get all users")
+            Field<ListGraphType<UserType>>("list")
+                .Description("Get list of users")
                 .Resolve(context =>
                 {
                     return userProvider.GetAllUsers().ToList();

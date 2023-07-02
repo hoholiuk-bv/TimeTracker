@@ -9,14 +9,12 @@ namespace DataLayer.Providers
 
         public IEnumerable<User> GetAllUsers()
         {
-            string query = Queries.GetAllQuery;
-            return Query<User>(query);
+            return Query<User>(Queries.Users.GetAll);
         }
 
         public int GetTotalUsersCount()
         {
-            string query = Queries.GetTotalUsersCountQuery;
-            return Query<int>(query).First();
+            return Query<int>(Queries.Users.GetTotalUsersCount).First();
         }
     }
 }

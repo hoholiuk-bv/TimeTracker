@@ -1,5 +1,6 @@
 ﻿using DataLayer.Entities;
 using GraphQL.Types;
+using static DataLayer.Constants;
 
 namespace TimeTracker.GraphQL.Users.Types
 {
@@ -14,8 +15,26 @@ namespace TimeTracker.GraphQL.Users.Types
             Field(t => t.Password);
             Field(t => t.Salt);
             Field(t => t.IsAdmin);
-            Field(t => t.EmploymentDate);
-            Field(t => t.EmploymentType);
+
+            Field<StringGraphType>()
+                .Name("EmploymentDate")
+                .Resolve(context =>
+                {
+                    DateTime employmentDate = context.Source.EmploymentDate;
+                    return employmentDate.ToString("dd.MM.yyyy");
+                });
+
+            Field<StringGraphType>()
+                .Name("EmploymentType")
+                .Resolve(context =>
+                {
+                    EmploymentType employmentType = context.Source.EmploymentType;
+
+                    if (EmploymentTypeMappings.ContainsKey(employmentType))
+                        return EmploymentTypeMappings[employmentType];
+
+                    return employmentType.ToString();
+                });
         }
     }
 }

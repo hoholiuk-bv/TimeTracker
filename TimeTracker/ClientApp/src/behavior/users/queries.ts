@@ -1,7 +1,7 @@
 export const getUsersQuery = `
 {
   users {
-    users {
+    list {
       id
       name
       surname
@@ -10,12 +10,6 @@ export const getUsersQuery = `
       employmentDate
       employmentType
     }
-  }
-}`;
-
-export const getTotalUsersCountQuery = `
-{
-  users {
     totalUsersCount
   }
 }`;

@@ -1,4 +1,6 @@
-﻿namespace DataLayer.Entities
+﻿using static DataLayer.Constants;
+
+namespace DataLayer.Entities
 {
     public class User
     {
