@@ -1,24 +1,26 @@
 import { createReducer } from '@reduxjs/toolkit';
 import type { User } from './types';
 import {
-  UsersReceivedAction,
   USER_LIST_RECEIVED,
+  UserListReceivedAction,
 } from './actions';
 
-export type UsersState = { 
-  users: User[]; 
+export type UsersState = {
+  list: User[];
+  totalUsersCount: number;
 };
 
 const initialState: UsersState = {
-  users: [],
+  list: [],
+  totalUsersCount: 0,
 };
 
 export default createReducer(initialState, {
   [USER_LIST_RECEIVED]: onUsersReceived,
 });
 
-function onUsersReceived(state: UsersState, action: UsersReceivedAction) {
-  const { users } = action.payload;
-
-  return { ...state, users };
+function onUsersReceived(state: UsersState, action: UserListReceivedAction): UsersState {
+  const list = action.payload.userList;
+  const totalUsersCount = action.payload.totalUsersCount;
+  return { ...state, list, totalUsersCount };
 }
