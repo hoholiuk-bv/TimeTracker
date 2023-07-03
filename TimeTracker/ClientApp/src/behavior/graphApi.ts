@@ -1,4 +1,4 @@
-import {from, map} from 'rxjs';
+import { from, map, tap } from 'rxjs';
 
 export const sendRequest = (query: string, variables?: unknown,) => {
   const path = 'http://localhost:5000/graphql';
@@ -15,5 +15,5 @@ export const sendRequest = (query: string, variables?: unknown,) => {
         method: 'POST',
         body,
       }).then(response => response.json())).pipe(
-    map((response: { data: any; }) => response.data));
+        map((response: { data: any; }) => response.data));
 };

@@ -20,11 +20,12 @@ export default createReducer(initialState, {
 function onUserExistenceReceived(state: ProfileState, action: FirstUserExistenceReceiveAction) {
   const { firstUserExists } = action.payload;
 
-  return {...state, firstUserExists}; 
+  return { ...state, firstUserExists };
 }
 
 function onUserAuthenticated(state: ProfileState, action: AuthenticateAction) {
   const { user } = action.payload;
-  localStorage.setItem('auth-token', user.token);
-  return {...state, user}; 
+  if (user?.token)
+    localStorage.setItem('auth-token', user.token);
+  return { ...state, user };
 }
