@@ -1,9 +1,18 @@
 ﻿namespace DataLayer
 {
-    public enum EmploymentType
+    public static class Constants
     {
-        PartTime,
-        FullTime,
-        PartTimeFlexible
+        public enum EmploymentType : byte
+        {
+            FullTime = 0,
+            PartTime = 1,
+        }
+
+        public static readonly Dictionary<EmploymentType, string> EmploymentTypeMappings = new Dictionary<EmploymentType, string>
+        {
+            { EmploymentType.FullTime, "full-time" },
+            { EmploymentType.PartTime, "part-time" },
+        };
     }
+    
 }

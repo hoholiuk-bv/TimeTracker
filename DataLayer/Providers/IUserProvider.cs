@@ -2,6 +2,7 @@
 
 namespace DataLayer.Providers
 
+namespace DataLayer.Providers
 {
     public interface IUserProvider
     {

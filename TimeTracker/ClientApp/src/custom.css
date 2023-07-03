@@ -1,3 +1,25 @@
+.navbar {
+    background-color: #F2F2F2;
+    height: 100vh;
+}
+
+.navbar a {
+    font-size: 1.25em;
+    color: black;
+}
+
+.navbar a:hover {
+    color: #485CFC;
+}
+
+.header {
+    border-bottom: 2px solid #F2F2F2;
+}
+
+.content-box {
+    width: 100%;
+    margin: 0;
+}
 .login-form{
   max-width: 400px;
 }

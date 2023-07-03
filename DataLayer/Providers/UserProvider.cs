@@ -7,6 +7,16 @@ namespace DataLayer.Providers
     {
         public UserProvider(IConfiguration configuration) : base(configuration) { }
 
+        public IEnumerable<User> GetAllUsers()
+        {
+            return Query<User>(Queries.Users.GetAll);
+        }
+
+        public int GetTotalUsersCount()
+        {
+            return Query<int>(Queries.Users.GetTotalUsersCount).First();
+        }
+
         public bool CheckIfAnyExists()
             => Query<User>(Queries.CheckIfExists).Any();
 

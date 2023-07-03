@@ -6,9 +6,9 @@ export const requestUserList = () => ({
 });
 
 export const USER_LIST_RECEIVED = 'USER_LIST_RECEIVED' as const;
-export const receiveUserList = (users: User[]) => ({
+export const receiveUserList = (userList: User[], totalUsersCount: number) => ({
   type: USER_LIST_RECEIVED,
-  payload: { users },
+  payload: { userList, totalUsersCount },
 });
 
-export type UsersReceivedAction = ReturnType<typeof receiveUserList>;
+export type UserListReceivedAction = ReturnType<typeof receiveUserList>;
