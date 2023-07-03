@@ -1,8 +1,6 @@
 ﻿using DataLayer.Entities;
 
 namespace DataLayer.Providers
-
-namespace DataLayer.Providers
 {
     public interface IUserProvider
     {
@@ -11,5 +9,9 @@ namespace DataLayer.Providers
         bool CheckIfAnyExists();
 
         User? GetByEmail(string email);
+
+        IEnumerable<User> GetAllUsers();
+
+        int GetTotalUsersCount();
     }
 }

@@ -39,7 +39,7 @@ namespace TimeTracker.GraphQL.Profile
                 IsAdmin = true,
                 EmploymentDate = DateTime.Now,
                 Salt = salt,
-                EmploymentType = EmploymentType.FullTime,
+                EmploymentType = Constants.EmploymentType.FullTime,
                 Name = input.Name,
                 Surname = input.Surname,
                 Email = input.Email,

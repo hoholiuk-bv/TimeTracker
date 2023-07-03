@@ -2,7 +2,7 @@ import React from 'react';
 import { LoginPage } from './components/profile/LoginPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
-import { UsersPage } from './components/users/UsersPage';
+import { UserListPage } from './components/users/UserListPage';
 
 const App = () => {
   return (
@@ -11,7 +11,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<Layout />}>
-            <Route path="/users" element={<UsersPage />} />
+            <Route path="/users" element={<UserListPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

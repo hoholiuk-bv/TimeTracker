@@ -6,7 +6,7 @@ export const sendRequest = (query: string, variables?: unknown,) => {
   const token = localStorage.getItem('auth-token');
   const headers = {
     'Content-Type': 'application/json',
-    'Authentication': 'Bearer ' + token,
+    'Authorization': 'Bearer ' + token,
   };
   return from(
     fetch(path,
