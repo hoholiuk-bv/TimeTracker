@@ -1,7 +1,7 @@
 import { combineEpics } from 'redux-observable';
-import { usersEpic } from './users';
-
+import { profileEpic } from './profile';
 
 export default combineEpics(
-  usersEpic,
+  profileEpic,
+  // usersEpic,
 );
