@@ -1,4 +1,6 @@
-﻿using GraphQL.Types;
+﻿using GraphQL;
+using GraphQL.Types;
+using TimeTracker.GraphQL.Profile;
 using TimeTracker.GraphQL.Users;
 
 namespace TimeTracker.GraphQL
@@ -7,8 +9,13 @@ namespace TimeTracker.GraphQL
     {
         public TimeTrackerMutation() 
         {
-            Field<UsersMutation>("Users")
-                .Description("Mutation for users")
+            //Field<UsersMutation>("Users")
+            //    .Description("Mutation for users")
+            //    .Resolve(context => new { });
+
+            Field<ProfileMutation>("Profile")
+                .Description("Mutation for profile")
+                .AllowAnonymous()
                 .Resolve(context => new { });
         }
     }

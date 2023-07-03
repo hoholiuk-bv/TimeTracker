@@ -5,7 +5,9 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker", "TimeTracker\TimeTracker.csproj", "{CB1DE87D-AB10-4480-8679-DF837036191F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{D7F5B03F-DFE7-490B-8B79-4DB3952432F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{D7F5B03F-DFE7-490B-8B79-4DB3952432F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{DCCA2894-3E2F-416C-93CA-6D3538A403D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D7F5B03F-DFE7-490B-8B79-4DB3952432F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7F5B03F-DFE7-490B-8B79-4DB3952432F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7F5B03F-DFE7-490B-8B79-4DB3952432F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCCA2894-3E2F-416C-93CA-6D3538A403D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCCA2894-3E2F-416C-93CA-6D3538A403D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCCA2894-3E2F-416C-93CA-6D3538A403D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCCA2894-3E2F-416C-93CA-6D3538A403D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

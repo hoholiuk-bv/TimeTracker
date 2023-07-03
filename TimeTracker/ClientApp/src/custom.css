@@ -20,3 +20,11 @@
     width: 100%;
     margin: 0;
 }
+.login-form{
+  max-width: 400px;
+}
+
+.field-validation-error {
+  color: red;
+  font-size: small;
+}

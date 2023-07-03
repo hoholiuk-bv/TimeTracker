@@ -8,13 +8,18 @@ namespace DataLayer.Providers
         public UserProvider(IConfiguration configuration) : base(configuration) { }
 
         public IEnumerable<User> GetAllUsers()
-        {
-            return Query<User>(Queries.Users.GetAll);
-        }
+            => Query<User>(Queries.Users.GetAll);
 
         public int GetTotalUsersCount()
-        {
-            return Query<int>(Queries.Users.GetTotalUsersCount).First();
-        }
+            => Query<int>(Queries.Users.GetTotalUsersCount).First();
+
+        public bool CheckIfAnyExists()
+            => Query<User>(Queries.Users.CheckIfExists).Any();
+
+        public void Save(User user)
+            => Execute(Queries.Users.Save, user);
+
+        public User? GetByEmail(string email)
+            => Query<User>(Queries.Users.GetByEmail, new { Email = email }).FirstOrDefault();
     }
 }
