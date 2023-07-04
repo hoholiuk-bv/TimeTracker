@@ -10,8 +10,7 @@ export type RegisterInput = {
   password: string | null;
 }
 
-export type User = {
+export type UserInfo = {
   name: string;
   surname: string;
-  token: string;
 }

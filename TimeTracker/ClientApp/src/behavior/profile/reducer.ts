@@ -1,21 +1,32 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { AuthenticateAction, FirstUserExistenceReceiveAction, FIRST_USER_EXISTENCE_RECEIVED, USER_AUTHENTICATED } from './actions';
-import type { User } from './types';
+import { AuthenticateAction, FirstUserExistenceReceiveAction, FIRST_USER_EXISTENCE_RECEIVED, LoginReceiveAction, LOGIN_RECIEVED, USER_AUTHENTICATED } from './actions';
+import type { UserInfo } from './types';
 
 export type ProfileState = {
-  firstUserExists: boolean,
-  user: User | null,
+  firstUserExists: boolean | null,
+  loginFailed: boolean,
+  authenticated: boolean | null,
+  user: UserInfo | null,
 };
 
 const initialState: ProfileState = {
-  firstUserExists: false,
-  user: null
+  firstUserExists: null,
+  loginFailed: false,
+  user: null,
+  authenticated: null,
 };
 
 export default createReducer(initialState, {
   [FIRST_USER_EXISTENCE_RECEIVED]: onUserExistenceReceived,
   [USER_AUTHENTICATED]: onUserAuthenticated,
+  [LOGIN_RECIEVED]: onLoginReceived,
 });
+
+function onLoginReceived(state: ProfileState, action: LoginReceiveAction) {
+  const { loginFailed } = action.payload;
+
+  return { ...state, loginFailed };
+}
 
 function onUserExistenceReceived(state: ProfileState, action: FirstUserExistenceReceiveAction) {
   const { firstUserExists } = action.payload;
@@ -24,8 +35,14 @@ function onUserExistenceReceived(state: ProfileState, action: FirstUserExistence
 }
 
 function onUserAuthenticated(state: ProfileState, action: AuthenticateAction) {
-  const { user } = action.payload;
-  if (user?.token)
-    localStorage.setItem('auth-token', user.token);
-  return { ...state, user };
+  const { userInfo, token } = action.payload;
+
+  if (token) {
+    localStorage.setItem('auth-token', token);
+  }
+  else {
+    localStorage.removeItem('auth-token');
+  }
+
+  return { ...state, userInfo, authenticated: userInfo != null };
 }
