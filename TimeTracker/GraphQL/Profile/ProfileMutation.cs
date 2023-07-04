@@ -12,21 +12,27 @@ namespace TimeTracker.GraphQL.Profile
     {
         private readonly IUserProvider userProvider;
         private readonly IAuthenticationService authenticationService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public ProfileMutation(IUserProvider userProvider, IAuthenticationService authenticationService)
+        public ProfileMutation(IUserProvider userProvider, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
         {
             this.userProvider = userProvider;
             this.authenticationService = authenticationService;
+            this.httpContextAccessor = httpContextAccessor;
 
             Field<AuthenticationResultType>("Login")
                 .Description("Authenticates user. Returns authentication info in case of success.")
                 .Argument<NonNullGraphType<LoginInputType>>("input")
                 .Resolve(ResolveLogin);
 
-            Field<NonNullGraphType<BooleanGraphType>>("FirstUserRegister")
+            Field<AuthenticationResultType>("FirstUserRegister")
                 .Description("Registers first user into system.")
                 .Argument<NonNullGraphType<FirstUserRegisterInputType>>("input")
                 .Resolve(ResolveFirstUserRegister);
+
+            Field<AuthenticationResultType>("Authenticate")
+                .Description("Authenticates user.")
+                .Resolve(ResolveAuthenticate);
         }
 
         private object? ResolveFirstUserRegister(IResolveFieldContext context)
@@ -48,7 +54,21 @@ namespace TimeTracker.GraphQL.Profile
 
             userProvider.Save(user);
 
-            return true;
+            if (authenticationService.Authenticate(user, input.Password, out var token))
+            {
+                return new AuthenticationResult()
+                {
+                    UserInfo = new UserInfo()
+                    {
+                        Name = user.Name,
+                        Surname = user.Surname,
+                    },
+
+                    Token = token!,
+                };
+            }
+
+            return null;
         }
 
         private object? ResolveLogin(IResolveFieldContext context)
@@ -62,13 +82,36 @@ namespace TimeTracker.GraphQL.Profile
             {
                 return new AuthenticationResult()
                 {
-                    Name = user.Name,
-                    Surname = user.Surname,
+                    UserInfo = new UserInfo()
+                    {
+                        Name = user.Name,
+                        Surname = user.Surname,
+                    },
+
                     Token = token!,
                 };
             }
 
             return null;
+        }
+
+        private object? ResolveAuthenticate(IResolveFieldContext context)
+        {
+            var httpContext = httpContextAccessor.HttpContext;
+
+            if (!httpContext?.User?.Identity?.IsAuthenticated ?? false)
+                return null;
+
+            return new AuthenticationResult()
+            {
+                UserInfo = new UserInfo()
+                {
+                    Name = "name",
+                    Surname = "surname",
+                },
+
+                Token = httpContext!.Request.Headers["Authorization"].First()!.Split(' ')[1],
+            };
         }
     }
 }

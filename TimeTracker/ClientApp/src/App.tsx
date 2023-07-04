@@ -1,23 +1,23 @@
 import React from 'react';
 import { LoginPage } from './components/profile/LoginPage';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
 import { UserListPage } from './components/users/UserListPage';
 import { routes } from './behavior/routing';
 import { NotFound } from './components/common/NotFound';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path={routes.login} element={<LoginPage />} />
-          <Route path="/" element={<Layout />}>
-            <Route path={routes.users} element={<UserListPage />} />
+          <Route index path={routes.login} element={<LoginPage />} />
+          <Route element={<Layout />}>
+            <Route index path={routes.users} element={<UserListPage />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
-          <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter >
     </>
   );
 };

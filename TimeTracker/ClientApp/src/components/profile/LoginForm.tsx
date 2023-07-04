@@ -1,25 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import type { LoginInput } from '../../behavior/profile/types';
-import { useDispatch } from 'react-redux';
-import { login } from '../../behavior/profile/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { requestLogin } from '../../behavior/profile';
 import { email, maxLength, required, validate } from '../../behavior/validators';
 import { ValidationMessage } from './ValidationMessage';
+import { RootState } from '../../behavior/store';
 
 export const LoginForm = () => {
   const initialValues: LoginInput = {
     email: '',
     password: '',
   };
+
   const dispatch = useDispatch();
-  const onSubmit = (values: LoginInput) => { dispatch(login(values)); };
+  const onSubmit = (values: LoginInput) => { dispatch(requestLogin(values)); };
+  const { loginFailed } = useSelector((state: RootState) => state.profile);
+
   return (
     <>
       <Container className="login-form">
+        <h1 className="mt-5 mb-3">Login</h1>
         <Formik onSubmit={onSubmit} initialValues={initialValues}>
           <Form>
-            <h1 className="mt-5 mb-3">Login</h1>
+            {loginFailed && <div className='alert alert-danger'>Username or password is invalid</div>}
             <Row>
               <Col>
                 <Field
