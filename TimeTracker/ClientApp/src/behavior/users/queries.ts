@@ -13,3 +13,18 @@ export const getUsersQuery = `
     totalUsersCount
   }
 }`;
+
+export const getSearchedUsersQuery = `
+query($searchedString: String!) {
+  users {
+    searchedUsers(searchedString: $searchedString) {
+      id
+      name
+      surname
+      email
+      isAdmin
+      employmentDate
+      employmentType
+    }
+  }
+}`;

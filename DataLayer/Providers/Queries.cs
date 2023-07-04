@@ -13,6 +13,12 @@
                 SELECT COUNT(*)
                 FROM Users
             ";
+            
+            public const string GetSearchedUsers = @"
+                SELECT Id, Name, Surname, Email, IsAdmin, EmploymentDate, EmploymentType
+                FROM Users
+                WHERE (Name + ' ' + Surname) LIKE '%' + @SearchedString + '%' OR Email LIKE '%' + @SearchedString + '%';
+            ";
 
             public const string Save = "insert into Users values(@Id, @Name, @Surname, @Email, @Password, @Salt, @IsAdmin, @EmploymentDate, @EmploymentType)";
 

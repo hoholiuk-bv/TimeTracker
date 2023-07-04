@@ -1,5 +1,6 @@
 ﻿using DataLayer.Entities;
 using DataLayer.Providers;
+using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Users.Types;
 
@@ -21,6 +22,15 @@ namespace TimeTracker.GraphQL.Users
                 .Resolve(context =>
                 {
                     return userProvider.GetTotalUsersCount();
+                });
+
+            Field<ListGraphType<UserType>>("searchedUsers")
+                .Description("Get list of searched users")
+                .Argument<StringGraphType>("searchedString", "Search users by name or email")
+                .Resolve(context =>
+                {
+                    string searchedString = context.GetArgument<string>("searchedString");
+                    return userProvider.SearchUsers(searchedString);
                 });
         }
     }

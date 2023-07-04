@@ -13,5 +13,7 @@ namespace DataLayer.Providers
         IEnumerable<User> GetAllUsers();
 
         int GetTotalUsersCount();
+
+        IEnumerable<User> SearchUsers(string searchedString);
     }
 }

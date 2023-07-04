@@ -10,6 +10,9 @@ namespace DataLayer.Providers
         public IEnumerable<User> GetAllUsers()
             => Query<User>(Queries.Users.GetAll);
 
+        public IEnumerable<User> SearchUsers(string searchedString)
+            => Query<User>(Queries.Users.GetSearchedUsers, new { SearchedString = searchedString });
+
         public int GetTotalUsersCount()
             => Query<int>(Queries.Users.GetTotalUsersCount).First();
 
