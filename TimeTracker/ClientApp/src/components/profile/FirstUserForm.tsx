@@ -4,7 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import type { RegisterInput } from '../../behavior/profile/types';
 import { useDispatch } from 'react-redux';
 import { register } from '../../behavior/profile/actions';
-import { required } from '../../behavior/validators';
+import { required, email, validate, maxLength, minLength } from '../../behavior/validators';
 import { ValidationMessage } from './ValidationMessage';
 
 const initialValues: RegisterInput = {
@@ -25,26 +25,61 @@ export const FirstUserForm = () => {
             <h1 className="mt-5 mb-3">Register</h1>
             <Row>
               <Col>
-                <Field type="text" className="form-control text-box single-line" placeholder="Name" name="name" validate={required}/>
-                <ValidationMessage fieldName='name'/>
+                <Field type="text"
+                  className="form-control text-box single-line"
+                  placeholder="Name"
+                  name="name"
+                  validate={validate(
+                    [
+                      { validationFunction: required },
+                      { validationFunction: maxLength, validationAttributes: { length: 128 } }
+                    ])} />
+                <ValidationMessage fieldName='name' />
               </Col>
             </Row>
             <Row>
               <Col>
-                <Field type="text" className="form-control text-box single-line mt-2" placeholder="Surname" name="surname" validate={required}/>
-                <ValidationMessage fieldName='surname'/>
+                <Field type="text"
+                  className="form-control text-box single-line mt-2"
+                  placeholder="Surname"
+                  name="surname"
+                  validate={validate(
+                    [
+                      { validationFunction: required },
+                      { validationFunction: maxLength, validationAttributes: { length: 128 } }
+                    ])} />
+                <ValidationMessage fieldName='surname' />
               </Col>
             </Row>
             <Row>
               <Col>
-                <Field type="text" className="form-control text-box single-line mt-2" placeholder="Email" name="email" validate={required}/>
-                <ValidationMessage fieldName='email'/>
+                <Field
+                  type="text"
+                  className="form-control text-box single-line mt-2"
+                  placeholder="Email"
+                  name="email"
+                  validate={validate(
+                    [
+                      { validationFunction: required },
+                      { validationFunction: email },
+                      { validationFunction: maxLength, validationAttributes: { length: 256 } }
+                    ])} />
+                <ValidationMessage fieldName='email' />
               </Col>
             </Row>
             <Row>
               <Col>
-                <Field type="password" className="form-control text-box single-line mt-2" placeholder="Password" name="password" validate={required}/>
-                <ValidationMessage fieldName='password'/>
+                <Field type="password"
+                  className="form-control text-box single-line mt-2"
+                  placeholder="Password"
+                  name="password"
+                  validate={validate(
+                    [
+                      { validationFunction: required },
+                      { validationFunction: maxLength, validationAttributes: { length: 128 } },
+                      { validationFunction: minLength, validationAttributes: { length: 6 } }
+                    ])} />
+                <ValidationMessage fieldName='password' />
               </Col>
             </Row>
             <Row>

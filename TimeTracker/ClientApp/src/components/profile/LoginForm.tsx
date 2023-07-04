@@ -4,7 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import type { LoginInput } from '../../behavior/profile/types';
 import { useDispatch } from 'react-redux';
 import { login } from '../../behavior/profile/actions';
-import { required } from '../../behavior/validators';
+import { email, maxLength, required, validate } from '../../behavior/validators';
 import { ValidationMessage } from './ValidationMessage';
 
 export const LoginForm = () => {
@@ -22,13 +22,26 @@ export const LoginForm = () => {
             <h1 className="mt-5 mb-3">Login</h1>
             <Row>
               <Col>
-                <Field type="text" className="form-control text-box single-line" placeholder="Email" name="email" validate={required} />
+                <Field
+                  type="text"
+                  className="form-control text-box single-line"
+                  placeholder="Email"
+                  name="email"
+                  validate={validate(
+                    [
+                      { validationFunction: required },
+                      { validationFunction: email },
+                    ])} />
                 <ValidationMessage fieldName='email' />
               </Col>
             </Row>
             <Row>
               <Col>
-                <Field type="password" className="form-control text-box single-line mt-2" placeholder="Password" name="password" validate={required} />
+                <Field type="password"
+                  className="form-control text-box single-line mt-2"
+                  placeholder="Password"
+                  name="password"
+                  validate={required} />
                 <ValidationMessage fieldName='password' />
               </Col>
             </Row>

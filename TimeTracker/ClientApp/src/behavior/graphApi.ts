@@ -1,4 +1,4 @@
-import { from, map, tap } from 'rxjs';
+import { from, map } from 'rxjs';
 
 export const sendRequest = (query: string, variables?: unknown,) => {
   const path = 'http://localhost:5000/graphql';
