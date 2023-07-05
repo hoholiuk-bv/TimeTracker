@@ -11,7 +11,7 @@ mutation($input: LoginInput!) {
 
 export const registerMutation = `
 mutation($input: FirstUserRegisterInput!) {
-  profile { 
+  userCreation { 
     firstUserRegister(input: $input)
    } 
  }`;

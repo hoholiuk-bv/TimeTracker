@@ -5,12 +5,14 @@ import { Layout } from './components/layout/Layout';
 import { UserListPage } from './components/users/UserListPage';
 import { routes } from './behavior/routing';
 import { NotFound } from './components/common/NotFound';
+import {CreationForm} from './components/creationForm/CreationForm';
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
         <Routes>
+          <Route path={routes.register} element={<CreationForm />} />
           <Route path={routes.login} element={<LoginPage />} />
           <Route path="/" element={<Layout />}>
             <Route path={routes.users} element={<UserListPage />} />

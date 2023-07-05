@@ -27,6 +27,11 @@ namespace TimeTracker.GraphQL.Profile
                 .Description("Registers first user into system.")
                 .Argument<NonNullGraphType<FirstUserRegisterInputType>>("input")
                 .Resolve(ResolveFirstUserRegister);
+            
+            Field<NonNullGraphType<BooleanGraphType>>("UserCreation")
+                .Description("Create a new user")
+                .Argument<NonNullGraphType<CreateUserInputType>>("input")
+                .Resolve(ResolveUserCreation);
         }
 
         private object? ResolveFirstUserRegister(IResolveFieldContext context)
@@ -40,6 +45,28 @@ namespace TimeTracker.GraphQL.Profile
                 EmploymentDate = DateTime.Now,
                 Salt = salt,
                 EmploymentType = Constants.EmploymentType.FullTime,
+                Name = input.Name,
+                Surname = input.Surname,
+                Email = input.Email,
+                Password = authenticationService.GenerateHash(input.Password, salt),
+            };
+
+            userProvider.Save(user);
+
+            return true;
+        }
+        
+        private object? ResolveUserCreation(IResolveFieldContext context)
+        {
+            var input = context.GetArgument<CreateUserInput>("input");
+            var salt = authenticationService.GenerateSalt();
+            var user = new User()
+            {
+                Id = Guid.NewGuid(),
+                IsAdmin = input.IsAdmin,
+                EmploymentDate = DateTime.Now,
+                Salt = salt,
+                EmploymentType = input.EmploymentType,
                 Name = input.Name,
                 Surname = input.Surname,
                 Email = input.Email,

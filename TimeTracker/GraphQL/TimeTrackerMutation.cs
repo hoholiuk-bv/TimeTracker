@@ -17,6 +17,7 @@ namespace TimeTracker.GraphQL
                 .Description("Mutation for profile")
                 .AllowAnonymous()
                 .Resolve(context => new { });
+            
         }
     }
 }
