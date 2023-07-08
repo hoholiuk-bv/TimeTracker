@@ -20,17 +20,22 @@
     width: 100%;
     margin: 0;
 }
-.login-form{
-  max-width: 400px;
+
+.login-form {
+    max-width: 400px;
 }
 
 .field-validation-error {
-  color: red;
-  font-size: small;
+    color: red;
+    font-size: small;
 }
 
-.bg-grey{
+.bg-grey {
     background-color: #f4f5f9;
+}
+
+.btn, input[type=text], input[type=password] {
+    border-radius: 12px;
 }
 
 th {

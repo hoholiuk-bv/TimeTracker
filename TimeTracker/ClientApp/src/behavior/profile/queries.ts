@@ -1,19 +1,30 @@
+const authenticationSegment = 'userInfo { name surname } token';
+
 export const loginMutation = `
 mutation($input: LoginInput!) {
-  profile { 
+  profile {
     login(input: $input){
-      name
-      surname
-      token
+      ${authenticationSegment}
     }
-   } 
+   }
+ }`;
+
+export const authencationMutation = `
+mutation {
+  profile {
+    authenticate{
+      ${authenticationSegment}
+    }
+   }
  }`;
 
 export const registerMutation = `
 mutation($input: FirstUserRegisterInput!) {
-  profile { 
-    firstUserRegister(input: $input)
-   } 
+  profile {
+    firstUserRegister(input: $input){
+      ${authenticationSegment}
+    }
+   }
  }`;
 
 export const firstUserExistenceQuery = `

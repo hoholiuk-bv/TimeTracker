@@ -1,20 +1,31 @@
-import type { LoginInput, RegisterInput, User } from '../profile/types';
+import type { LoginInput, RegisterInput, UserInfo } from '../profile/types';
 
-export const LOGIN = 'LOGIN' as const;
-export const login = (loginInput: LoginInput) => ({
-  type: LOGIN,
+export const LOGIN_REQUESTED = 'LOGIN_REQUESTED' as const;
+export const requestLogin = (loginInput: LoginInput) => ({
+  type: LOGIN_REQUESTED,
   payload: { loginInput }
 });
 
-export const USER_AUTHENTICATED = 'USER_AUTHENTICATED' as const;
-export const authenticate = (user: User) => ({
-  type: USER_AUTHENTICATED,
-  payload: { user }
+export const LOGIN_RECIEVED = 'LOGIN_RECIEVED' as const;
+export const receiveLogin = (loginFailed: boolean) => ({
+  type: LOGIN_RECIEVED,
+  payload: { loginFailed }
 });
 
-export const REGISTER = 'REGISTER' as const;
+export const USER_AUTHENTICATION_REQUESTED = 'USER_AUTHENTICATION_REQUESTED' as const;
+export const requestAuthentication = () => ({
+  type: USER_AUTHENTICATION_REQUESTED,
+});
+
+export const USER_AUTHENTICATED = 'USER_AUTHENTICATED' as const;
+export const authenticate = (userInfo: UserInfo | null, token: string | null) => ({
+  type: USER_AUTHENTICATED,
+  payload: { userInfo, token }
+});
+
+export const USER_REGISTERED = 'USER_REGISTERED' as const;
 export const register = (registerInput: RegisterInput) => ({
-  type: REGISTER,
+  type: USER_REGISTERED,
   payload: { registerInput }
 });
 
@@ -29,12 +40,14 @@ export const receiveFirstUserExistence = (firstUserExists: boolean) => ({
   payload: { firstUserExists }
 });
 
-export type LoginAction = ReturnType<typeof login>;
+export type LoginRequestAction = ReturnType<typeof requestLogin>;
+export type LoginReceiveAction = ReturnType<typeof receiveLogin>;
 export type AuthenticateAction = ReturnType<typeof authenticate>;
 export type RegisterAction = ReturnType<typeof register>;
 export type FirstUserExistenceReceiveAction = ReturnType<typeof receiveFirstUserExistence>;
 export type ProfileActions = ReturnType<
-  | typeof login
+  | typeof requestLogin
+  | typeof receiveLogin
   | typeof register
   | typeof receiveFirstUserExistence
   | typeof authenticate>
