@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { register } from '../../behavior/userCreation/actions';
 import { required } from '../../behavior/validators';
 import { ValidationMessage } from './ValidationMessage';
+import {useNavigate} from 'react-router-dom';
 
 const initialValues: RegisterInput = {
     name: null,
@@ -18,7 +19,10 @@ const initialValues: RegisterInput = {
 
 export const CreationForm = () => {
     const dispatch = useDispatch();
-    const onSubmit = (values: RegisterInput) => { dispatch(register(values)); };
+    const navigate = useNavigate();
+
+    const onSubmit = (values: RegisterInput) => { dispatch(register(values)); navigate('/users');
+    };
     return (
         <>
             <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>

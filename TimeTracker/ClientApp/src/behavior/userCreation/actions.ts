@@ -1,4 +1,4 @@
-﻿import type { RegisterInput, User } from '../profile/types';
+﻿import type { RegisterInput} from '../profile/types';
 
 
 
