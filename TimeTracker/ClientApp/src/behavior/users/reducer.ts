@@ -2,24 +2,26 @@ import {createReducer} from '@reduxjs/toolkit';
 import type {User} from './types';
 import {
   USER_LIST_RECEIVED,
-  SEARCHED_USERS_RECEIVED,
+  EMPLOYMENT_TYPE_LIST_RECEIVED,
   UserListReceivedAction,
-  SearchedUsersReceivedAction,
+  EmploymentTypeListReceivedAction
 } from './actions';
 
 export type UsersState = {
   list: User[];
   totalUsersCount: number;
+  employmentTypeList: string[];
 };
 
 const initialState: UsersState = {
   list: [],
   totalUsersCount: 0,
+  employmentTypeList: [],
 };
 
 export default createReducer(initialState, {
   [USER_LIST_RECEIVED]: onUsersReceived,
-  [SEARCHED_USERS_RECEIVED]: onSearchedUsersReceived,
+  [EMPLOYMENT_TYPE_LIST_RECEIVED]: onEmploymentTypeListReceived,
 });
 
 function onUsersReceived(state: UsersState, action: UserListReceivedAction): UsersState {
@@ -28,7 +30,7 @@ function onUsersReceived(state: UsersState, action: UserListReceivedAction): Use
   return {...state, list, totalUsersCount};
 }
 
-function onSearchedUsersReceived(state: UsersState, action: SearchedUsersReceivedAction): UsersState {
-  const list = action.payload.userList;
-  return {...state, list};
+function onEmploymentTypeListReceived(state: UsersState, action: EmploymentTypeListReceivedAction): UsersState {
+  const employmentTypeList = action.payload.employmentTypeList;
+  return {...state, employmentTypeList};
 }

@@ -7,3 +7,10 @@ export type User = {
   employmentDate: string;
   employmentType: string;
 }
+
+export type SearchType = {
+  searchText: string;
+  startEmploymentDate: string;
+  endEmploymentDate: string;
+  employmentType: string[];
+}

@@ -4,30 +4,39 @@ import {sendRequest} from '../graphApi';
 
 import {
   USER_LIST_REQUESTED,
-  SEARCHED_USERS_REQUESTED,
-  receiveUserList,
-  receiveSearchedUsers
+  EMPLOYMENT_TYPE_LIST_REQUESTED, 
+  receiveUserList, 
+  receiveEmploymentTypeList,
 } from './actions';
 
-import {getUsersQuery, getSearchedUsersQuery} from './queries';
+import {getEmploymentTypeListQuery, getUsersQuery} from './queries';
 
 const epic: Epic<any> = (actions$, state$) => {
   const requestUsers$ = actions$.pipe(
     ofType(USER_LIST_REQUESTED),
-    mergeMap(() => sendRequest(getUsersQuery).pipe(
+    map(action => action.payload),
+    mergeMap((variables) => sendRequest(getUsersQuery, {
+      searchText: variables.searchText,
+      pageSize: variables.pageSize,
+      pageNumber: variables.pageNumber,
+      fieldName: variables.fieldName,
+      sortingOrder: variables.sortingOrder,
+      startEmploymentDate: variables.startEmploymentDate,
+      endEmploymentDate: variables.endEmploymentDate,
+      employmentType: variables.employmentType,
+    }).pipe(
       map(({users}) => receiveUserList(users.list, users.totalUsersCount))
     )),
   );
 
-  const requestSearchedUsers$ = actions$.pipe(
-    ofType(SEARCHED_USERS_REQUESTED),
-    map(action => action.payload),
-    mergeMap(({searchedString}) => sendRequest(getSearchedUsersQuery, {searchedString: searchedString}).pipe(
-      map(({users}) => receiveSearchedUsers(users.searchedUsers))
+  const requestEmploymentTypeList$ = actions$.pipe(
+    ofType(EMPLOYMENT_TYPE_LIST_REQUESTED),
+    mergeMap(() => sendRequest(getEmploymentTypeListQuery).pipe(
+      map(({users}) => receiveEmploymentTypeList(users.employmentTypeList))
     )),
   );
 
-  return merge(requestUsers$, requestSearchedUsers$);
+  return merge(requestUsers$, requestEmploymentTypeList$);
 };
 
 export default epic;
