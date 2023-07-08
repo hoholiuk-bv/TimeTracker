@@ -1,17 +1,6 @@
-﻿export const loginMutation = `
-mutation($input: LoginInput!) {
-  profile { 
-    login(input: $input){
-      name
-      surname
-      token
-    }
-   } 
- }`;
-
-export const registerMutation = `
+﻿export const creationMutation = `
 mutation($input: CreateUserInput!) {
-  profile { 
+  users { 
     userCreation(input: $input)
    } 
  }`;

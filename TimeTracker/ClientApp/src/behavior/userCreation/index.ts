@@ -1,2 +1,1 @@
-﻿export { default as userCreationReducer } from './reducer';
-export { default as userCreationEpic } from './epic';
+﻿export { default as userCreationEpic } from './epic';

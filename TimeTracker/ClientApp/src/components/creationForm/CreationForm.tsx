@@ -53,7 +53,7 @@ export const CreationForm = () => {
                         <Row>
                             <Col>
                                 <Field as="select" className="form-control mb-3" name="employmentType">
-                                    <option value="">Choose</option>
+                                    <option value="">Choose the employment type</option>
                                     <option value={0}>Full time</option>
                                     <option value={1}>Part time</option>
                                 </Field>
