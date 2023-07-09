@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
 import './custom.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';

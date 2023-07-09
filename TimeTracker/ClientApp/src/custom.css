@@ -37,3 +37,7 @@
 .btn, input[type=text], input[type=password] {
     border-radius: 12px;
 }
+
+th {
+    user-select: none;
+}
