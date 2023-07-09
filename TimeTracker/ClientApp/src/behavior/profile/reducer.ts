@@ -6,13 +6,13 @@ export type ProfileState = {
   firstUserExists: boolean | null,
   loginFailed: boolean,
   authenticated: boolean | null,
-  user: UserInfo | null,
+  userInfo: UserInfo | null,
 };
 
 const initialState: ProfileState = {
   firstUserExists: null,
   loginFailed: false,
-  user: null,
+  userInfo: null,
   authenticated: null,
 };
 

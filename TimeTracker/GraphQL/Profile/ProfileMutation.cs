@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Authentication;
+﻿using BusinessLayer;
+using BusinessLayer.Authentication;
 using DataLayer;
 using DataLayer.Entities;
 using DataLayer.Providers;
@@ -14,7 +15,9 @@ namespace TimeTracker.GraphQL.Profile
         private readonly IAuthenticationService authenticationService;
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        public ProfileMutation(IUserProvider userProvider, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor)
+        public ProfileMutation(IUserProvider userProvider,
+            IAuthenticationService authenticationService,
+            IHttpContextAccessor httpContextAccessor)
         {
             this.userProvider = userProvider;
             this.authenticationService = authenticationService;
@@ -56,14 +59,12 @@ namespace TimeTracker.GraphQL.Profile
 
             if (authenticationService.Authenticate(user, input.Password, out var token))
             {
+                var userContext = context.RequestServices!.GetRequiredService<UserContext>();
+                userContext.User = user;
                 return new AuthenticationResult()
                 {
-                    UserInfo = new UserInfo()
-                    {
-                        Name = user.Name,
-                        Surname = user.Surname,
-                    },
 
+                    UserInfo = InitializeUserInfo(context.RequestServices!.GetRequiredService<UserContext>()),
                     Token = token!,
                 };
             }
@@ -80,14 +81,12 @@ namespace TimeTracker.GraphQL.Profile
 
             if (authenticationService.Authenticate(user, input.Password, out var token))
             {
+                var userContext = context.RequestServices!.GetRequiredService<UserContext>();
+                userContext.User = user;
+
                 return new AuthenticationResult()
                 {
-                    UserInfo = new UserInfo()
-                    {
-                        Name = user.Name,
-                        Surname = user.Surname,
-                    },
-
+                    UserInfo = InitializeUserInfo(userContext),
                     Token = token!,
                 };
             }
@@ -104,13 +103,23 @@ namespace TimeTracker.GraphQL.Profile
 
             return new AuthenticationResult()
             {
-                UserInfo = new UserInfo()
-                {
-                    Name = "name",
-                    Surname = "surname",
-                },
-
+                UserInfo = InitializeUserInfo(context.RequestServices!.GetRequiredService<UserContext>()),
                 Token = httpContext!.Request.Headers["Authorization"].First()!.Split(' ')[1],
+            };
+        }
+
+        private UserInfo? InitializeUserInfo(UserContext userContext)
+        {
+            var authenticatedUser = userContext.User;
+
+            if (authenticatedUser == null)
+                return null;
+
+            return new UserInfo()
+            {
+                Name = authenticatedUser.Name,
+                Surname = authenticatedUser.Surname,
+                Permissions = userContext.GetGrantedPermissions()
             };
         }
     }

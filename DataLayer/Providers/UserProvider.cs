@@ -36,5 +36,8 @@ namespace DataLayer.Providers
 
         public User? GetByEmail(string email)
             => Query<User>(Queries.Users.GetByEmail, new { Email = email }).FirstOrDefault();
+
+        public User? GetById(string id)
+            => Query<User>(Queries.Users.GetById, new { Id = id }).FirstOrDefault();
     }
 }
