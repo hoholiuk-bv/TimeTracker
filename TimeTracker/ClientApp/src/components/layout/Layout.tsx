@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate, Outlet } from 'react-router-dom';
-import { usePermissions } from '../../behavior/hooks';
+import { Navigate, Outlet } from 'react-router-dom';
 import { requestAuthentication } from '../../behavior/profile';
-import { PermissionType } from '../../behavior/profile/types';
 import { routes } from '../../behavior/routing';
 import { RootState } from '../../behavior/store';
+import { Navigation } from './Navigation';
 
 export const Layout = () => {
   const dispatch = useDispatch();
   const { authenticated } = useSelector((state: RootState) => state.profile);
-  const [canManageUsers, canConfigureCalendar] = usePermissions([PermissionType.ManageUsers, PermissionType.ConfigureCalendar]);
 
   useEffect(() => {
     if (authenticated == null)
@@ -25,28 +24,14 @@ export const Layout = () => {
 
   return (
     <>
+      <Container className='top-panel'>
+        <Row className='align-items-center justify-content-end'>
+          <Col></Col>
+        </Row>
+      </Container>
       <div className="container">
         <div className="row">
-          <div className="col-2">
-            <div>
-              <Link to={routes.worktime}>Worktime</Link>
-            </div>
-            <div>
-              <Link to={routes.daysoff}>Days off</Link>
-            </div>
-            <div>
-              <Link to={routes.approvals}>Approvals</Link>
-            </div>
-            {canManageUsers &&
-              <div>
-                <Link to={routes.users.list}>Users</Link>
-              </div>}
-            {canConfigureCalendar &&
-              <div>
-                <Link to={routes.calendarSettings}>Calendar settings</Link>
-              </div>
-            }
-          </div>
+          <Navigation />
           <div className="col">
             <Outlet />
           </div>

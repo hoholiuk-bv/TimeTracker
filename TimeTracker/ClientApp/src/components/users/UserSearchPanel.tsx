@@ -131,7 +131,7 @@ export const UserSearchPanel = ({
       </div>
 
       <div className="col-4 d-flex justify-content-end align-items-start">
-        <input type="button" className="form-control btn btn-primary w-auto px-4" onClick={handleCreateButtonClick} value="Create new" />
+        <input type="button" className="btn btn-primary" onClick={handleCreateButtonClick} value="Create new" />
       </div>
     </div>
   );
