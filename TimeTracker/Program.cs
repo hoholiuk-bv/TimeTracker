@@ -9,6 +9,9 @@ using TimeTracker.GraphQL.Users.Types;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TimeTracker.Middleware;
+using BusinessLayer;
+using BusinessLayer.Permissions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,9 +39,9 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey
         (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-        ValidateIssuer = false, 
+        ValidateIssuer = false,
         ValidateAudience = false,
-        ValidateLifetime = false,
+        ValidateLifetime = true,
         ValidateIssuerSigningKey = false
     };
 });
@@ -52,6 +55,8 @@ builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 builder.Services.AddSingleton<IUserProvider, UserProvider>();
 builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<UserContext>();
+builder.Services.AddSingleton<PermissionSet>();
 
 //GraphQL
 
@@ -82,6 +87,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 app.UseAuthentication();
+app.UseMiddleware<UserContextMiddleware>();
 app.UseAuthorization();
 app.UseGraphQL();
 

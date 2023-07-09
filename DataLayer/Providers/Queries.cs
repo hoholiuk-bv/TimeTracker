@@ -19,6 +19,8 @@
             public const string CheckIfExists = "select top (1) [Id] from Users";
 
             public const string GetByEmail = "select * from Users where Email = @Email";
+
+            public const string GetById = "select * from Users where Id = @Id";
         }
     }
 }

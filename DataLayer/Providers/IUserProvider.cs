@@ -10,6 +10,8 @@ namespace DataLayer.Providers
 
         User? GetByEmail(string email);
 
+        User? GetById(string id);
+
         IEnumerable<User> GetAllUsers();
 
         int GetTotalUsersCount();
