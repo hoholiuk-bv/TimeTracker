@@ -9,14 +9,15 @@ namespace TimeTracker.GraphQL
     {
         public TimeTrackerMutation() 
         {
-            //Field<UsersMutation>("Users")
-            //    .Description("Mutation for users")
-            //    .Resolve(context => new { });
+            Field<UsersMutation>("Users")
+                .Description("Mutation for users")
+                .Resolve(context => new { });
 
             Field<ProfileMutation>("Profile")
                 .Description("Mutation for profile")
                 .AllowAnonymous()
                 .Resolve(context => new { });
+            
         }
     }
 }

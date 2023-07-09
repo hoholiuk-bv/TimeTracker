@@ -1,9 +1,12 @@
 import React from 'react';
+
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faMagnifyingGlass, faXmark, faFilter} from '@fortawesome/free-solid-svg-icons';
 import { Field, useFormik, FormikProvider  } from 'formik';
 import {SearchType} from '../../behavior/users/types';
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
+
 
 type Props = {
   searchText: string;
@@ -45,6 +48,11 @@ export const UserSearchPanel = ({
       setEndEmploymentDate(values.endEmploymentDate !== '' ? format(new Date(values.endEmploymentDate), 'dd.MM.yyyy') : '');
     },
   });
+
+    const navigate = useNavigate();
+    const handleCreateButtonClick = () => {
+        navigate('/userCreation');
+    };
 
   const handleSearchTextRemove = () => {
     setSearchText('');
@@ -122,7 +130,7 @@ export const UserSearchPanel = ({
       </div>
 
       <div className="col-4 d-flex justify-content-end align-items-start">
-        <input type="button" className="form-control btn btn-primary w-auto px-4" value="Create new"/>
+          <input type="button" className="form-control btn btn-primary w-auto px-4" onClick={handleCreateButtonClick} value="Create new"/>
       </div>
     </div>
   );

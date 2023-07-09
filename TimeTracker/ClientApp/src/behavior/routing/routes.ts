@@ -4,5 +4,6 @@ export const routes = {
   worktime: '/worktime',
   daysoff: '/daysoff',
   approvals: '/approvals',
-  calendarSettings: '/calendarsettings'
+  calendarSettings: '/calendarsettings',
+  userCreation: '/userCreation'
 };

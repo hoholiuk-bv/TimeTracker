@@ -69,6 +69,7 @@ builder.Services.AddTransient<ProfileQuery>();
 builder.Services.AddTransient<UserType>();
 builder.Services.AddTransient<LoginInputType>();
 builder.Services.AddTransient<FirstUserRegisterInputType>();
+builder.Services.AddTransient<CreateUserInputType>();
 builder.Services.AddTransient<AuthenticationResultType>();
 builder.Services.AddTransient<UserInfoType>();
 builder.Services.AddGraphQL(a => a.AddSchema<TimeTrackerSchema>().AddSystemTextJson().AddAuthorizationRule());

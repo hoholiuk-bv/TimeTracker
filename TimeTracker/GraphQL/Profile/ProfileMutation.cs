@@ -71,7 +71,7 @@ namespace TimeTracker.GraphQL.Profile
 
             return null;
         }
-
+        
         private object? ResolveLogin(IResolveFieldContext context)
         {
             var input = context.GetArgument<LoginInput>("input");

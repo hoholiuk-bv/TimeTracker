@@ -4,6 +4,7 @@ import { Layout } from './components/layout/Layout';
 import { UserListPage } from './components/users/UserListPage';
 import { routes } from './behavior/routing';
 import { NotFound } from './components/common/NotFound';
+import {CreationForm} from './components/creationForm/CreationForm';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Page } from './components/common/Page';
 import { PermissionType } from './behavior/profile/types';
@@ -13,7 +14,9 @@ const App = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route index path={routes.login} element={<LoginPage />} />
+
+            <Route path={routes.userCreation} element={<CreationForm />} />
+            <Route index path={routes.login} element={<LoginPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to={routes.users} />} />
             <Route
