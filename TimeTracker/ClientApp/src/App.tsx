@@ -15,7 +15,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
 
-            <Route path={routes.register} element={<CreationForm />} />
+            <Route path={routes.userCreation} element={<CreationForm />} />
             <Route index path={routes.login} element={<LoginPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to={routes.users} />} />

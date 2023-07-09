@@ -1,10 +1,10 @@
-﻿import type { RegisterInput} from '../profile/types';
+﻿import type { CreationInput} from './types';
 
 
 
-export const REGISTER = 'REGISTER' as const;
-export const register = (registerInput: RegisterInput) => ({
-    type: REGISTER,
+export const USER_CREATION = 'USER_CREATION' as const;
+export const register = (registerInput: CreationInput) => ({
+    type: USER_CREATION,
     payload: { registerInput }
 });
 

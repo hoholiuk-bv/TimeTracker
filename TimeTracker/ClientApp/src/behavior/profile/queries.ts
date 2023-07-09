@@ -20,17 +20,11 @@ mutation {
 
 export const registerMutation = `
 mutation($input: FirstUserRegisterInput!) {
-<<<<<<< HEAD
-  userCreation { 
-    firstUserRegister(input: $input)
-   } 
-=======
   profile {
     firstUserRegister(input: $input){
       ${authenticationSegment}
     }
    }
->>>>>>> master
  }`;
 
 export const firstUserExistenceQuery = `

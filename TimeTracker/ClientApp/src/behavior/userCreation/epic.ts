@@ -1,6 +1,6 @@
 ﻿import { mergeMap, map, merge } from 'rxjs';
 import {
-    REGISTER,
+    USER_CREATION,
     CreationActions,
 } from './actions';
 import { Epic, ofType } from 'redux-observable';
@@ -10,14 +10,14 @@ import { creationMutation} from './queries';
 const epic: Epic<CreationActions | any> = (actions$, state$) => {
     
 
-    const register$ = actions$.pipe(
-        ofType(REGISTER),
+    const userCreation$ = actions$.pipe(
+        ofType(USER_CREATION),
         map(action => action.payload),
         mergeMap(({ registerInput }) => sendRequest(creationMutation, { input: registerInput }).pipe(
         ))
     );
     
-    return merge(register$);
+    return merge(userCreation$);
 };
 
 export default epic;
