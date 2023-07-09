@@ -3,7 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import type { CreationInput } from '../../behavior/userCreation/types';
 import { useDispatch } from 'react-redux';
-import { register } from '../../behavior/userCreation/actions';
+import { userCreation } from '../../behavior/userCreation/actions';
 import {email, maxLength, required, validate} from '../../behavior/validators';
 import { ValidationMessage } from './ValidationMessage';
 import {useNavigate} from 'react-router-dom';
@@ -21,7 +21,7 @@ export const CreationForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const onSubmit = (values: CreationInput) => { dispatch(register(values)); navigate('/users');
+    const onSubmit = (values: CreationInput) => { dispatch(userCreation(values)); navigate('/users');
     };
     return (
         <>

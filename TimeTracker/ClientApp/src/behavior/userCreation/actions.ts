@@ -3,12 +3,12 @@
 
 
 export const USER_CREATION = 'USER_CREATION' as const;
-export const register = (registerInput: CreationInput) => ({
+export const userCreation = (userCreationInput: CreationInput) => ({
     type: USER_CREATION,
-    payload: { registerInput }
+    payload: { userCreationInput }
 });
 
 
-export type RegisterAction = ReturnType<typeof register>;
+export type UserCreationAction = ReturnType<typeof userCreation>;
 export type CreationActions = ReturnType<
-    | typeof register>
+    | typeof userCreation>
