@@ -12,6 +12,7 @@ public class CreateUserInputType : InputObjectGraphType<CreateUserInput>
         Field<NonNullGraphType<StringGraphType>>("Surname");
         Field<NonNullGraphType<StringGraphType>>("Email");
         Field<NonNullGraphType<StringGraphType>>("Password");
+        Field<NonNullGraphType<StringGraphType>>("EmploymentDate");
         Field<BooleanGraphType>("IsAdmin");
         Field<NonNullGraphType<StringGraphType>>("EmploymentType");
     }
@@ -19,16 +20,17 @@ public class CreateUserInputType : InputObjectGraphType<CreateUserInput>
 
 public class CreateUserInput
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
-    public string Surname { get; set; }
+    public string Surname { get; set; } = null!;
 
-    public string Email { get; set; }
+    public string Email { get; set; } = null!;
 
-    public string Password { get; set; }
-        
+    public string Password { get; set; } = null!;
+
+    public string EmploymentDate { get; set; } = null!;
+
     public bool IsAdmin { get; set; }
-        
         
     public Constants.EmploymentType EmploymentType { get; set; }
 }

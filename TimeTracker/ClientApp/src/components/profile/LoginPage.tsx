@@ -22,7 +22,7 @@ export const LoginPage = () => {
     return null;
 
   if (authenticated)
-    return (<Navigate to={routes.users} />);
+    return (<Navigate to={routes.users.list} />);
 
   return (
     <>

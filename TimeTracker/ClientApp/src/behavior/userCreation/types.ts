@@ -4,5 +4,6 @@
     email: string | null;
     password: string | null;
     employmentType: number | null;
+    employmentDate: string | null;
     isAdmin: boolean | null;
 }

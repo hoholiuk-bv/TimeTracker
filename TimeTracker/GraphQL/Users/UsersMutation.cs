@@ -29,7 +29,7 @@ namespace TimeTracker.GraphQL.Users
             {
                 Id = Guid.NewGuid(),
                 IsAdmin = input.IsAdmin,
-                EmploymentDate = DateTime.Now,
+                EmploymentDate = DateTime.Parse(input.EmploymentDate),
                 Salt = salt,
                 EmploymentType = input.EmploymentType,
                 Name = input.Name,

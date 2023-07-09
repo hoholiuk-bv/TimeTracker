@@ -1,9 +1,11 @@
 export const routes = {
   login: '/login',
-  users: '/users',
+  users: {
+    list: '/users',
+    creation: '/users/new'
+  },
   worktime: '/worktime',
   daysoff: '/daysoff',
   approvals: '/approvals',
   calendarSettings: '/calendarsettings',
-  userCreation: '/userCreation'
 };

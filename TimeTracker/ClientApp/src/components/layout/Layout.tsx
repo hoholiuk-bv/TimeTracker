@@ -39,7 +39,7 @@ export const Layout = () => {
             </div>
             {canManageUsers &&
               <div>
-                <Link to={routes.users}>Users</Link>
+                <Link to={routes.users.list}>Users</Link>
               </div>}
             {canConfigureCalendar &&
               <div>
