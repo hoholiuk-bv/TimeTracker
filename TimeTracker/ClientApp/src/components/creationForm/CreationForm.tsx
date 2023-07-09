@@ -4,7 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import type { RegisterInput } from '../../behavior/userCreation/types';
 import { useDispatch } from 'react-redux';
 import { register } from '../../behavior/userCreation/actions';
-import { required } from '../../behavior/validators';
+import {email, maxLength, required, validate} from '../../behavior/validators';
 import { ValidationMessage } from './ValidationMessage';
 import {useNavigate} from 'react-router-dom';
 
@@ -44,7 +44,12 @@ export const CreationForm = () => {
                         </Row>
                         <Row>
                             <Col>
-                                <Field type="email" className="form-control mb-3" placeholder="Email" name="email" validate={required}/>
+                                <Field type="email" className="form-control mb-3" placeholder="Email" name="email" validate={validate(
+                                    [
+                                        { validationFunction: required },
+                                        { validationFunction: email },
+                                        { validationFunction: maxLength, validationAttributes: { length: 256 } }
+                                    ])}/>
                                 <ValidationMessage fieldName='email'/>
                             </Col>
                         </Row>

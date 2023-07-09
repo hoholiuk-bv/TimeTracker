@@ -15,7 +15,7 @@ namespace BusinessLayer.Authentication
             this.configuration = configuration;
         }
 
-        public string GetToken(string username)
+        public string GetToken(string userId)
         {
             var issuer = configuration["Jwt:Issuer"];
             var audience = configuration["Jwt:Issuer"];
@@ -24,7 +24,7 @@ namespace BusinessLayer.Authentication
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Email, username),
+                    new Claim("id", userId),
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(120),
                 Issuer = issuer,

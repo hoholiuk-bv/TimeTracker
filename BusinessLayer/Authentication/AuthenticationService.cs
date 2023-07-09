@@ -20,7 +20,7 @@ namespace BusinessLayer.Authentication
             token = null;
 
             if (authenticated)
-                token = tokenService.GetToken(user.Email);
+                token = tokenService.GetToken(user.Id.ToString());
 
             return authenticated;
         }

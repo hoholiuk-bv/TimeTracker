@@ -13,4 +13,10 @@ export type RegisterInput = {
 export type UserInfo = {
   name: string;
   surname: string;
+  permissions: PermissionType[]
+}
+
+export enum PermissionType {
+  ManageUsers = 'MANAGE_USERS',
+  ConfigureCalendar = 'CONFIGURE_CALENDAR',
 }

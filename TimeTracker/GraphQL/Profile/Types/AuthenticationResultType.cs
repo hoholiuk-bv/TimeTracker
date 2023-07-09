@@ -1,4 +1,5 @@
-﻿using GraphQL.Types;
+﻿using BusinessLayer;
+using GraphQL.Types;
 
 namespace TimeTracker.GraphQL.Profile.Types
 {
