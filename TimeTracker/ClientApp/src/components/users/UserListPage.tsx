@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {RootState} from '../../behavior/store';
-import {useDispatch, useSelector} from 'react-redux';
-import {requestEmploymentTypeList, requestUserList} from '../../behavior/users/actions';
-import {UserPagination} from './UserPagination';
-import {UserSearchPanel} from './UserSearchPanel';
-import {UserTable} from './UserTable';
+import React, { useEffect, useState } from 'react';
+import { RootState } from '../../behavior/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { requestEmploymentTypeList, requestUserList } from '../../behavior/users/actions';
+import { UserPagination } from './UserPagination';
+import { UserSearchPanel } from './UserSearchPanel';
+import { UserTable } from './UserTable';
 
 export const UserListPage = () => {
   const dispatch = useDispatch();
@@ -28,33 +28,31 @@ export const UserListPage = () => {
 
   return (
     <>
-      <div className="p-5 pt-3">
-        <h2 className="mb-4 h1">Users</h2>
-        <UserSearchPanel
-          searchText={searchText}
-          setSearchText={setSearchText}
-          setStartEmploymentDate={setStartEmploymentDate}
-          startEmploymentDate={startEmploymentDate}
-          setEndEmploymentDate={setEndEmploymentDate}
-          endEmploymentDate={endEmploymentDate}
-          employmentTypeList={employmentTypeList}
-          setEmploymentType={setEmploymentType}
-          employmentType={employmentType}
+      <h1 className="mb-4">Users</h1>
+      <UserSearchPanel
+        searchText={searchText}
+        setSearchText={setSearchText}
+        setStartEmploymentDate={setStartEmploymentDate}
+        startEmploymentDate={startEmploymentDate}
+        setEndEmploymentDate={setEndEmploymentDate}
+        endEmploymentDate={endEmploymentDate}
+        employmentTypeList={employmentTypeList}
+        setEmploymentType={setEmploymentType}
+        employmentType={employmentType}
+      />
+      {users.length === 0 && (
+        <div className="h5 alert alert-danger">User not found.</div>
+      )}
+      {users.length > 0 && (
+        <UserTable
+          users={users}
+          fieldName={fieldName}
+          setFieldName={setFieldName}
+          sortingOrder={sortingOrder}
+          setSortingOrder={setSortingOrder}
         />
-        {users.length === 0 && (
-          <div className="h5 alert alert-danger">User not found.</div>
-        )}
-        {users.length > 0 && (
-          <UserTable
-            users={users}
-            fieldName={fieldName}
-            setFieldName={setFieldName}
-            sortingOrder={sortingOrder}
-            setSortingOrder={setSortingOrder}
-          />
-        )}
-        <UserPagination totalUsersCount={totalUsersCount}/>
-      </div>
+      )}
+      <UserPagination totalUsersCount={totalUsersCount} />
     </>
   );
 };

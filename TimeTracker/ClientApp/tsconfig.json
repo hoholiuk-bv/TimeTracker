@@ -22,7 +22,8 @@
   },
   "include": [
     "src/components",
+    "src/components",
     "src/behavior",
-    "src/App.tsx",
+    "src/App.tsx", "src/index.d.ts",
   ],
 }

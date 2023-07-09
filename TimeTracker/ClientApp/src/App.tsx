@@ -16,8 +16,14 @@ const App = () => {
         <Routes>
           <Route index path={routes.login} element={<LoginPage />} />
           <Route element={<Layout />}>
-            <Route path={routes.users.creation} element={<CreationForm />} />
             <Route path="/" element={<Navigate to={routes.users.list} />} />
+            <Route
+              path={routes.users.creation}
+              element={
+                <Page requiredPermissions={[PermissionType.ManageUsers]}>
+                  <CreationForm />
+                </Page>
+              } />
             <Route
               index
               path={routes.users.list}
