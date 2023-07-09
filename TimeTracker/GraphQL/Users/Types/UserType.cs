@@ -12,8 +12,6 @@ namespace TimeTracker.GraphQL.Users.Types
             Field(t => t.Name);
             Field(t => t.Surname);
             Field(t => t.Email);
-            Field(t => t.Password);
-            Field(t => t.Salt);
             Field(t => t.IsAdmin);
 
             Field<StringGraphType>()
