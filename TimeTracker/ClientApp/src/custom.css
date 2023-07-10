@@ -70,7 +70,7 @@ input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="color"]:focus,
 .uneditable-input:focus {
-    background-color: #EFF0F2;
+    background-color: #EFF0F2 !important;
     box-shadow: none;
     outline: 0 none;
     border: none !important;
