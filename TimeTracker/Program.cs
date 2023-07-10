@@ -85,6 +85,7 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseCors();
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();
@@ -95,5 +96,7 @@ app.UseGraphQL();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
+
+app.MapFallbackToFile("index.html");
 
 app.Run();
