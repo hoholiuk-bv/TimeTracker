@@ -1,13 +1,13 @@
 import React from 'react';
-import {User} from '../../behavior/users/types';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTrashCan, faFileLines} from '@fortawesome/free-solid-svg-icons';
+import { User } from '../../behavior/users/types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan, faFileLines } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
-    user: User;
+  user: User;
 }
 
-export const UserRow = ({user}: Props) => {
+export const UserRow = ({ user }: Props) => {
   return (
     <tr>
       <td>
@@ -22,10 +22,10 @@ export const UserRow = ({user}: Props) => {
       <td>
         {user.employmentDate.toString()}
       </td>
-      <td>
+      <td className='align-middle'>
         <div className="d-flex gap-3 justify-content-end">
-          <FontAwesomeIcon icon={faFileLines} size="xl" style={{color: '#2977ff'}}/>
-          <FontAwesomeIcon icon={faTrashCan} size="xl" style={{color: '#ED2939'}}/>
+          <FontAwesomeIcon icon={faFileLines} />
+          <FontAwesomeIcon icon={faTrashCan} />
         </div>
       </td>
     </tr>

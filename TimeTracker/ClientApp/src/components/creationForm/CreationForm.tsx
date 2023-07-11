@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, FormLabel, Row } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import type { CreationInput } from '../../behavior/userCreation/types';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import { email, maxLength, required, validate } from '../../behavior/validators'
 import { ValidationMessage } from './ValidationMessage';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../behavior/routing';
+import { FormGroup } from '../common/elements/FormGroup';
 
 const initialValues: CreationInput = {
   name: null,
@@ -28,77 +29,78 @@ export const CreationForm = () => {
   };
   return (
     <>
-      {/* <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}> */}
-      <div className="d-flex flex-wrap justify-content-center align-items-start p-4 border rounded-5">
-        <Formik onSubmit={onSubmit} initialValues={initialValues}>
-          <Form>
-            <h1 className="mb-3">Creation Form</h1>
-            <Row>
-              <Col>
-                <label>Name</label>
-                <Field type="text" className="form-control mb-3" name="name" validate={required} />
+      <Formik onSubmit={onSubmit} initialValues={initialValues}>
+        <Form>
+          <h1 className="mb-3">New user</h1>
+          <Row>
+            <Col>
+              <FormGroup>
+                <FormLabel htmlFor='name'>Name</FormLabel>
+                <Field type="text" className="form-control" name="name" validate={required} />
                 <ValidationMessage fieldName='name' />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <label>Surname</label>
-                <Field type="text" className="form-control mb-3" name="surname" validate={required} />
+              </FormGroup>
+            </Col>
+            <Col>
+              <FormGroup>
+                <FormLabel htmlFor='employmentType'>Employment type</FormLabel>
+                <Field as="select" className="form-control" name="employmentType">
+                  <option value="">Choose the employment type</option>
+                  <option value={0}>Full time</option>
+                  <option value={1}>Part time</option>
+                </Field>
+                <ValidationMessage fieldName='employmentType' />
+              </FormGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <FormGroup>
+                <FormLabel htmlFor='surname'>Surname</FormLabel>
+                <Field type="text" className="form-control" name="surname" validate={required} />
                 <ValidationMessage fieldName='surname' />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <label>Email</label>
-                <Field type="email" className="form-control mb-3" name="email" validate={validate(
+              </FormGroup>
+            </Col>
+            <Col>
+              <FormGroup>
+                <FormLabel htmlFor='employmentDate'>Employment date</FormLabel>
+                <Field name="employmentDate" type="date" className="form-control" />
+              </FormGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <FormGroup>
+                <FormLabel htmlFor='email'>Email</FormLabel>
+                <Field type="email" className="form-control" name="email" validate={validate(
                   [
                     { validationFunction: required },
                     { validationFunction: email },
                     { validationFunction: maxLength, validationAttributes: { length: 256 } }
                   ])} />
                 <ValidationMessage fieldName='email' />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <label>Password</label>
-                <Field type="password" className="form-control mb-3" name="password" validate={required} />
-                <ValidationMessage fieldName='password' />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <label>Employment type</label>
-                <Field as="select" className="form-control mb-3" name="employmentType">
-                  <option value="">Choose the employment type</option>
-                  <option value={0}>Full time</option>
-                  <option value={1}>Part time</option>
-                </Field>
-                <ValidationMessage fieldName='employmentType' />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <label>Employment date</label>
-                <Field name="employmentDate" type="date" className="form-control" />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <label>Admin user</label>
+              </FormGroup>
+            </Col>
+            <Col>
+              <FormGroup>
+                <FormLabel htmlFor='isAdmin'>Admin user</FormLabel>
                 <Field type="checkbox" name="isAdmin" />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <button className="btn btn-primary w-100 mt-2" type="submit">Register</button>
-              </Col>
-            </Row>
-
-          </Form>
-        </Formik>
-      </div>
-      {/* </Container> */}
+              </FormGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <FormGroup>
+                <FormLabel htmlFor='password'>Password</FormLabel>
+                <Field type="password" className="form-control" name="password" validate={required} />
+                <ValidationMessage fieldName='password' />
+              </FormGroup>
+            </Col>
+            <Col>
+            </Col>
+          </Row>
+          <button className="btn btn-primary mt-2" type="submit">Create</button>
+        </Form>
+      </Formik>
     </>
   );
 };

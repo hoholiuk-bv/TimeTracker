@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {RootState} from '../../behavior/store';
-import {useDispatch, useSelector} from 'react-redux';
-import {requestEmploymentTypeList, requestUserList} from '../../behavior/users/actions';
-import {UserPagination} from './UserPagination';
-import {UserSearchPanel} from './UserSearchPanel';
-import {UserTable} from './UserTable';
+import React, { useEffect, useState } from 'react';
+import { RootState } from '../../behavior/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { requestEmploymentTypeList, requestUserList } from '../../behavior/users/actions';
+import { UserPagination } from './UserPagination';
+import { UserSearchPanel } from './UserSearchPanel';
+import { UserTable } from './UserTable';
 import {FilterType, PaginationType, SortType} from '../../behavior/users/types';
 
 export const UserListPage = () => {
