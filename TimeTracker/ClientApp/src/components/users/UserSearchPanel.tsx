@@ -113,18 +113,18 @@ export const UserSearchPanel = ({employmentTypeList, filter, setFilter}: Props) 
               <div className="d-flex gap-2">
                 <div className="dropstart">
                   <button type="button" className="btn btn-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                    <FontAwesomeIcon icon={faFilter} style={{ color: '#ffffff', }} />
+                    <FontAwesomeIcon icon={faFilter}/>
                   </button>
                   <div className="dropdown-menu p-3 me-2">
                     <div className="d-flex gap-2 flex-column">
                       <span className="h5">Employment date</span>
                       <div className="d-flex flex-row align-items-center gap-2">
                         <label htmlFor="startEmploymentDate">Start:</label>
-                        <Field name="startEmploymentDate" type="date" className="form-control" value={values.startEmploymentDate} />
+                        <Field name="startEmploymentDate" type="date" className="form-control" value={values.startEmploymentDate}/>
                       </div>
                       <div className="d-flex flex-row align-items-center gap-2">
                         <label htmlFor="endEmploymentDate">End:</label>
-                        <Field name="endEmploymentDate" type="date" className="form-control" value={values.endEmploymentDate} />
+                        <Field name="endEmploymentDate" type="date" className="form-control" value={values.endEmploymentDate}/>
                       </div>
                       <span className="h5 mt-2">Employment type</span>
                       <Field name="employmentTypes" as="select" className="form-select" multiple>
@@ -140,7 +140,7 @@ export const UserSearchPanel = ({employmentTypeList, filter, setFilter}: Props) 
                 </div>
                 <Field name="searchText" type="search" className="form-control w-50" value={values.searchText} placeholder="Search by name or email" />
                 <button className="btn btn-primary" type="submit">
-                  <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: '#ffffff', }} />
+                  <FontAwesomeIcon icon={faMagnifyingGlass}/>
                 </button>
               </div>
               <div className="d-flex gap-2 flex-wrap">

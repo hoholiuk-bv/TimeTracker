@@ -3,7 +3,6 @@ body {
     color: #424242;
 }
 
-
 .header {
     border-bottom: 2px solid #F2F2F2;
 }
@@ -151,7 +150,8 @@ th {
 }
 
 .sorting-inactive {
-    color: white;
+    color: gray;
+    opacity: 0.25;
 }
 
 .alert {
