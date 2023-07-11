@@ -1,9 +1,10 @@
-import type {User} from './types';
+import type {SortType, User} from './types';
+import {FilterType, PaginationType} from './types';
 
 export const USER_LIST_REQUESTED = 'USER_LIST_REQUESTED' as const;
-export const requestUserList = (searchText: string, pageSize: number, pageNumber: number, fieldName: string, sortingOrder: string, startEmploymentDate: string, endEmploymentDate: string, employmentType: string[]) => ({
+export const requestUserList = (filter: FilterType, sorting: SortType, pagination: PaginationType) => ({
   type: USER_LIST_REQUESTED,
-  payload: {searchText, pageSize, pageNumber, fieldName, sortingOrder, startEmploymentDate, endEmploymentDate, employmentType},
+  payload: {filter, sorting, pagination},
 });
 
 export const USER_LIST_RECEIVED = 'USER_LIST_RECEIVED' as const;

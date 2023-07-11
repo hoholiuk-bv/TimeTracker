@@ -1,5 +1,5 @@
-﻿using System.Data;
-using static DataLayer.Constants;
+﻿using DataLayer.Models;
+using System.Data;
 
 namespace DataLayer.Providers
 {
@@ -7,16 +7,9 @@ namespace DataLayer.Providers
     {
         public static class Users
         {
-            public static string GetAll(
-                IEnumerable<EmploymentType> employmentTypes,
-                int pageSize = 10,
-                int pageNumber = 1,
-                string fieldName = "EmploymentDate",
-                string sortingOrder = "DESC",
-                DateTime? startEmploymentDate = null,
-                DateTime? endEmploymentDate = null)
+            public static string GetAll(FilterModel filter, SortModel sort, PaginationModel pagination)
             {
-                string filterQuery = _FilterQuery(employmentTypes, startEmploymentDate, endEmploymentDate);
+                string filterQuery = _FilterQuery(filter);
 
                 string sqlQuery = $@"
                     SELECT Id, Name, Surname, Email, IsAdmin, EmploymentDate, EmploymentType
@@ -27,20 +20,17 @@ namespace DataLayer.Providers
                         OR Email LIKE '%' + @SearchText + '%')
                         {filterQuery}
 
-                    ORDER BY {fieldName} {sortingOrder}
-                    OFFSET ({pageNumber} - 1) * {pageSize} ROWS
-                    FETCH NEXT {pageSize} ROWS ONLY
+                    ORDER BY {sort.FieldName} {sort.SortingOrder}
+                    OFFSET ({pagination.PageNumber} - 1) * {pagination.PageSize} ROWS
+                    FETCH NEXT {pagination.PageSize} ROWS ONLY
                 ";
 
                 return sqlQuery;
             }
 
-            public static string GetTotalUsersCount (
-                IEnumerable<EmploymentType> employmentTypes,
-                DateTime? startEmploymentDate = null,
-                DateTime? endEmploymentDate = null)
+            public static string GetTotalUsersCount (FilterModel filter)
             {
-                string filterQuery = _FilterQuery(employmentTypes, startEmploymentDate, endEmploymentDate);
+                string filterQuery = _FilterQuery(filter);
 
                 string sqlQuery = $@"
                     SELECT COUNT (*)
@@ -55,17 +45,14 @@ namespace DataLayer.Providers
                 return sqlQuery;
             }
 
-            private static string _FilterQuery(
-                IEnumerable<EmploymentType> employmentTypes,
-                DateTime? startEmploymentDate = null,
-                DateTime? endEmploymentDate = null)
+            private static string _FilterQuery(FilterModel filter)
             {
                 string filterQuery = "";
 
-                if (startEmploymentDate.HasValue)
+                if (filter.StartEmploymentDate.HasValue)
                 {
                     filterQuery += "AND CAST(EmploymentDate AS DATE) ";
-                    if (endEmploymentDate.HasValue)
+                    if (filter.EndEmploymentDate.HasValue)
                     {
                         filterQuery += "BETWEEN @StartEmploymentDate AND @EndEmploymentDate";
                     }
@@ -75,9 +62,9 @@ namespace DataLayer.Providers
                     }
                 }
 
-                if (employmentTypes.Any())
+                if (filter.EmploymentTypes.Any())
                 {
-                    string employmentTypeFilter = string.Join(" OR ", employmentTypes.Select(type => $"EmploymentType = {(byte)type}"));
+                    string employmentTypeFilter = string.Join(" OR ", filter.EmploymentTypes.Select(type => $"EmploymentType = {(byte)type}"));
                     filterQuery += $" AND ({employmentTypeFilter})";
                 }
 
