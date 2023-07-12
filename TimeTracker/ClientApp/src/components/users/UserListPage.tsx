@@ -35,7 +35,7 @@ export const UserListPage = () => {
       {userList.length > 0 && (
         <UserTable userList={userList} sorting={sorting} setSorting={setSorting}/>
       )}
-      <UserPagination totalUsersCount={totalUsersCount}/>
+      <UserPagination totalUsersCount={totalUsersCount} pagination={pagination} setPagination={setPagination}/>
     </div>
   );
 };
