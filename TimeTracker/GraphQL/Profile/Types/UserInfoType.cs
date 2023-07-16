@@ -8,7 +8,7 @@ namespace TimeTracker.GraphQL.Profile.Types
         public UserInfoType()
         {
             Name = "UserInfo";
-
+            Field<NonNullGraphType<GuidGraphType>>("Id");
             Field<NonNullGraphType<StringGraphType>>("Name");
             Field<NonNullGraphType<StringGraphType>>("Surname");
             Field<NonNullGraphType<ListGraphType<EnumerationGraphType<PermissionType>>>>("Permissions");
@@ -17,6 +17,8 @@ namespace TimeTracker.GraphQL.Profile.Types
 
     public class UserInfo
     {
+        public Guid Id { get; set; }
+
         public string Name { get; set; } = null!;
 
         public string Surname { get; set; } = null!;

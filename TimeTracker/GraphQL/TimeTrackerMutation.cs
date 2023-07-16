@@ -2,6 +2,7 @@
 using GraphQL.Types;
 using TimeTracker.GraphQL.Profile;
 using TimeTracker.GraphQL.Users;
+using TimeTracker.GraphQL.Worktime;
 
 namespace TimeTracker.GraphQL
 {
@@ -18,6 +19,9 @@ namespace TimeTracker.GraphQL
                 .AllowAnonymous()
                 .Resolve(context => new { });
             
+            Field<WorktimeMutation>("Worktime")
+                .Description("Mutation for worktime")
+                .Resolve(context => new { });
         }
     }
 }

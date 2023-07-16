@@ -8,13 +8,17 @@ import { CreationForm } from './components/creationForm/CreationForm';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Page } from './components/common/Page';
 import { PermissionType } from './behavior/profile/types';
+import {WorktimePage} from './components/worktimePage/WorktimePage';
+import {DemoWorktime} from './components/worktimePage/DemoWorktime';
+import {ListPage} from './components/worktimePage/ListPage';
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route index path={routes.login} element={<LoginPage />} />
+            <Route index path={routes.worktime} element={<ListPage />} />
+            <Route index path={routes.login} element={<LoginPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to={routes.users.list} />} />
             <Route

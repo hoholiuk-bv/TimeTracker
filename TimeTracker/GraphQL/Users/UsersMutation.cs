@@ -4,6 +4,7 @@ using DataLayer.Providers;
 using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Users.Types;
+using TimeTracker.GraphQL.Worktime.Types;
 
 namespace TimeTracker.GraphQL.Users
 {
@@ -20,7 +21,9 @@ namespace TimeTracker.GraphQL.Users
                 .Description("Create a new user")
                 .Argument<NonNullGraphType<CreateUserInputType>>("input")
                 .Resolve(ResolveUserCreation);
+            
         }
+        
         private object? ResolveUserCreation(IResolveFieldContext context)
         {
             var input = context.GetArgument<CreateUserInput>("input");
@@ -42,5 +45,6 @@ namespace TimeTracker.GraphQL.Users
 
             return true;
         }
+    } 
     }
-}
+

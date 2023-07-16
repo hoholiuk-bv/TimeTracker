@@ -117,6 +117,7 @@ namespace TimeTracker.GraphQL.Profile
 
             return new UserInfo()
             {
+                Id = authenticatedUser.Id,
                 Name = authenticatedUser.Name,
                 Surname = authenticatedUser.Surname,
                 Permissions = userContext.GetGrantedPermissions()

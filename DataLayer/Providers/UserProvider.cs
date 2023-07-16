@@ -39,5 +39,8 @@ namespace DataLayer.Providers
 
         public User? GetById(string id)
             => Query<User>(Queries.Users.GetById, new { Id = id }).FirstOrDefault();
+        
+        public void SaveWorktime(Worktime worktime)
+            => Execute(Queries.Users.SaveWorktime, worktime);
     }
 }

@@ -11,6 +11,7 @@ export type RegisterInput = {
 }
 
 export type UserInfo = {
+  id: string;
   name: string;
   surname: string;
   permissions: PermissionType[]

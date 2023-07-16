@@ -22,4 +22,6 @@ namespace DataLayer.Entities
 
         public EmploymentType EmploymentType { get; set; }
     }
+    
+   
 }

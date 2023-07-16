@@ -12,6 +12,8 @@ using System.Text;
 using TimeTracker.Middleware;
 using BusinessLayer;
 using BusinessLayer.Permissions;
+using TimeTracker.GraphQL.Worktime;
+using TimeTracker.GraphQL.Worktime.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,7 +68,10 @@ builder.Services.AddTransient<UsersQuery>();
 builder.Services.AddTransient<TimeTrackerQuery>();
 builder.Services.AddTransient<ProfileMutation>();
 builder.Services.AddTransient<ProfileQuery>();
+builder.Services.AddTransient<WorktimeMutation>();
 builder.Services.AddTransient<UserType>();
+builder.Services.AddTransient<WorktimeInputType>();
+builder.Services.AddTransient<WorktimeMutation>();
 builder.Services.AddTransient<LoginInputType>();
 builder.Services.AddTransient<FirstUserRegisterInputType>();
 builder.Services.AddTransient<CreateUserInputType>();

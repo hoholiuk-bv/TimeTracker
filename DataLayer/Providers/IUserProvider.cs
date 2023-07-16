@@ -7,6 +7,8 @@ namespace DataLayer.Providers
     {
         void Save(User user);
 
+        void SaveWorktime(Worktime worktime);
+
         bool CheckIfAnyExists();
 
         User? GetByEmail(string email);

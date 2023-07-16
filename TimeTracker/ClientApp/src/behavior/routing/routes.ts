@@ -8,4 +8,5 @@ export const routes = {
   daysoff: '/daysoff',
   approvals: '/approvals',
   calendarSettings: '/calendarsettings',
+  worktimePage: '/worktimePage'
 };

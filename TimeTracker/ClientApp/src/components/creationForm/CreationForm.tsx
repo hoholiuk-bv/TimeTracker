@@ -28,79 +28,79 @@ export const CreationForm = () => {
     dispatch(userCreation(values)); navigate(routes.users.list);
   };
   return (
-    <>
-      <Formik onSubmit={onSubmit} initialValues={initialValues}>
-        <Form>
-          <h1 className="mb-3">New user</h1>
-          <Row>
-            <Col>
-              <FormGroup>
-                <FormLabel htmlFor='name'>Name</FormLabel>
-                <Field type="text" className="form-control" name="name" validate={required} />
-                <ValidationMessage fieldName='name' />
-              </FormGroup>
-            </Col>
-            <Col>
-              <FormGroup>
-                <FormLabel htmlFor='employmentType'>Employment type</FormLabel>
-                <Field as="select" className="form-control" name="employmentType">
-                  <option value="">Choose the employment type</option>
-                  <option value={0}>Full time</option>
-                  <option value={1}>Part time</option>
-                </Field>
-                <ValidationMessage fieldName='employmentType' />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <FormGroup>
-                <FormLabel htmlFor='surname'>Surname</FormLabel>
-                <Field type="text" className="form-control" name="surname" validate={required} />
-                <ValidationMessage fieldName='surname' />
-              </FormGroup>
-            </Col>
-            <Col>
-              <FormGroup>
-                <FormLabel htmlFor='employmentDate'>Employment date</FormLabel>
-                <Field name="employmentDate" type="date" className="form-control" />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <FormGroup>
-                <FormLabel htmlFor='email'>Email</FormLabel>
-                <Field type="email" className="form-control" name="email" validate={validate(
-                  [
-                    { validationFunction: required },
-                    { validationFunction: email },
-                    { validationFunction: maxLength, validationAttributes: { length: 256 } }
-                  ])} />
-                <ValidationMessage fieldName='email' />
-              </FormGroup>
-            </Col>
-            <Col>
-              <FormGroup>
-                <FormLabel htmlFor='isAdmin'>Admin user</FormLabel>
-                <Field type="checkbox" name="isAdmin" />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <FormGroup>
-                <FormLabel htmlFor='password'>Password</FormLabel>
-                <Field type="password" className="form-control" name="password" validate={required} />
-                <ValidationMessage fieldName='password' />
-              </FormGroup>
-            </Col>
-            <Col>
-            </Col>
-          </Row>
-          <button className="btn btn-primary mt-2" type="submit">Create</button>
-        </Form>
-      </Formik>
-    </>
+      <>
+        <Formik onSubmit={onSubmit} initialValues={initialValues}>
+          <Form>
+            <h1 className="mb-3">New user</h1>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='name'>Name</FormLabel>
+                  <Field type="text" className="form-control" name="name" validate={required} />
+                  <ValidationMessage fieldName='name' />
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='employmentType'>Employment type</FormLabel>
+                  <Field as="select" className="form-control" name="employmentType">
+                    <option value="">Choose the employment type</option>
+                    <option value={0}>Full time</option>
+                    <option value={1}>Part time</option>
+                  </Field>
+                  <ValidationMessage fieldName='employmentType' />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='surname'>Surname</FormLabel>
+                  <Field type="text" className="form-control" name="surname" validate={required} />
+                  <ValidationMessage fieldName='surname' />
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='employmentDate'>Employment date</FormLabel>
+                  <Field name="employmentDate" type="date" className="form-control" />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='email'>Email</FormLabel>
+                  <Field type="email" className="form-control" name="email" validate={validate(
+                      [
+                        { validationFunction: required },
+                        { validationFunction: email },
+                        { validationFunction: maxLength, validationAttributes: { length: 256 } }
+                      ])} />
+                  <ValidationMessage fieldName='email' />
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='isAdmin'>Admin user</FormLabel>
+                  <Field type="checkbox" name="isAdmin" />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='password'>Password</FormLabel>
+                  <Field type="password" className="form-control" name="password" validate={required} />
+                  <ValidationMessage fieldName='password' />
+                </FormGroup>
+              </Col>
+              <Col>
+              </Col>
+            </Row>
+            <button className="btn btn-primary mt-2" type="submit">Create</button>
+          </Form>
+        </Formik>
+      </>
   );
 };
