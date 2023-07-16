@@ -6,10 +6,12 @@ mutation($input: CreateUserInput!) {
  }`;
 
 export const getUsersQuery = `
-query {
+query(
+  $filter: FilterInputType
+) {
   users {
     list(
-      filter: null
+      filter: $filter
       sorting: null
       pagination: null
     ) {

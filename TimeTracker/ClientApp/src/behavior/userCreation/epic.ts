@@ -12,7 +12,8 @@ import { creationMutation, getUsersQuery } from './queries';
 const epic: Epic<CreationActions | any> = (actions$, state$) => {
   const requestUsers$ = actions$.pipe(
     ofType(SHORT_USER_LIST_REQUESTED),
-    mergeMap(() => sendRequest(getUsersQuery).pipe(
+    map(action => action.payload),
+    mergeMap((variables) => sendRequest(getUsersQuery, { filter: variables.filter }).pipe(
       map(({users}) => receiveUserList(users.list))
     ))
   );

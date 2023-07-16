@@ -196,7 +196,11 @@ ul.pagination .active a {
     min-height: auto;
 }
 
-#react-select-2-input {
+.approvers-picker div[class*="-placeholder"]  {
+    margin-left: 5px!important;
+}
+
+.approvers-picker #react-select-2-input {
     background-color: transparent!important;
     border-radius: 0!important;
 }
@@ -208,8 +212,10 @@ ul.pagination .active a {
     justify-content: start;
     align-items: center;
     gap: 0.5em;
+    margin: 0;
 }
 
 .admin-checkbox-group label {
     user-select: none;
+    margin: 0;
 }

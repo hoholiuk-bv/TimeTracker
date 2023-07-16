@@ -1,4 +1,5 @@
 ﻿import type { CreationInput, User } from './types';
+import {FilterType} from '../users/types';
 
 export const USER_CREATION = 'USER_CREATION' as const;
 export const userCreation = (userCreationInput: CreationInput) => ({
@@ -7,8 +8,9 @@ export const userCreation = (userCreationInput: CreationInput) => ({
 });
 
 export const SHORT_USER_LIST_REQUESTED = 'SHORT_USER_LIST_REQUESTED' as const;
-export const requestUserList = () => ({
+export const requestUserList = (filter: FilterType) => ({
   type: SHORT_USER_LIST_REQUESTED,
+  payload: {filter},
 });
 
 export const SHORT_USER_LIST_RECEIVED = 'SHORT_USER_LIST_RECEIVED' as const;
