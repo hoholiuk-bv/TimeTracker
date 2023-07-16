@@ -5,16 +5,16 @@ namespace DataLayer.Providers
 {
     public interface IUserProvider
     {
-        void Save(User user);
+        int Save(User user);
 
         bool CheckIfAnyExists();
 
         User? GetByEmail(string email);
 
-        IEnumerable<User> GetAllUsers(FilterModel filter, Sorting sort, Paging pagination);
+        IEnumerable<User> GetAllUsers(FilterModel? filter, Sorting? sorting, Paging? pagination);
 
         User? GetById(string id);
 
-        int GetTotalUsersCount(FilterModel filter);
+        int GetTotalUsersCount(FilterModel? filter);
     }
 }

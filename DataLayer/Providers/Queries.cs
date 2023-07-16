@@ -7,46 +7,51 @@ namespace DataLayer.Providers
     {
         public static class Users
         {
-            public static string GetAll(FilterModel filter, Sorting sort, Paging pagination)
+            public static string GetAll(FilterModel? filter, Sorting? sort, Paging? pagination)
             {
                 string filterQuery = _FilterQuery(filter);
 
                 string sqlQuery = $@"
                     SELECT Id, Name, Surname, Email, IsAdmin, EmploymentDate, EmploymentType
                     FROM Users
-                    WHERE
-                        ((Name + ' ' + Surname) LIKE '%' + @SearchText + '%' 
-                        OR (Surname + ' ' + Name) LIKE '%' + @SearchText + '%'
-                        OR Email LIKE '%' + @SearchText + '%')
-                        {filterQuery}
-
-                    {AddSorting(sort)}
-                    {AddPaging(pagination)}
+                    {filterQuery}
                 ";
+
+                if (sort != null)
+                {
+                    sqlQuery += $" {AddSorting(sort)} ";
+
+                    if (pagination != null)
+                        sqlQuery += $" {AddPaging(pagination)} ";
+                }
 
                 return sqlQuery;
             }
 
-            public static string GetTotalUsersCount(FilterModel filter)
+            public static string GetTotalUsersCount(FilterModel? filter)
             {
                 string filterQuery = _FilterQuery(filter);
 
                 string sqlQuery = $@"
                     SELECT COUNT (*)
                     FROM Users
-                    WHERE
-                        ((Name + ' ' + Surname) LIKE '%' + @SearchText + '%' 
-                        OR (Surname + ' ' + Name) LIKE '%' + @SearchText + '%'
-                        OR Email LIKE '%' + @SearchText + '%')
-                        {filterQuery}
+                    {filterQuery}
                 ";
 
                 return sqlQuery;
             }
 
-            private static string _FilterQuery(FilterModel filter)
+            private static string _FilterQuery(FilterModel? filter)
             {
-                string filterQuery = "";
+                if (filter == null)
+                    return "";
+
+                string filterQuery = @"
+                    WHERE
+                    ((Name + ' ' + Surname) LIKE '%' + @SearchText + '%' 
+                    OR (Surname + ' ' + Name) LIKE '%' + @SearchText + '%'
+                    OR Email LIKE '%' + @SearchText + '%')
+                ";
 
                 if (filter.StartEmploymentDate.HasValue)
                 {
@@ -77,6 +82,14 @@ namespace DataLayer.Providers
             public const string GetByEmail = "select * from Users where Email = @Email";
 
             public const string GetById = "select * from Users where Id = @Id";
+        }
+
+        public static class DayOffRequestApprovers
+        {
+            public const string Create = $@"
+                INSERT INTO [DayOffRequestApprovers] (UserId, ApproverId)
+                VALUES (@UserId, @ApproverId)
+            ";
         }
 
         public static class DaysOff

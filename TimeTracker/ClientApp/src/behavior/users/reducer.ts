@@ -15,7 +15,7 @@ export type UsersState = {
 
 const initialState: UsersState = {
   list: [],
-  totalUsersCount: 0,
+  totalUsersCount: -1,
   employmentTypeList: [],
 };
 
