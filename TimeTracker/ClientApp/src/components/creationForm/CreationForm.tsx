@@ -1,11 +1,11 @@
 ﻿import React from 'react';
-import { Col, Container, FormLabel, Row } from 'react-bootstrap';
+import { Col, FormLabel, Row } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import type { CreationInput } from '../../behavior/userCreation/types';
 import { useDispatch } from 'react-redux';
 import { userCreation } from '../../behavior/userCreation/actions';
 import { email, maxLength, required, validate } from '../../behavior/validators';
-import { ValidationMessage } from './ValidationMessage';
+import { ValidationMessage } from '../common/validation/ValidationMessage';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../behavior/routing';
 import { FormGroup } from '../common/elements/FormGroup';
@@ -25,7 +25,8 @@ export const CreationForm = () => {
   const navigate = useNavigate();
 
   const onSubmit = (values: CreationInput) => {
-    dispatch(userCreation(values)); navigate(routes.users.list);
+    dispatch(userCreation(values)); 
+    navigate(routes.users.list);
   };
   return (
     <>
@@ -63,7 +64,7 @@ export const CreationForm = () => {
             <Col>
               <FormGroup>
                 <FormLabel htmlFor='employmentDate'>Employment date</FormLabel>
-                <Field name="employmentDate" type="date" className="form-control" />
+                <Field name="employmentDate" type="date" className="form-control"/>
               </FormGroup>
             </Col>
           </Row>

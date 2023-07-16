@@ -5,7 +5,7 @@ import type { RegisterInput } from '../../behavior/profile/types';
 import { useDispatch } from 'react-redux';
 import { register } from '../../behavior/profile/actions';
 import { required, email, validate, maxLength, minLength } from '../../behavior/validators';
-import { ValidationMessage } from './ValidationMessage';
+import { ValidationMessage } from '../common/validation/ValidationMessage';
 import { FormGroup } from '../common/elements/FormGroup';
 
 const initialValues: RegisterInput = {

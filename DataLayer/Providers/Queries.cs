@@ -92,5 +92,13 @@ namespace DataLayer.Providers
 
             public const string GetById = "select * from Users where Id = @Id";
         }
+
+        public static class DaysOff 
+        {
+            public const string Request = "insert into DayOffRequests values(@Id, @StartDate, @FinishDate, @Reason)";
+
+            public const string GetAll = "select * from DayOffRequests";
+        }
+
     }
 }

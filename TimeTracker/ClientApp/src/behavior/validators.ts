@@ -2,7 +2,7 @@ import type { FieldValidator } from 'formik';
 
 export function required(value: any) {
   let error;
-  if (value === null || !value.toString()) {
+  if (value === null || value === undefined || !value.toString()) {
     error = 'This field is required';
   }
   return error;

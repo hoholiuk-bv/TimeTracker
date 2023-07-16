@@ -12,6 +12,8 @@ using System.Text;
 using TimeTracker.Middleware;
 using BusinessLayer;
 using BusinessLayer.Permissions;
+using TimeTracker.GraphQL.DaysOff.Types;
+using TimeTracker.GraphQL.DaysOff;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +55,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 builder.Services.AddSingleton<IUserProvider, UserProvider>();
+builder.Services.AddSingleton<IDaysOffProvider, DaysOffProvider>();
 builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<UserContext>();
@@ -72,6 +75,10 @@ builder.Services.AddTransient<FirstUserRegisterInputType>();
 builder.Services.AddTransient<CreateUserInputType>();
 builder.Services.AddTransient<AuthenticationResultType>();
 builder.Services.AddTransient<UserInfoType>();
+builder.Services.AddTransient<DaysOffQuery>();
+builder.Services.AddTransient<DayOffRequestType>();
+builder.Services.AddTransient<DayOffRequestInputType>();
+builder.Services.AddTransient<DaysOffMutation>();
 builder.Services.AddGraphQL(a => a.AddSchema<TimeTrackerSchema>().AddSystemTextJson().AddAuthorizationRule());
 
 builder.Services.AddControllersWithViews();

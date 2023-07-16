@@ -100,10 +100,8 @@ th {
     margin-bottom: 10px;
 }
 
-.btn-primary,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:visited {
+.btn-primary
+{
     background-color: #64B5F6 !important;
     border: none;
 }
@@ -112,6 +110,19 @@ th {
 .btn-primary:active,
 .btn-primary:visited {
     background-color: #42A5F5 !important;
+    border: none;
+}
+
+.btn-secondary
+{
+    background-color: #B0BEC5 !important;
+    border: none;
+}
+
+.btn-secondary:hover,
+.btn-secondary:active,
+.btn-secondary:visited {
+    background-color: #90A4AE !important;
     border: none;
 }
 
@@ -157,4 +168,8 @@ th {
 .alert {
     border: none;
     border-radius: 12px;
+}
+
+.sortableColumn{
+    cursor: pointer;
 }

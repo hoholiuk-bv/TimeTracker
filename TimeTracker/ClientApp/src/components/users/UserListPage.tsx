@@ -28,7 +28,7 @@ export const UserListPage = () => {
 
   return (
     <>
-      <h1 className="mb-4">Users</h1>
+      <h1 className="mb-3">Users</h1>
       <UserSearchPanel
         searchText={searchText}
         setSearchText={setSearchText}
