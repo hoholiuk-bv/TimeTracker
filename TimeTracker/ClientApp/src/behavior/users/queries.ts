@@ -1,8 +1,8 @@
 export const getUsersQuery = `
 query(
-  $filter: FilterInputType!
-  $sorting: SortInputType!
-  $pagination: PaginationInputType!
+  $filter: FilterInputType
+  $sorting: SortInputType
+  $pagination: PaginationInputType
 ) {
   users {
     list(

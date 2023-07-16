@@ -18,9 +18,9 @@ namespace TimeTracker.GraphQL.Users
                 .Argument<PaginationInputType>("pagination", "Pagination type")
                 .Resolve(context =>
                 {
-                    FilterModel filter = context.GetArgument<FilterModel>("filter");
-                    SortModel sorting = context.GetArgument<SortModel>("sorting");
-                    PaginationModel pagination = context.GetArgument<PaginationModel>("pagination");
+                    FilterModel? filter = context.GetArgument<FilterModel?>("filter");
+                    SortModel? sorting = context.GetArgument<SortModel?>("sorting");
+                    PaginationModel? pagination = context.GetArgument<PaginationModel?>("pagination");
 
                     return userProvider.GetAllUsers(filter, sorting, pagination).ToList();
                 });
@@ -30,7 +30,7 @@ namespace TimeTracker.GraphQL.Users
                 .Argument<FilterInputType>("filter", "Filter type")
                 .Resolve(context =>
                 {
-                    FilterModel filter = context.GetArgument<FilterModel>("filter");
+                    FilterModel? filter = context.GetArgument<FilterModel?>("filter");
                     return userProvider.GetTotalUsersCount(filter);
                 });
 
