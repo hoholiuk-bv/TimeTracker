@@ -1,6 +1,6 @@
 ﻿using DataLayer.Entities;
+using DataLayer.Models;
 using Microsoft.Extensions.Configuration;
-using static DataLayer.Constants;
 
 namespace DataLayer.Providers
 {
@@ -8,25 +8,11 @@ namespace DataLayer.Providers
     {
         public UserProvider(IConfiguration configuration) : base(configuration) { }
 
-        public IEnumerable<User> GetAllUsers(
-            string searchText, 
-            int pageSize, 
-            int pageNumber, 
-            string fieldName, 
-            string sortingOrder,
-            DateTime? startEmploymentDate,
-            DateTime? endEmploymentDate,
-            IEnumerable<EmploymentType> employmentTypes)
-            => Query<User>(Queries.Users.GetAll(employmentTypes, pageSize, pageNumber, fieldName, sortingOrder, startEmploymentDate, endEmploymentDate), 
-                new { SearchText = searchText, StartEmploymentDate = startEmploymentDate, EndEmploymentDate = endEmploymentDate});
+        public IEnumerable<User> GetAllUsers(FilterModel filter, SortModel sort, PaginationModel pagination)
+            => Query<User>(Queries.Users.GetAll(filter, sort, pagination), filter);
 
-        public int GetTotalUsersCount(
-            string searchText, 
-            DateTime? startEmploymentDate,
-            DateTime? endEmploymentDate,
-            IEnumerable<EmploymentType> employmentTypes) 
-            => Query<int>(Queries.Users.GetTotalUsersCount(employmentTypes, startEmploymentDate, endEmploymentDate), 
-                new {SearchText = searchText, StartEmploymentDate = startEmploymentDate, EndEmploymentDate = endEmploymentDate}).First();
+        public int GetTotalUsersCount(FilterModel filter) 
+            => Query<int>(Queries.Users.GetTotalUsersCount(filter), filter).First();
 
         public bool CheckIfAnyExists()
             => Query<User>(Queries.Users.CheckIfExists).Any();

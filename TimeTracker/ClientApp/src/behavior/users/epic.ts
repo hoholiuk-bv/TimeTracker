@@ -16,14 +16,9 @@ const epic: Epic<any> = (actions$, state$) => {
     ofType(USER_LIST_REQUESTED),
     map(action => action.payload),
     mergeMap((variables) => sendRequest(getUsersQuery, {
-      searchText: variables.searchText,
-      pageSize: variables.pageSize,
-      pageNumber: variables.pageNumber,
-      fieldName: variables.fieldName,
-      sortingOrder: variables.sortingOrder,
-      startEmploymentDate: variables.startEmploymentDate,
-      endEmploymentDate: variables.endEmploymentDate,
-      employmentType: variables.employmentType,
+      filter: variables.filter, 
+      sorting: variables.sorting, 
+      pagination: variables.pagination
     }).pipe(
       map(({users}) => receiveUserList(users.list, users.totalUsersCount))
     )),
