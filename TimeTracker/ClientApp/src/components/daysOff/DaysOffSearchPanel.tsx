@@ -4,7 +4,7 @@ export const DaysOffSearchPanel = () => {
 
   return (
     <>
-      <h1>Piska zhopa</h1>
+      <h1>Search panel</h1>
     </>
   );
 };

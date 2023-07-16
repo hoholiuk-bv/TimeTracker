@@ -7,7 +7,7 @@ namespace DataLayer.Providers
     {
         public static class Users
         {
-            public static string GetAll(FilterModel filter, SortModel sort, PaginationModel pagination)
+            public static string GetAll(FilterModel filter, Sorting sort, Paging pagination)
             {
                 string filterQuery = _FilterQuery(filter);
 
@@ -20,15 +20,14 @@ namespace DataLayer.Providers
                         OR Email LIKE '%' + @SearchText + '%')
                         {filterQuery}
 
-                    ORDER BY {sort.FieldName} {sort.SortingOrder}
-                    OFFSET ({pagination.PageNumber} - 1) * {pagination.PageSize} ROWS
-                    FETCH NEXT {pagination.PageSize} ROWS ONLY
+                    {AddSorting(sort)}
+                    {AddPaging(pagination)}
                 ";
 
                 return sqlQuery;
             }
 
-            public static string GetTotalUsersCount (FilterModel filter)
+            public static string GetTotalUsersCount(FilterModel filter)
             {
                 string filterQuery = _FilterQuery(filter);
 
@@ -80,12 +79,29 @@ namespace DataLayer.Providers
             public const string GetById = "select * from Users where Id = @Id";
         }
 
-        public static class DaysOff 
+        public static class DaysOff
         {
-            public const string Request = "insert into DayOffRequests values(@Id, @StartDate, @FinishDate, @Reason)";
+            public const string Create = "insert into DayOffRequests values(@Id, @StartDate, @FinishDate, @Reason)";
 
-            public const string GetAll = "select * from DayOffRequests";
+            public static string GetRequests(Sorting sorting, Paging paging) =>
+                $@"SELECT * FROM DayOffRequests 
+                {AddSorting(sorting)} 
+                {AddPaging(paging)}";
+
+            public static string GetApprovers = @"SELECT Users.Id, Users.Name, Users.Surname 
+                                                  FROM DayOffRequestApprovers 
+                                                  JOIN Users ON (Users.Id=DayOffRequestApprovers.ApproverId)
+                                                  WHERE DayOffRequestApprovers.UserId=@UserId";
+
+            public static string GetApprovals = @"SELECT *
+                                                  FROM DayOffRequestApprovals
+                                                  WHERE RequestId IN @RequestIds";
         }
 
+        private static string AddSorting(Sorting sorting)
+            => $@"ORDER BY {sorting.SortingField} {(sorting.SortingOrder == Constants.SortingOrder.Descending ? "DESC" : "ASC")}";
+
+        private static string AddPaging(Paging paging)
+            => $@"OFFSET ({paging.PageNumber} - 1) * {paging.PageSize} ROWS FETCH NEXT {paging.PageSize} ROWS ONLY";
     }
 }

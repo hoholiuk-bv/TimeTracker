@@ -14,6 +14,7 @@ using BusinessLayer;
 using BusinessLayer.Permissions;
 using TimeTracker.GraphQL.DaysOff.Types;
 using TimeTracker.GraphQL.DaysOff;
+using TimeTracker.GraphQL.Common.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,6 +83,8 @@ builder.Services.AddTransient<DaysOffQuery>();
 builder.Services.AddTransient<DayOffRequestType>();
 builder.Services.AddTransient<DayOffRequestInputType>();
 builder.Services.AddTransient<DaysOffMutation>();
+builder.Services.AddTransient<SortingInputType>();
+builder.Services.AddTransient<PagingInputType>();
 builder.Services.AddGraphQL(a => a.AddSchema<TimeTrackerSchema>().AddSystemTextJson().AddAuthorizationRule());
 
 builder.Services.AddControllersWithViews();

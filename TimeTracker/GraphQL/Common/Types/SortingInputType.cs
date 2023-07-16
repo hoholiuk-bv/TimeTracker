@@ -1,22 +1,16 @@
-﻿using GraphQL.Types;
+﻿using DataLayer.Models;
+using GraphQL.Types;
 using static DataLayer.Constants;
 
 namespace TimeTracker.GraphQL.Common.Types
 {
-    public class SortingInputType : InputObjectGraphType<SortingInput>
+    public class SortingInputType : InputObjectGraphType<Sorting>
     {
-        SortingInputType() 
+        public SortingInputType() 
         {
             Name = "SortingInput";
             Field<NonNullGraphType<StringGraphType>>("SortingField");
-            Field<NonNullGraphType<EnumerationGraphType<SortingType>>>("SortingType");
+            Field<NonNullGraphType<EnumerationGraphType<SortingOrder>>>("SortingOrder");
         }
-    }
-
-    public class SortingInput 
-    {
-        public string SortingField { get; set; }
-
-        public SortingType SortingType { get; set; }
     }
 }

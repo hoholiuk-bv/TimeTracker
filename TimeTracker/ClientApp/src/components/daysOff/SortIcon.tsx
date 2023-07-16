@@ -1,19 +1,19 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortDown, faSortUp, faSort } from '@fortawesome/free-solid-svg-icons';
-import { SortingModes } from '../../behavior/common/types';
+import { SortingOrder } from '../../behavior/common/types';
 
 type Props = {
-  sortingMode: SortingModes | null;
+  sortingOrder: SortingOrder | null;
 };
 
 
-export const SortIcon = ({ sortingMode }: Props) => {
+export const SortIcon = ({ sortingOrder }: Props) => {
   const sortingIconClass = 'sorting-type ms-2';
 
-  if (sortingMode === SortingModes.Ascending)
+  if (sortingOrder === SortingOrder.Ascending)
     return <FontAwesomeIcon icon={faSortDown} className={sortingIconClass} />;
-  if (sortingMode === SortingModes.Descending)
+  if (sortingOrder === SortingOrder.Descending)
     return <FontAwesomeIcon icon={faSortUp} className={sortingIconClass} />;
 
   return <FontAwesomeIcon icon={faSort} className={`${sortingIconClass} sorting-inactive`} />;

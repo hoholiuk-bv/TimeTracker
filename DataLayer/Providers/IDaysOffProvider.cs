@@ -1,12 +1,15 @@
 ﻿using DataLayer.Entities;
-using static DataLayer.Constants;
+using DataLayer.Models;
 
-namespace DataLayer.Providers
+namespace DataLayer.Providers;
+
+public interface IDaysOffProvider
 {
-    public interface IDaysOffProvider
-    {
-        void Create(DayOffRequest dayOffRequest);
+    void CreateRequest(DayOffRequest dayOffRequest);
 
-        List<DayOffRequest> GetAll();
-    }
+    List<DayOffRequest> GetRequests(Sorting sorting, Paging paging);
+
+    List<DayOffRequestApprover> GetApprovers(Guid userId);
+
+    List<DayOffRequestApproval> GetApprovals(List<Guid> requestIds);
 }

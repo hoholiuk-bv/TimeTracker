@@ -1,33 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SortingModes } from '../../behavior/common/types';
-import { requestDaysOffList } from '../../behavior/daysOff/actions';
+import { SortingOrder } from '../../behavior/common/types';
+import { requestDaysOffList, changeDaysOffListSorting } from '../../behavior/daysOff/actions';
 import { RootState } from '../../behavior/store';
 import { DayOffItem } from './DayOffItem';
 import { SortIcon } from './SortIcon';
 
 export const DayOffList = () => {
+  const defaultSortingField = 'StartDate';
+
   const dispatch = useDispatch();
-  const daysOff = useSelector((state: RootState) => state.daysOff.list);
-
-  useEffect(() => { dispatch(requestDaysOffList()); }, [dispatch]);
-  const [sortingField, setSortingField] = useState<string | null>(null);
-  const [sortingMode, setSortingMode] = useState<SortingModes>(SortingModes.Ascending);
+  const { list: daysOff, sorting } = useSelector((state: RootState) => state.daysOff);
+  useEffect(() => { dispatch(requestDaysOffList(sorting, { pageNumber: 1, pageSize: 10 })); }, [dispatch, sorting]);
   const handleSortingColumnClick = (fieldName: string) => {
-    if (fieldName !== sortingField) {
-      setSortingField(fieldName);
-      setSortingMode(SortingModes.Ascending);
-      return;
+    let newSortingField = fieldName;
+    let newSortingOrder = sorting.sortingOrder;
+    if (fieldName !== sorting.sortingField) {
+      newSortingField = fieldName;
+      newSortingOrder = SortingOrder.Ascending;
     }
-
-    switch (sortingMode) {
-    case SortingModes.Ascending:
-      setSortingMode(SortingModes.Descending);
-      break;
-    case SortingModes.Descending:
-      setSortingMode(SortingModes.Ascending);
-      setSortingField(null);
+    else {
+      switch (sorting.sortingOrder) {
+        case SortingOrder.Ascending:
+          newSortingOrder = SortingOrder.Descending;
+          break;
+        case SortingOrder.Descending:
+          newSortingOrder = SortingOrder.Ascending;
+          newSortingField = defaultSortingField;
+      }
     }
+    dispatch(changeDaysOffListSorting({ sortingOrder: newSortingOrder, sortingField: newSortingField }));
   };
 
   return (
@@ -37,15 +39,15 @@ export const DayOffList = () => {
           <tr>
             <th className='sortableColumn' onClick={() => handleSortingColumnClick('StartDate')}>
               <span>Start date</span>
-              <SortIcon sortingMode={sortingField === 'StartDate' ? sortingMode : null}/>
+              <SortIcon sortingOrder={sorting.sortingField === 'StartDate' ? sorting.sortingOrder : null} />
             </th>
             <th className='sortableColumn' onClick={() => handleSortingColumnClick('FinishDate')}>
               <span>Finish date</span>
-              <SortIcon sortingMode={sortingField === 'FinishDate' ? sortingMode : null}/>
+              <SortIcon sortingOrder={sorting.sortingField === 'FinishDate' ? sorting.sortingOrder : null} />
             </th>
             <th className='sortableColumn' onClick={() => handleSortingColumnClick('Reason')}>
               <span>Reason</span>
-              <SortIcon sortingMode={sortingField === 'Reason' ? sortingMode : null}/>
+              <SortIcon sortingOrder={sorting.sortingField === 'Reason' ? sorting.sortingOrder : null} />
             </th>
           </tr>
         </thead>

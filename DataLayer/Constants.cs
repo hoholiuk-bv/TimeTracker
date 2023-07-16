@@ -15,7 +15,7 @@
             DayOff
         }
 
-        public enum SortingType
+        public enum SortingOrder
         {
             Ascending,
             Descending

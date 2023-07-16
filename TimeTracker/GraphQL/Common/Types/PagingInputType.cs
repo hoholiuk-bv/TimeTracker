@@ -1,23 +1,16 @@
-﻿using GraphQL.Types;
-using static DataLayer.Constants;
+﻿using DataLayer.Models;
+using GraphQL.Types;
 
 namespace TimeTracker.GraphQL.Common.Types
 {
-    public class PagingInputType : InputObjectGraphType<SortingInput>
+    public class PagingInputType : InputObjectGraphType<Paging>
     {
-        PagingInputType()
+        public PagingInputType()
         {
             Name = "PagingInput";
 
             Field<NonNullGraphType<IntGraphType>>("PageNumber");
             Field<NonNullGraphType<IntGraphType>>("PageSize");
         }
-    }
-
-    public class PagingInput
-    {
-        public int PageNumber { get; set; }
-
-        public int PageSize { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DataLayer.Entities;
+using DataLayer.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace DataLayer.Providers
@@ -7,10 +8,16 @@ namespace DataLayer.Providers
     {
         public DaysOffProvider(IConfiguration configuration) : base(configuration) { }
 
-        public void Create(DayOffRequest dayOffRequest)
-            => Execute(Queries.DaysOff.Request, dayOffRequest);
+        public void CreateRequest(DayOffRequest dayOffRequest)
+            => Execute(Queries.DaysOff.Create, dayOffRequest);
 
-        public List<DayOffRequest> GetAll()
-            => Query<DayOffRequest>(Queries.DaysOff.GetAll);
+        public List<DayOffRequestApproval> GetApprovals(List<Guid> requestIds)
+            => Query<DayOffRequestApproval>(Queries.DaysOff.GetApprovals, new { RequestIds = requestIds });
+
+        public List<DayOffRequestApprover> GetApprovers(Guid userId)
+            => Query<DayOffRequestApprover>(Queries.DaysOff.GetApprovers, new { UserId = userId });
+
+        public List<DayOffRequest> GetRequests(Sorting sorting, Paging paging)
+            => Query<DayOffRequest>(Queries.DaysOff.GetRequests(sorting, paging));
     }
 }

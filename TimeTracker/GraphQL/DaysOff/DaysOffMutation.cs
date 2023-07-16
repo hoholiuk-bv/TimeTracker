@@ -32,7 +32,7 @@ namespace TimeTracker.GraphQL.DaysOff
             newRequest.FinishDate = DateTime.Parse(input.FinishDate);
             newRequest.Reason = input.Reason;
 
-            daysOffProvider.Create(newRequest);
+            daysOffProvider.CreateRequest(newRequest);
 
             return true;
         }
