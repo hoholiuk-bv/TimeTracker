@@ -11,17 +11,21 @@ namespace TimeTracker.GraphQL.Users
     {
         private readonly IUserProvider userProvider;
         private readonly IAuthenticationService authenticationService;
-        public UsersMutation(IUserProvider userProvider, IAuthenticationService authenticationService)
+        private readonly IDayOffRequestApproversProvider dayOffRequestApproversProvider;
+
+        public UsersMutation(IUserProvider userProvider, IDayOffRequestApproversProvider dayOffRequestApproversProvider, IAuthenticationService authenticationService)
         {
             this.userProvider = userProvider;
             this.authenticationService = authenticationService;
+            this.dayOffRequestApproversProvider = dayOffRequestApproversProvider;
 
-            Field<NonNullGraphType<BooleanGraphType>>("UserCreation")
+            Field<BooleanGraphType>("UserCreation")
                 .Description("Create a new user")
                 .Argument<NonNullGraphType<CreateUserInputType>>("input")
-                .Resolve(ResolveUserCreation);
+                .Resolve(context => ResolveUserCreation(context));
         }
-        private object? ResolveUserCreation(IResolveFieldContext context)
+
+        private bool ResolveUserCreation(IResolveFieldContext context)
         {
             var input = context.GetArgument<CreateUserInput>("input");
             var salt = authenticationService.GenerateSalt();
@@ -38,9 +42,19 @@ namespace TimeTracker.GraphQL.Users
                 Password = authenticationService.GenerateHash(input.Password, salt),
             };
 
-            userProvider.Save(user);
+            List<Guid> approversIdentificators = input.ApproversIdList;
 
-            return true;
+            bool isUserCreated = 0 < userProvider.Save(user);
+
+            if (isUserCreated)
+            {
+                foreach (Guid approverId in approversIdentificators)
+                    dayOffRequestApproversProvider.Create(user.Id, approverId);
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

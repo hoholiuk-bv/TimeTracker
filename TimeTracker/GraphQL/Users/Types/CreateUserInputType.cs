@@ -15,6 +15,7 @@ public class CreateUserInputType : InputObjectGraphType<CreateUserInput>
         Field<NonNullGraphType<StringGraphType>>("EmploymentDate");
         Field<BooleanGraphType>("IsAdmin");
         Field<NonNullGraphType<StringGraphType>>("EmploymentType");
+        Field<NonNullGraphType<ListGraphType<GuidGraphType>>>("ApproversIdList");
     }
 }
 
@@ -33,4 +34,6 @@ public class CreateUserInput
     public bool IsAdmin { get; set; }
         
     public Constants.EmploymentType EmploymentType { get; set; }
+
+    public List<Guid> ApproversIdList { get; set; }
 }

@@ -1,23 +1,31 @@
 ﻿import { mergeMap, map, merge } from 'rxjs';
 import {
-    USER_CREATION,
-    CreationActions, userCreation,
+  USER_CREATION,
+  SHORT_USER_LIST_REQUESTED,
+  CreationActions,
+  receiveUserList,
 } from './actions';
 import { Epic, ofType } from 'redux-observable';
 import { sendRequest } from '../graphApi';
-import { creationMutation} from './queries';
+import { creationMutation, getUsersQuery } from './queries';
 
 const epic: Epic<CreationActions | any> = (actions$, state$) => {
-    
+  const requestUsers$ = actions$.pipe(
+    ofType(SHORT_USER_LIST_REQUESTED),
+    map(action => action.payload),
+    mergeMap((variables) => sendRequest(getUsersQuery, { filter: variables.filter }).pipe(
+      map(({users}) => receiveUserList(users.list))
+    ))
+  );
 
-    const userCreation = actions$.pipe(
-        ofType(USER_CREATION),
-        map(action => action.payload),
-        mergeMap(({ userCreationInput }) => sendRequest(creationMutation, { input: userCreationInput }).pipe(
-        ))
-    );
+  const userCreation$ = actions$.pipe(
+    ofType(USER_CREATION),
+    map(action => action.payload),
+    mergeMap(({ userCreationInput }) => sendRequest(creationMutation, { input: userCreationInput }).pipe(
+    ))
+  );
     
-    return merge(userCreation);
+  return merge(userCreation$, requestUsers$);
 };
 
 export default epic;

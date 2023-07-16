@@ -8,16 +8,16 @@ namespace DataLayer.Providers
     {
         public UserProvider(IConfiguration configuration) : base(configuration) { }
 
-        public IEnumerable<User> GetAllUsers(FilterModel filter, SortModel sort, PaginationModel pagination)
+        public IEnumerable<User> GetAllUsers(FilterModel? filter, SortModel? sort, PaginationModel? pagination)
             => Query<User>(Queries.Users.GetAll(filter, sort, pagination), filter);
 
-        public int GetTotalUsersCount(FilterModel filter) 
+        public int GetTotalUsersCount(FilterModel? filter) 
             => Query<int>(Queries.Users.GetTotalUsersCount(filter), filter).First();
 
         public bool CheckIfAnyExists()
             => Query<User>(Queries.Users.CheckIfExists).Any();
 
-        public void Save(User user)
+        public int Save(User user)
             => Execute(Queries.Users.Save, user);
 
         public User? GetByEmail(string email)
