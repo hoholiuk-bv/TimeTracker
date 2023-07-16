@@ -4,7 +4,7 @@ import {WorktimeInput} from '../../behavior/worktime/types';
 import {Field, Form, Formik} from 'formik';
 import {Col, FormLabel, Row} from 'react-bootstrap';
 import {FormGroup} from '../common/elements/FormGroup';
-import {userCreation} from '../../behavior/worktime/actions';
+import {worktimeCreation} from '../../behavior/worktime/actions';
 import {PermissionType, UserInfo} from '../../behavior/profile/types';
 
 type Props = {
@@ -85,7 +85,7 @@ export const WorktimePage = ({ user }: Props) => {
         console.log(initialValues.userId);
         console.log(initialValues.lastEditorId);
         console.log(initialValues.isAutoCreated);
-        dispatch(userCreation(values));
+        dispatch(worktimeCreation(values));
     };
 
    /* const onSubmit = (values: WorktimeInput) => {

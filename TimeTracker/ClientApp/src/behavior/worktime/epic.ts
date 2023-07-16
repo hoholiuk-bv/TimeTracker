@@ -1,7 +1,7 @@
 ﻿import { mergeMap, map, merge } from 'rxjs';
 import {
-    USER_CREATION,
-    CreationActions, userCreation,
+    WORKTIME_CREATION,
+    CreationActions,
 } from './actions';
 import { Epic, ofType } from 'redux-observable';
 import { sendRequest } from '../graphApi';
@@ -11,9 +11,9 @@ const epic: Epic<CreationActions | any> = (actions$, state$) => {
 
 
     const userCreation = actions$.pipe(
-        ofType(USER_CREATION),
+        ofType(WORKTIME_CREATION),
         map(action => action.payload),
-        mergeMap(({ userCreationInput }) => sendRequest(worktimeCreationMutation, { input: userCreationInput }).pipe(
+        mergeMap(({ worktimeCreationInput }) => sendRequest(worktimeCreationMutation, { input: worktimeCreationInput }).pipe(
         ))
     );
 
