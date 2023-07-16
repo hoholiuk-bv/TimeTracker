@@ -3,7 +3,6 @@ body {
     color: #424242;
 }
 
-
 .header {
     border-bottom: 2px solid #F2F2F2;
 }
@@ -32,6 +31,7 @@ body {
     padding: 6px 30px;
 }
 
+.approvers-picker div[class*="-control"],
 textarea,
 select,
 input[type="text"],
@@ -54,6 +54,7 @@ input[type="color"],
     border: none !important;
 }
 
+.approvers-picker div[class*="-control"]:focus-within,
 textarea:focus,
 input[type="text"]:focus,
 input[type="password"]:focus,
@@ -100,10 +101,8 @@ th {
     margin-bottom: 10px;
 }
 
-.btn-primary,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:visited {
+.btn-primary
+{
     background-color: #64B5F6 !important;
     border: none;
 }
@@ -112,6 +111,19 @@ th {
 .btn-primary:active,
 .btn-primary:visited {
     background-color: #42A5F5 !important;
+    border: none;
+}
+
+.btn-secondary
+{
+    background-color: #B0BEC5 !important;
+    border: none;
+}
+
+.btn-secondary:hover,
+.btn-secondary:active,
+.btn-secondary:visited {
+    background-color: #90A4AE !important;
     border: none;
 }
 
@@ -151,10 +163,74 @@ th {
 }
 
 .sorting-inactive {
-    color: white;
+    color: gray;
+    opacity: 0.25;
 }
 
 .alert {
     border: none;
     border-radius: 12px;
+}
+
+/* PAGINATION START */
+
+ul.pagination {
+    user-select: none;
+    display: flex;
+    gap: 0.1em;
+    padding: 0;
+    margin: 0;
+}
+
+ul.pagination a {
+    color: black;
+    padding: 0.35em 0.7em;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: auto;
+    transition: background-color 0.25s ease;
+}
+
+ul.pagination li:not(.disabled):not(.active) a:hover {
+    background-color: rgba(128, 128, 128, 0.15);
+    cursor: pointer;
+}
+
+ul.pagination .active a {
+    color: white!important;
+    background-color: #64B5F6;
+}
+
+/* APPROVERS PICKER START */
+
+.approvers-picker div[class*="-control"] {
+    min-height: auto;
+}
+
+.approvers-picker div[class*="-placeholder"]  {
+    margin-left: 5px!important;
+}
+
+.approvers-picker #react-select-2-input {
+    background-color: transparent!important;
+    border-radius: 0!important;
+}
+
+/* ADMIN CHECKBOX START */
+
+.admin-checkbox-group .form-group {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5em;
+    margin: 0;
+}
+
+.admin-checkbox-group label {
+    user-select: none;
+    margin: 0;
+}
+
+.sortableColumn{
+    cursor: pointer;
 }

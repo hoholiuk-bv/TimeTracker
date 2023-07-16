@@ -1,24 +1,14 @@
 export const getUsersQuery = `
 query(
-  $searchText: String!
-  $pageSize: Int!
-  $pageNumber: Int!
-  $fieldName: String!
-  $sortingOrder: String!
-  $startEmploymentDate: String
-  $endEmploymentDate: String
-  $employmentType: [String]
+  $filter: FilterInputType
+  $sorting: SortInputType
+  $pagination: PaginationInputType
 ) {
   users {
     list(
-      searchText: $searchText
-      pageSize: $pageSize
-      pageNumber: $pageNumber
-      fieldName: $fieldName
-      sortingOrder: $sortingOrder
-      startEmploymentDate: $startEmploymentDate
-      endEmploymentDate: $endEmploymentDate
-      employmentType: $employmentType
+      filter: $filter
+      sorting: $sorting
+      pagination: $pagination
     ) {
       id
       name
@@ -29,10 +19,7 @@ query(
       employmentType
     }
     totalUsersCount(
-      searchText: $searchText
-      startEmploymentDate: $startEmploymentDate
-      endEmploymentDate: $endEmploymentDate
-      employmentType: $employmentType
+      filter: $filter
     )
   }
 }`;

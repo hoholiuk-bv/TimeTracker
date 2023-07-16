@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { FormLabel } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import type { LoginInput } from '../../behavior/profile/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestLogin } from '../../behavior/profile';
 import { email, required, validate } from '../../behavior/validators';
-import { ValidationMessage } from './ValidationMessage';
+import { ValidationMessage } from '../common/validation/ValidationMessage';
 import { RootState } from '../../behavior/store';
 import { FormGroup } from '../common/elements/FormGroup';
 

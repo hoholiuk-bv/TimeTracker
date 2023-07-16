@@ -1,35 +1,29 @@
 import React from 'react';
-import {UserRow} from './UserRow';
-import {User} from '../../behavior/users/types';
-import {SortIcon} from './SortIcon';
+import { UserRow } from './UserRow';
+import { User } from '../../behavior/users/types';
+import { SortingInput, SortingOrder } from '../../behavior/common/types';
+import { SortIcon } from '../common/elements/SortIcon';
 
 type Props = {
-    users: User[];
-    fieldName: any;
-    setFieldName: any;
-    sortingOrder: any;
-    setSortingOrder: any;
+  userList: User[];
+  sorting: SortingInput;
+  setSorting: React.Dispatch<React.SetStateAction<SortingInput>>;
 };
 
-export const UserTable = ({users, fieldName, setFieldName, sortingOrder, setSortingOrder}: Props) => {
-
-  const handleSortingClick = (field: string) => {
-    if (field === fieldName) {
-      setSortingOrder(sortingOrder === 'DESC' ? '' : sortingOrder === 'ASC' ? 'DESC' : 'ASC');
-    } else {
-      setFieldName(field);
-      setSortingOrder('ASC');
+export const UserTable = ({ userList, sorting, setSorting }: Props) => {
+  const defaultSortingField = 'EmploymentDate';
+  const handleSortingColumnClick = (fieldName: string) => {
+    if (fieldName !== sorting.sortingField) {
+      setSorting({ sortingField: fieldName, sortingOrder: SortingOrder.Ascending });
     }
-  };
-
-  const getSortingType = (): string => {
-    switch (sortingOrder) {
-    case 'DESC':
-      return 'descending';
-    case 'ASC':
-      return 'ascending';
-    default:
-      return '';
+    else {
+      switch (sorting.sortingOrder) {
+        case SortingOrder.Ascending:
+          setSorting(previousSorting => ({ ...previousSorting, sortingOrder: SortingOrder.Descending }));
+          break;
+        case SortingOrder.Descending:
+          setSorting({ sortingField: defaultSortingField, sortingOrder: SortingOrder.Ascending });
+      }
     }
   };
 
@@ -37,27 +31,27 @@ export const UserTable = ({users, fieldName, setFieldName, sortingOrder, setSort
     <table className="table table-striped mb-4">
       <thead>
         <tr>
-          <th onClick={() => handleSortingClick('Name')} className={fieldName === 'Name' ? getSortingType() : ''}>
+          <th onClick={() => handleSortingColumnClick('Name')} className='sortableColumn'>
             <span>Name</span>
-            <SortIcon sortingType={fieldName === 'Name' ? getSortingType() : ''}/>
+            <SortIcon sortingOrder={sorting.sortingField === 'Name' ? sorting.sortingOrder : null} />
           </th>
-          <th onClick={() => handleSortingClick('Email')} className={fieldName === 'Email' ? getSortingType() : ''}>
+          <th onClick={() => handleSortingColumnClick('Email')} className='sortableColumn'>
             <span>Email</span>
-            <SortIcon sortingType={fieldName === 'Email' ? getSortingType() : ''}/>
+            <SortIcon sortingOrder={sorting.sortingField === 'Email' ? sorting.sortingOrder : null} />
           </th>
-          <th onClick={() => handleSortingClick('EmploymentType')} className={fieldName === 'EmploymentType' ? getSortingType() : ''}>
+          <th onClick={() => handleSortingColumnClick('EmploymentType')} className='sortableColumn'>
             <span>Employment type</span>
-            <SortIcon sortingType={fieldName === 'EmploymentType' ? getSortingType() : ''}/>
+            <SortIcon sortingOrder={sorting.sortingField === 'EmploymentType' ? sorting.sortingOrder : null} />
           </th>
-          <th onClick={() => handleSortingClick('EmploymentDate')} className={fieldName === 'EmploymentDate' ? getSortingType() : ''} colSpan={2}>
+          <th onClick={() => handleSortingColumnClick('EmploymentDate')} className='sortableColumn' colSpan={2}>
             <span>Employment date</span>
-            <SortIcon sortingType={fieldName === 'EmploymentDate' ? getSortingType() : ''}/>
+            <SortIcon sortingOrder={sorting.sortingField === 'EmploymentDate' ? sorting.sortingOrder : null} />
           </th>
         </tr>
       </thead>
       <tbody>
-        {users.map((user) => (
-          <UserRow key={user.id} user={user}/>
+        {userList.map((user) => (
+          <UserRow key={user.id} user={user} />
         ))}
       </tbody>
     </table>

@@ -14,6 +14,10 @@ using BusinessLayer;
 using BusinessLayer.Permissions;
 using TimeTracker.GraphQL.Worktime;
 using TimeTracker.GraphQL.Worktime.Types;
+using TimeTracker.GraphQL.DaysOff.Types;
+using TimeTracker.GraphQL.DaysOff;
+using TimeTracker.GraphQL.Common.Types;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +59,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 builder.Services.AddSingleton<IUserProvider, UserProvider>();
+builder.Services.AddSingleton<IDayOffRequestApproversProvider, DayOffRequestApproversProvider>();
+builder.Services.AddSingleton<IDaysOffProvider, DaysOffProvider>();
 builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<UserContext>();
@@ -74,11 +80,20 @@ builder.Services.AddTransient<WorktimeType>();
 builder.Services.AddTransient<WorktimeQuery>();
 builder.Services.AddTransient<WorktimeInputType>();
 builder.Services.AddTransient<WorktimeMutation>();
+builder.Services.AddTransient<FilterInputType>();
+builder.Services.AddTransient<SortInputType>();
+builder.Services.AddTransient<PaginationInputType>();
 builder.Services.AddTransient<LoginInputType>();
 builder.Services.AddTransient<FirstUserRegisterInputType>();
 builder.Services.AddTransient<CreateUserInputType>();
 builder.Services.AddTransient<AuthenticationResultType>();
 builder.Services.AddTransient<UserInfoType>();
+builder.Services.AddTransient<DaysOffQuery>();
+builder.Services.AddTransient<DayOffRequestType>();
+builder.Services.AddTransient<DayOffRequestInputType>();
+builder.Services.AddTransient<DaysOffMutation>();
+builder.Services.AddTransient<SortingInputType>();
+builder.Services.AddTransient<PagingInputType>();
 builder.Services.AddGraphQL(a => a.AddSchema<TimeTrackerSchema>().AddSystemTextJson().AddAuthorizationRule());
 
 builder.Services.AddControllersWithViews();
@@ -92,6 +107,7 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseCors();
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();
@@ -103,6 +119,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-app.UseGraphQLAltair();
+
+app.MapFallbackToFile("index.html");
 
 app.Run();

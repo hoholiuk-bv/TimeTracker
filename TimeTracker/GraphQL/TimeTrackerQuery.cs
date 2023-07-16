@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using TimeTracker.GraphQL.DaysOff;
 using TimeTracker.GraphQL.Profile;
 using TimeTracker.GraphQL.Users;
 using TimeTracker.GraphQL.Worktime;
@@ -21,6 +22,10 @@ namespace TimeTracker.GraphQL
             
             Field<WorktimeQuery>("Worktime")
                 .Description("Queries for worktime")
+                .Resolve(context => new { });
+
+            Field<DaysOffQuery>("DaysOff")
+                .Description("Queries for days off")
                 .Resolve(context => new { });
         }
     }

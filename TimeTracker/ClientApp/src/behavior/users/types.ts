@@ -8,9 +8,24 @@ export type User = {
   employmentType: string;
 }
 
-export type SearchType = {
+export type FilterType = {
   searchText: string;
-  startEmploymentDate: string;
-  endEmploymentDate: string;
-  employmentType: string[];
+  startEmploymentDate: string | null;
+  endEmploymentDate: string | null;
+  employmentTypes: string[];
+}
+
+export type PaginationType = {
+  pageSize: number;
+  pageNumber: number;
+}
+
+export enum employmentType {
+  FullTime = 'FULL_TIME',
+  PartTime = 'PART_TIME',
+}
+
+export enum employmentTypeForDisplay {
+  FullTime = 'full-time',
+  PartTime = 'part-time',
 }
