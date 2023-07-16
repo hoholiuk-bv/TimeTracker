@@ -5,54 +5,37 @@ import { requestEmploymentTypeList, requestUserList } from '../../behavior/users
 import { UserPagination } from './UserPagination';
 import { UserSearchPanel } from './UserSearchPanel';
 import { UserTable } from './UserTable';
+import {FilterType, PaginationType, SortType} from '../../behavior/users/types';
 
 export const UserListPage = () => {
   const dispatch = useDispatch();
-  const users = useSelector((state: RootState) => state.users.list);
+  const userList = useSelector((state: RootState) => state.users.list);
   const totalUsersCount = useSelector((state: RootState) => state.users.totalUsersCount);
   const employmentTypeList = useSelector((state: RootState) => state.users.employmentTypeList);
-  const [fieldName, setFieldName] = useState('');
-  const [sortingOrder, setSortingOrder] = useState('');
-  const [searchText, setSearchText] = useState('');
-  const [startEmploymentDate, setStartEmploymentDate] = useState('');
-  const [endEmploymentDate, setEndEmploymentDate] = useState('');
-  const [employmentType, setEmploymentType] = useState([]);
+
+  const [filter, setFilter] = useState<FilterType>({ searchText: '', startEmploymentDate: null, endEmploymentDate: null, employmentTypes: [] });
+  const [sorting, setSorting] = useState<SortType>({ fieldName: 'EmploymentDate', sortingOrder: 'ASC'});
+  const [pagination, setPagination] = useState<PaginationType>({ pageSize: 10, pageNumber: 1});
 
   useEffect(() => {
-    dispatch(requestUserList(searchText, 10, 1, fieldName, sortingOrder, startEmploymentDate, endEmploymentDate, employmentType));
-  }, [dispatch, searchText, fieldName, sortingOrder, startEmploymentDate, endEmploymentDate, employmentType]);
+    dispatch(requestUserList(filter, sorting, pagination));
+  }, [dispatch, filter, sorting, pagination]);
 
   useEffect(() => {
     dispatch(requestEmploymentTypeList());
   }, [dispatch]);
 
   return (
-    <>
-      <h1 className="mb-3">Users</h1>
-      <UserSearchPanel
-        searchText={searchText}
-        setSearchText={setSearchText}
-        setStartEmploymentDate={setStartEmploymentDate}
-        startEmploymentDate={startEmploymentDate}
-        setEndEmploymentDate={setEndEmploymentDate}
-        endEmploymentDate={endEmploymentDate}
-        employmentTypeList={employmentTypeList}
-        setEmploymentType={setEmploymentType}
-        employmentType={employmentType}
-      />
-      {users.length === 0 && (
+    <div className="p-5 pt-3">
+      <h2 className="mb-4 h1">Users</h2>
+      <UserSearchPanel filter={filter} setFilter={setFilter} employmentTypeList={employmentTypeList}/>
+      {userList.length === 0 && (
         <div className="h5 alert alert-danger">User not found.</div>
       )}
-      {users.length > 0 && (
-        <UserTable
-          users={users}
-          fieldName={fieldName}
-          setFieldName={setFieldName}
-          sortingOrder={sortingOrder}
-          setSortingOrder={setSortingOrder}
-        />
+      {userList.length > 0 && (
+        <UserTable userList={userList} sorting={sorting} setSorting={setSorting}/>
       )}
-      <UserPagination totalUsersCount={totalUsersCount} />
-    </>
+      <UserPagination totalUsersCount={totalUsersCount} pagination={pagination} setPagination={setPagination}/>
+    </div>
   );
 };

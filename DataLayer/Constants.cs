@@ -27,5 +27,4 @@
             { EmploymentType.PartTime, "part-time" },
         };
     }
-    
 }
