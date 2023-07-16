@@ -1,6 +1,5 @@
 import type { WorktimeInput} from './types';
-
-
+import {Worktime} from './types';
 
 export const WORKTIME_CREATION = 'WORKTIME_CREATION' as const;
 export const worktimeCreation = (worktimeCreationInput: WorktimeInput) => ({
@@ -9,6 +8,6 @@ export const worktimeCreation = (worktimeCreationInput: WorktimeInput) => ({
 });
 
 
-export type UserCreationAction = ReturnType<typeof worktimeCreation>;
+export type WorktimeCreationAction = ReturnType<typeof worktimeCreation>;
 export type CreationActions = ReturnType<
     | typeof worktimeCreation>

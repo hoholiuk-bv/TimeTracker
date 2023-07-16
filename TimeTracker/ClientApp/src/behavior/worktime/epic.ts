@@ -5,7 +5,7 @@ import {
 } from './actions';
 import { Epic, ofType } from 'redux-observable';
 import { sendRequest } from '../graphApi';
-import { worktimeCreationMutation} from './queries';
+import {getWorktimeQuery, worktimeCreationMutation} from './queries';
 
 const epic: Epic<CreationActions | any> = (actions$, state$) => {
 
@@ -16,7 +16,7 @@ const epic: Epic<CreationActions | any> = (actions$, state$) => {
         mergeMap(({ worktimeCreationInput }) => sendRequest(worktimeCreationMutation, { input: worktimeCreationInput }).pipe(
         ))
     );
-
+    
     return merge(userCreation);
 };
 

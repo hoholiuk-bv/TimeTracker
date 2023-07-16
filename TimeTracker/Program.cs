@@ -70,6 +70,8 @@ builder.Services.AddTransient<ProfileMutation>();
 builder.Services.AddTransient<ProfileQuery>();
 builder.Services.AddTransient<WorktimeMutation>();
 builder.Services.AddTransient<UserType>();
+builder.Services.AddTransient<WorktimeType>();
+builder.Services.AddTransient<WorktimeQuery>();
 builder.Services.AddTransient<WorktimeInputType>();
 builder.Services.AddTransient<WorktimeMutation>();
 builder.Services.AddTransient<LoginInputType>();
@@ -100,5 +102,7 @@ app.UseGraphQL();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
+
+app.UseGraphQLAltair();
 
 app.Run();

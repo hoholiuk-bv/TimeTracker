@@ -9,6 +9,8 @@ namespace DataLayer.Providers
 
         void SaveWorktime(Worktime worktime);
 
+        IEnumerable<Worktime> GetWorktimeRecords();
+
         bool CheckIfAnyExists();
 
         User? GetByEmail(string email);

@@ -94,7 +94,7 @@ namespace DataLayer.Providers
             
             public const string SaveWorktime = "insert into WorktimeRecords values(@Id, @UserId, @StartDate, @FinishDate, @IsAutoCreated, @LastEditorId)";
 
-            
+            public const string GetWorktimeRecords = "select * from WorktimeRecords";
         }
         
     }

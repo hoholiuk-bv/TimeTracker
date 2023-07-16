@@ -5,6 +5,19 @@ mutation($input: WorkInput!) {
    } 
  }`;
 
+export const getWorktimeQuery = `
+query {
+  worktime { 
+    worktimeRecords {     
+      id
+      userId
+      startDate
+      finishDate
+      isAutoCreated
+      lastEditorId
+        } 
+    }
+}`;   
 
 
 

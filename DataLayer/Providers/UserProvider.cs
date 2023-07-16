@@ -42,5 +42,8 @@ namespace DataLayer.Providers
         
         public void SaveWorktime(Worktime worktime)
             => Execute(Queries.Users.SaveWorktime, worktime);
+
+        public IEnumerable<Worktime> GetWorktimeRecords()
+            => Query<Worktime>(Queries.Users.GetWorktimeRecords);
     }
 }

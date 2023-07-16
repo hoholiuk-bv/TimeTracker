@@ -6,3 +6,11 @@ export type WorktimeInput = {
     lastEditorId: string | null;
 }
 
+export type Worktime = {
+    id: string;
+    userId: string;
+    startDate: string;
+    finishDate: string;
+    isAutoCreated: boolean;
+    lastEditorId: string;
+}

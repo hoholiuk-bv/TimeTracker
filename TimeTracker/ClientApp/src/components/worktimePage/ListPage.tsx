@@ -1,19 +1,22 @@
-﻿import React, { useEffect } from 'react';
-import { RootState } from '../../behavior/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { requestEmploymentTypeList, requestUserList } from '../../behavior/users/actions';
+﻿import React from 'react';
+import { Timer } from './Timer';
+import { UserInfo } from '../../behavior/profile/types';
+import {Worktime} from '../../behavior/worktime/types';
 
-import { DemoWorktime } from './DemoWorktime';
+type Props = {
+    users: UserInfo | null;
+};
 
-export const ListPage = () => {
-    const dispatch = useDispatch();
-    const users = useSelector((state: RootState) => state.profile.userInfo);
+export const ListPage = ({ users }: Props) => {
+    if (!users) {
+        return null; 
+    }
 
-    
     return (
-        <>
-            <h1 className="mb-4"></h1>
-            <DemoWorktime users={users} />
-        </>
+        <table className="table table-striped mb-4">
+            <tbody>
+            <Timer user={users} />
+            </tbody>
+        </table>
     );
 };
