@@ -5,7 +5,7 @@ import type { CreationInput } from '../../behavior/userCreation/types';
 import { useDispatch, useSelector } from 'react-redux';
 import {userCreation, requestUserList, receiveUserList} from '../../behavior/userCreation/actions';
 import { email, maxLength, required, validate } from '../../behavior/validators';
-import { ValidationMessage } from './ValidationMessage';
+import { ValidationMessage } from '../common/validation/ValidationMessage';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../behavior/routing';
 import { FormGroup } from '../common/elements/FormGroup';

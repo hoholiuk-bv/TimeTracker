@@ -19,8 +19,8 @@ namespace TimeTracker.GraphQL.Users
                 .Resolve(context =>
                 {
                     FilterModel? filter = context.GetArgument<FilterModel?>("filter");
-                    SortModel? sorting = context.GetArgument<SortModel?>("sorting");
-                    PaginationModel? pagination = context.GetArgument<PaginationModel?>("pagination");
+                    Sorting? sorting = context.GetArgument<Sorting?>("sorting");
+                    Paging? pagination = context.GetArgument<Paging?>("pagination");
 
                     return userProvider.GetAllUsers(filter, sorting, pagination).ToList();
                 });

@@ -15,11 +15,6 @@ export type FilterType = {
   employmentTypes: string[];
 }
 
-export type SortType = {
-  fieldName: string;
-  sortingOrder: string;
-}
-
 export type PaginationType = {
   pageSize: number;
   pageNumber: number;

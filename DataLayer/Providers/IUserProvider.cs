@@ -11,7 +11,7 @@ namespace DataLayer.Providers
 
         User? GetByEmail(string email);
 
-        IEnumerable<User> GetAllUsers(FilterModel? filter, SortModel? sort, PaginationModel? pagination);
+        IEnumerable<User> GetAllUsers(FilterModel? filter, Sorting? sorting, Paging? pagination);
 
         User? GetById(string id);
 

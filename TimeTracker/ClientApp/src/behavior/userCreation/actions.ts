@@ -1,22 +1,22 @@
 ﻿import type { CreationInput, User } from './types';
-import {FilterType} from '../users/types';
+import { FilterType } from '../users/types';
 
 export const USER_CREATION = 'USER_CREATION' as const;
 export const userCreation = (userCreationInput: CreationInput) => ({
-  type: USER_CREATION,
-  payload: { userCreationInput }
+    type: USER_CREATION,
+    payload: { userCreationInput }
 });
 
 export const SHORT_USER_LIST_REQUESTED = 'SHORT_USER_LIST_REQUESTED' as const;
 export const requestUserList = (filter: FilterType) => ({
-  type: SHORT_USER_LIST_REQUESTED,
-  payload: {filter},
+    type: SHORT_USER_LIST_REQUESTED,
+    payload: { filter },
 });
 
 export const SHORT_USER_LIST_RECEIVED = 'SHORT_USER_LIST_RECEIVED' as const;
 export const receiveUserList = (userList: User[]) => ({
-  type: SHORT_USER_LIST_RECEIVED,
-  payload: {userList},
+    type: SHORT_USER_LIST_RECEIVED,
+    payload: { userList },
 });
 
 export type UserCreationAction = ReturnType<typeof userCreation>;

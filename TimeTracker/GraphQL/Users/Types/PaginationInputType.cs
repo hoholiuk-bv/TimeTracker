@@ -3,7 +3,7 @@ using GraphQL.Types;
 
 namespace TimeTracker.GraphQL.Users.Types
 {
-    public class PaginationInputType : InputObjectGraphType<PaginationModel>
+    public class PaginationInputType : InputObjectGraphType<Paging>
     {
         public PaginationInputType()
         {
