@@ -5,7 +5,8 @@ import { requestEmploymentTypeList, requestUserList } from '../../behavior/users
 import { UserPagination } from './UserPagination';
 import { UserSearchPanel } from './UserSearchPanel';
 import { UserTable } from './UserTable';
-import {FilterType, PaginationType, SortType} from '../../behavior/users/types';
+import { FilterType, PaginationType } from '../../behavior/users/types';
+import { SortingInput, SortingOrder } from '../../behavior/common/types';
 
 export const UserListPage = () => {
   const dispatch = useDispatch();
@@ -14,8 +15,8 @@ export const UserListPage = () => {
   const employmentTypeList = useSelector((state: RootState) => state.users.employmentTypeList);
 
   const [filter, setFilter] = useState<FilterType>({ searchText: '', startEmploymentDate: null, endEmploymentDate: null, employmentTypes: [] });
-  const [sorting, setSorting] = useState<SortType>({ fieldName: 'EmploymentDate', sortingOrder: 'ASC'});
-  const [pagination, setPagination] = useState<PaginationType>({ pageSize: 10, pageNumber: 1});
+  const [sorting, setSorting] = useState<SortingInput>({ sortingField: 'EmploymentDate', sortingOrder: SortingOrder.Ascending });
+  const [pagination, setPagination] = useState<PaginationType>({ pageSize: 10, pageNumber: 1 });
 
   useEffect(() => {
     dispatch(requestUserList(filter, sorting, pagination));
@@ -28,14 +29,14 @@ export const UserListPage = () => {
   return (
     <div className="p-5 pt-3">
       <h2 className="mb-4 h1">Users</h2>
-      <UserSearchPanel filter={filter} setFilter={setFilter} employmentTypeList={employmentTypeList}/>
+      <UserSearchPanel filter={filter} setFilter={setFilter} employmentTypeList={employmentTypeList} />
       {userList.length === 0 && (
         <div className="h5 alert alert-danger">User not found.</div>
       )}
       {userList.length > 0 && (
-        <UserTable userList={userList} sorting={sorting} setSorting={setSorting}/>
+        <UserTable userList={userList} sorting={sorting} setSorting={setSorting} />
       )}
-      <UserPagination totalUsersCount={totalUsersCount} pagination={pagination} setPagination={setPagination}/>
+      <UserPagination totalUsersCount={totalUsersCount} pagination={pagination} setPagination={setPagination} />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortDown, faSortUp, faSort } from '@fortawesome/free-solid-svg-icons';
-import { SortingOrder } from '../../behavior/common/types';
+import { SortingOrder } from '../../../behavior/common/types';
 
 type Props = {
   sortingOrder: SortingOrder | null;

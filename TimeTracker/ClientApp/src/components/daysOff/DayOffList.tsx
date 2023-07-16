@@ -4,7 +4,7 @@ import { SortingOrder } from '../../behavior/common/types';
 import { requestDaysOffList, changeDaysOffListSorting } from '../../behavior/daysOff/actions';
 import { RootState } from '../../behavior/store';
 import { DayOffItem } from './DayOffItem';
-import { SortIcon } from './SortIcon';
+import { SortIcon } from '../common/elements/SortIcon';
 
 export const DayOffList = () => {
   const defaultSortingField = 'StartDate';
