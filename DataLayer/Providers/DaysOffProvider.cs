@@ -17,7 +17,7 @@ namespace DataLayer.Providers
         public List<DayOffRequestApprover> GetApprovers(Guid userId)
             => Query<DayOffRequestApprover>(Queries.DaysOff.GetApprovers, new { UserId = userId });
 
-        public List<DayOffRequest> GetRequests(Sorting sorting, Paging paging)
-            => Query<DayOffRequest>(Queries.DaysOff.GetRequests(sorting, paging));
+        public List<DayOffRequest> GetRequests(DayOffRequestFilter filter, Sorting sorting, Paging paging)
+            => Query<DayOffRequest>(Queries.DaysOff.GetRequests(filter, sorting, paging));
     }
 }

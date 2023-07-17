@@ -21,6 +21,7 @@ namespace TimeTracker.GraphQL
 
             Field<DaysOffQuery>("DaysOff")
                 .Description("Queries for days off")
+                .Authorize()
                 .Resolve(context => new { });
         }
     }

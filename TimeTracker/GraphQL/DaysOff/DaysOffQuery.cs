@@ -1,4 +1,5 @@
-﻿using DataLayer.Models;
+﻿using BusinessLayer;
+using DataLayer.Models;
 using DataLayer.Providers;
 using GraphQL;
 using GraphQL.Types;
@@ -17,9 +18,13 @@ namespace TimeTracker.GraphQL.DaysOff
                 .Argument<SortingInputType>("Sorting")
                 .Resolve(context =>
                 {
+                    var userContext = context.RequestServices!.GetRequiredService<UserContext>();
                     var sorting = context.GetArgument<Sorting>("sorting");
                     var paging = context.GetArgument<Paging>("paging");
-                    return daysOffProvider.GetRequests(sorting, paging);
+                    var filter = new DayOffRequestFilter() { UserId = userContext.User!.Id };
+                    var requests = daysOffProvider.GetRequests(filter, sorting, paging);
+
+                    return requests;
                 });
         }
     }

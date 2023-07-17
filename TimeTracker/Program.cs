@@ -86,6 +86,7 @@ builder.Services.AddTransient<DayOffRequestInputType>();
 builder.Services.AddTransient<DaysOffMutation>();
 builder.Services.AddTransient<SortingInputType>();
 builder.Services.AddTransient<PagingInputType>();
+builder.Services.AddTransient<DayOffRequestApprovalType>();
 builder.Services.AddGraphQL(a => a.AddSchema<TimeTrackerSchema>().AddSystemTextJson().AddAuthorizationRule());
 
 builder.Services.AddControllersWithViews();
