@@ -34,7 +34,7 @@ export const UserListPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="p-5 pt-3">
+    <>
       <h2 className="mb-4 h1">Users</h2>
       <UserSearchPanel filter={filter} setFilter={setFilter} employmentTypeList={employmentTypeList}/>
       {totalUsersCount === 0 && (
@@ -46,6 +46,6 @@ export const UserListPage = () => {
           <UserPagination totalUsersCount={totalUsersCount} pagination={pagination} setPagination={setPagination}/>
         </>
       )}
-    </div>
+    </>
   );
 };
