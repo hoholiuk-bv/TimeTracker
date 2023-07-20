@@ -9,7 +9,7 @@ namespace DataLayer.Providers
         {
             public static string GetAll(FilterModel? filter, Sorting? sort, Paging? pagination)
             {
-                string filterQuery = _FilterQuery(filter);
+                string filterQuery = AddFiltering(filter);
 
                 string sqlQuery = $@"
                     SELECT Id, Name, Surname, Email, IsAdmin, EmploymentDate, EmploymentType
@@ -30,7 +30,7 @@ namespace DataLayer.Providers
 
             public static string GetTotalUsersCount(FilterModel? filter)
             {
-                string filterQuery = _FilterQuery(filter);
+                string filterQuery = AddFiltering(filter);
 
                 string sqlQuery = $@"
                     SELECT COUNT (*)
@@ -41,7 +41,7 @@ namespace DataLayer.Providers
                 return sqlQuery;
             }
 
-            private static string _FilterQuery(FilterModel? filter)
+            private static string AddFiltering(FilterModel? filter)
             {
                 if (filter == null)
                     return "";
@@ -75,7 +75,10 @@ namespace DataLayer.Providers
                 return filterQuery;
             }
 
-            public const string Save = "insert into Users values(@Id, @Name, @Surname, @Email, @Password, @Salt, @IsAdmin, @EmploymentDate, @EmploymentType)";
+            public const string Save = @"
+                INSERT INTO Users (Id, Name, Surname, Email, Password, Salt, IsAdmin, EmploymentDate, EmploymentType, WorkingHoursCount)
+                VALUES (@Id, @Name, @Surname, @Email, @Password, @Salt, @IsAdmin, @EmploymentDate, @EmploymentType, @WorkingHoursCount)
+            ";
 
             public const string CheckIfExists = "select top (1) [Id] from Users";
 

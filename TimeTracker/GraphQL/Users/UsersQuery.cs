@@ -2,7 +2,6 @@
 using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Users.Types;
-using static DataLayer.Constants;
 using DataLayer.Models;
 
 namespace TimeTracker.GraphQL.Users
@@ -33,13 +32,7 @@ namespace TimeTracker.GraphQL.Users
                     FilterModel? filter = context.GetArgument<FilterModel?>("filter");
                     return userProvider.GetTotalUsersCount(filter);
                 });
-
-            Field<ListGraphType<StringGraphType>>("employmentTypeList")
-                .Description("Get all employment types")
-                .Resolve(context =>
-                {
-                    return Enum.GetNames(typeof(EmploymentType)).ToList();
-                });
         }
     }
 }
+    

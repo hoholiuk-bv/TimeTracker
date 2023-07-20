@@ -1,10 +1,10 @@
 import React from 'react';
-import {PaginationType} from '../../behavior/users/types';
 import ReactPaginate from 'react-paginate';
+import {PagingInput} from '../../behavior/common/types';
 
 type Props = {
   totalUsersCount: number;
-  pagination: PaginationType;
+  pagination: PagingInput;
   setPagination: any;
 }
 

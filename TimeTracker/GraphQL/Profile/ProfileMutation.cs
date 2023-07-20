@@ -53,6 +53,7 @@ namespace TimeTracker.GraphQL.Profile
                 Surname = input.Surname,
                 Email = input.Email,
                 Password = authenticationService.GenerateHash(input.Password, salt),
+                WorkingHoursCount = Constants.MaxWorkingHours,
             };
 
             userProvider.Save(user);

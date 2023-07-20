@@ -1,5 +1,5 @@
 import React from 'react';
-import { User } from '../../behavior/users/types';
+import {employmentType, employmentTypeForDisplay, User} from '../../behavior/users/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faFileLines } from '@fortawesome/free-solid-svg-icons';
 
@@ -8,19 +8,23 @@ type Props = {
 }
 
 export const UserRow = ({ user }: Props) => {
+  const employmentTypeKey = Object.keys(employmentType).find(key => employmentType[key as keyof typeof employmentType] === user.employmentType);
+  const formattedEmploymentType = employmentTypeForDisplay[employmentTypeKey as keyof typeof employmentTypeForDisplay];
+  const formattedEmploymentDate = new Date(user.employmentDate).toLocaleDateString();
+
   return (
     <tr>
       <td>
-        {user.name + ' ' + user.surname}
+        {user.surname + ' ' + user.name}
       </td>
       <td>
         {user.email}
       </td>
       <td>
-        {user.employmentType}
+        {formattedEmploymentType}
       </td>
       <td>
-        {user.employmentDate.toString()}
+        {formattedEmploymentDate}
       </td>
       <td className='align-middle'>
         <div className="d-flex gap-4 justify-content-end">

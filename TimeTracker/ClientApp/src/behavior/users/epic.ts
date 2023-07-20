@@ -4,12 +4,10 @@ import {sendRequest} from '../graphApi';
 
 import {
   USER_LIST_REQUESTED,
-  EMPLOYMENT_TYPE_LIST_REQUESTED, 
-  receiveUserList, 
-  receiveEmploymentTypeList,
+  receiveUserList,
 } from './actions';
 
-import {getEmploymentTypeListQuery, getUsersQuery} from './queries';
+import {getUsersQuery} from './queries';
 
 const epic: Epic<any> = (actions$, state$) => {
   const requestUsers$ = actions$.pipe(
@@ -24,14 +22,7 @@ const epic: Epic<any> = (actions$, state$) => {
     )),
   );
 
-  const requestEmploymentTypeList$ = actions$.pipe(
-    ofType(EMPLOYMENT_TYPE_LIST_REQUESTED),
-    mergeMap(() => sendRequest(getEmploymentTypeListQuery).pipe(
-      map(({users}) => receiveEmploymentTypeList(users.employmentTypeList))
-    )),
-  );
-
-  return merge(requestUsers$, requestEmploymentTypeList$);
+  return merge(requestUsers$);
 };
 
 export default epic;

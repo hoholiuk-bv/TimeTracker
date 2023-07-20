@@ -21,5 +21,7 @@ namespace DataLayer.Entities
         public DateTime EmploymentDate { get; set; }
 
         public EmploymentType EmploymentType { get; set; }
+
+        public decimal WorkingHoursCount { get; set; }
     }
 }

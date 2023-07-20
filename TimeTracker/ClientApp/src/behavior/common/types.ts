@@ -12,3 +12,5 @@ export type PagingInput = {
   pageNumber: number;
   pageSize: number;
 }
+
+export const MaxWorkingHours = 8.0;

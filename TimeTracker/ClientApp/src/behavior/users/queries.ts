@@ -23,10 +23,3 @@ query(
     )
   }
 }`;
-
-export const getEmploymentTypeListQuery = `
-query {
-  users {
-    employmentTypeList
-  }
-}`;

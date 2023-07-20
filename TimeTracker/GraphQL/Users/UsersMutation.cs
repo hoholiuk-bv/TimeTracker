@@ -4,6 +4,7 @@ using DataLayer.Providers;
 using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Users.Types;
+using DataLayer;
 
 namespace TimeTracker.GraphQL.Users
 {
@@ -40,6 +41,7 @@ namespace TimeTracker.GraphQL.Users
                 Surname = input.Surname,
                 Email = input.Email,
                 Password = authenticationService.GenerateHash(input.Password, salt),
+                WorkingHoursCount = input.EmploymentType == Constants.EmploymentType.FullTime ? Constants.MaxWorkingHours : input.WorkingHoursCount
             };
 
             List<Guid> approversIdentificators = input.ApproversIdList;

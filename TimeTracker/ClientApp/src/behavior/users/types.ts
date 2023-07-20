@@ -15,11 +15,6 @@ export type FilterType = {
   employmentTypes: string[];
 }
 
-export type PaginationType = {
-  pageSize: number;
-  pageNumber: number;
-}
-
 export enum employmentType {
   FullTime = 'FULL_TIME',
   PartTime = 'PART_TIME',
