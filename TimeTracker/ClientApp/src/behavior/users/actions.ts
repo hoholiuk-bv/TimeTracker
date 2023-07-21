@@ -15,4 +15,17 @@ export const receiveUserList = (userList: User[], totalUsersCount: number) => ({
   payload: { userList, totalUsersCount },
 });
 
+export const TOGGLE_ACTIVITY_STATUS_REQUESTED = 'TOGGLE_ACTIVITY_STATUS_REQUESTED' as const;
+export const requestToggleActivityStatus = (id: string) => ({
+  type: TOGGLE_ACTIVITY_STATUS_REQUESTED,
+  payload: { id },
+});
+
+export const ACTIVITY_STATUS_TOGGLED = 'ACTIVITY_STATUS_TOGGLED' as const;
+export const activityStatusToggled = (id: string) => ({
+  type: ACTIVITY_STATUS_TOGGLED,
+  payload: { id },
+});
+
 export type UserListReceivedAction = ReturnType<typeof receiveUserList>;
+export type ActivityStatusToggledAction = ReturnType<typeof activityStatusToggled>;

@@ -4,6 +4,7 @@ export type User = {
   surname: string;
   email: string;
   isAdmin: boolean;
+  isActive: boolean;
   employmentDate: string;
   employmentType: string;
 }

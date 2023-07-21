@@ -12,7 +12,7 @@ namespace DataLayer.Providers
                 string filterQuery = AddFiltering(filter);
 
                 string sqlQuery = $@"
-                    SELECT Id, Name, Surname, Email, IsAdmin, EmploymentDate, EmploymentType
+                    SELECT Id, Name, Surname, Email, IsAdmin, IsActive, EmploymentDate, EmploymentType, WorkingHoursCount
                     FROM Users
                     {filterQuery}
                 ";
@@ -74,6 +74,12 @@ namespace DataLayer.Providers
 
                 return filterQuery;
             }
+
+            public const string ToggleActivityStatus = @"
+                UPDATE Users
+                SET IsActive = IsActive ^ 1
+                WHERE Id = @Id;
+            ";
 
             public const string Save = @"
                 INSERT INTO Users (Id, Name, Surname, Email, Password, Salt, IsAdmin, EmploymentDate, EmploymentType, WorkingHoursCount)

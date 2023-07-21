@@ -24,6 +24,16 @@ namespace TimeTracker.GraphQL.Users
                 .Description("Create a new user")
                 .Argument<NonNullGraphType<CreateUserInputType>>("input")
                 .Resolve(context => ResolveUserCreation(context));
+
+            Field<GuidGraphType>("ToggleActivityStatus")
+                .Description("Toggle the IsActive status for User")
+                .Argument<NonNullGraphType<GuidGraphType>>("id")
+                .Resolve(context =>
+                {
+                    Guid id = context.GetArgument<Guid>("id");
+                    bool IsActiveStatusUpdated = 0 < userProvider.ToggleActivityStatus(id);
+                    return IsActiveStatusUpdated ? id : null;
+                });
         }
 
         private bool ResolveUserCreation(IResolveFieldContext context)

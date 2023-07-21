@@ -19,6 +19,9 @@ namespace DataLayer.Providers
 
         public int Save(User user)
             => Execute(Queries.Users.Save, user);
+        
+        public int ToggleActivityStatus(Guid id)
+            => Execute(Queries.Users.ToggleActivityStatus, new { Id = id });
 
         public User? GetByEmail(string email)
             => Query<User>(Queries.Users.GetByEmail, new { Email = email }).FirstOrDefault();

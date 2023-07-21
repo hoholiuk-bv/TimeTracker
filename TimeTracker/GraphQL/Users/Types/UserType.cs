@@ -12,6 +12,7 @@ namespace TimeTracker.GraphQL.Users.Types
             Field(t => t.Surname);
             Field(t => t.Email);
             Field(t => t.IsAdmin);
+            Field(t => t.IsActive);
             Field(t => t.EmploymentDate);
             Field(t => t.EmploymentType);
             Field(t => t.WorkingHoursCount);
