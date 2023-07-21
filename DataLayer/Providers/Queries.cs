@@ -95,10 +95,11 @@ namespace DataLayer.Providers
 
         public static class DaysOff
         {
-            public const string Create = "insert into DayOffRequests values(@Id, @StartDate, @FinishDate, @Reason)";
+            public const string Create = "insert into DayOffRequests values(@Id, @UserId, @StartDate, @FinishDate, @Reason)";
 
-            public static string GetRequests(Sorting sorting, Paging paging) =>
+            public static string GetRequests(DayOffRequestFilter filter, Sorting sorting, Paging paging) =>
                 $@"SELECT * FROM DayOffRequests 
+                WHERE UserId='{filter.UserId}'
                 {AddSorting(sorting)} 
                 {AddPaging(paging)}";
 

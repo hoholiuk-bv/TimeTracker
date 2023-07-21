@@ -7,7 +7,7 @@ public interface IDaysOffProvider
 {
     void CreateRequest(DayOffRequest dayOffRequest);
 
-    List<DayOffRequest> GetRequests(Sorting sorting, Paging paging);
+    List<DayOffRequest> GetRequests(DayOffRequestFilter filter, Sorting sorting, Paging paging);
 
     List<DayOffRequestApprover> GetApprovers(Guid userId);
 
