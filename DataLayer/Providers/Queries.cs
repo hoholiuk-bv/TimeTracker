@@ -83,9 +83,6 @@ namespace DataLayer.Providers
 
             public const string GetById = "select * from Users where Id = @Id";
             
-            public const string SaveWorktime = "insert into WorktimeRecords values(@Id, @UserId, @StartDate, @FinishDate, @IsAutoCreated, @LastEditorId)";
-
-            public const string GetWorktimeRecords = "select * from WorktimeRecords";
         }
 
         public static class DayOffRequestApprovers
@@ -113,6 +110,13 @@ namespace DataLayer.Providers
             public static string GetApprovals = @"SELECT *
                                                   FROM DayOffRequestApprovals
                                                   WHERE RequestId IN @RequestIds";
+        }
+
+        public static class Worktime
+        {
+            public const string SaveWorktime = "insert into WorktimeRecords values(@Id, @UserId, @StartDate, @FinishDate, @IsAutoCreated, @LastEditorId)";
+
+            public const string GetWorktimeRecords = "select * from WorktimeRecords ORDER BY FinishDate DESC";
         }
 
         private static string AddSorting(Sorting sorting)

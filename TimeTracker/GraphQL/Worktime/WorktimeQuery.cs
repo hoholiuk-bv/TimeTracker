@@ -6,13 +6,13 @@ namespace TimeTracker.GraphQL.Worktime;
 
 public class WorktimeQuery : ObjectGraphType
 {
-    public WorktimeQuery(IUserProvider userProvider)
+    public WorktimeQuery(IWorktimeProvider worktimeProvider)
     {
         Field<ListGraphType<WorktimeType>>("worktimeRecords")
             .Description("Get list of worktimeRecords")
             .Resolve(context =>
             {
-                return userProvider.GetWorktimeRecords().ToList();
+                return worktimeProvider.GetWorktimeRecords().ToList();
             });
     }
 }

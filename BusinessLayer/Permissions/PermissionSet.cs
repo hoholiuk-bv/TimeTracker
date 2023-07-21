@@ -9,7 +9,8 @@
             Permissions = new IPermission[]
             {
                 new ManageUsersPermission(),
-                new ConfigureCalendarPermission()
+                new ConfigureCalendarPermission(),
+                new WorktimePermission()
             };
         }
     }
@@ -17,6 +18,7 @@
     public enum PermissionType
     {
         ManageUsers,
-        ConfigureCalendar
+        ConfigureCalendar,
+        Worktime
     }
 }

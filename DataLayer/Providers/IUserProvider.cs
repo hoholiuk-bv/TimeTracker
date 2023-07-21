@@ -6,11 +6,7 @@ namespace DataLayer.Providers
     public interface IUserProvider
     {
         int Save(User user);
-
-        void SaveWorktime(Worktime worktime);
-
-        IEnumerable<Worktime> GetWorktimeRecords();
-
+        
         bool CheckIfAnyExists();
 
         User? GetByEmail(string email);

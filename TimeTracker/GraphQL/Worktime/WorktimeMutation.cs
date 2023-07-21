@@ -10,12 +10,10 @@
 
     public class WorktimeMutation : ObjectGraphType
     {
-        private readonly IUserProvider userProvider;
-        private readonly IAuthenticationService authenticationService;
-        public WorktimeMutation(IUserProvider userProvider, IAuthenticationService authenticationService)
+        private readonly IWorktimeProvider worktimeProvider;
+        public WorktimeMutation(IWorktimeProvider worktimeProvider, IAuthenticationService authenticationService)
         {
-            this.userProvider = userProvider;
-            this.authenticationService = authenticationService;
+            this.worktimeProvider = worktimeProvider;
 
             Field<NonNullGraphType<BooleanGraphType>>("WorkCreation")
                 .Description("work")
@@ -35,7 +33,7 @@
                 IsAutoCreated = input.IsAutoCreated,
             };
 
-            userProvider.SaveWorktime(worktime);
+            worktimeProvider.SaveWorktime(worktime);
 
             return true;
         }

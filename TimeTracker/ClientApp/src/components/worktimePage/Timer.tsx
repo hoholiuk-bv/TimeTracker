@@ -7,7 +7,7 @@ import {UserInfo} from '../../behavior/profile/types';
 
 type Props = {
     user: UserInfo;
-}
+};
 
 const initialValues: WorktimeInput = {
     userId: '',
@@ -17,17 +17,15 @@ const initialValues: WorktimeInput = {
     isAutoCreated: false,
 };
 
-export const Timer = ({ user }: Props) => {
+export const Timer = ({user}: Props) => {
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [hours, setHours] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
-
+    const [buttonText, setButtonText] = useState('Start');
 
     let timer: NodeJS.Timeout;
     const dispatch = useDispatch();
-
- 
 
     useEffect(() => {
         if (isRunning) {
@@ -60,46 +58,41 @@ export const Timer = ({ user }: Props) => {
         return () => clearInterval(timer);
     }, [isRunning, seconds, minutes]);
 
-  
-
-    const start = () => {
-        setIsRunning(true);
-        initialValues.startDate = new Date().toISOString();
-        initialValues.userId = user.id;
-        initialValues.lastEditorId = user.id;
-        
+    const toggleTimer = (values: WorktimeInput) => {
+        if (isRunning) {
+            clearInterval(timer);
+            setIsRunning(false);
+            initialValues.finishDate = new Date().toISOString();
+            setButtonText('Start');
+            dispatch(worktimeCreation(values));
+        } else {
+            setIsRunning(true);
+            initialValues.startDate = new Date().toISOString();
+            initialValues.userId = user.id;
+            initialValues.lastEditorId = user.id;
+            setButtonText('Stop');
+        }
     };
 
     useEffect(() => {
         localStorage.setItem('isRunning', isRunning.toString());
     }, [isRunning]);
 
-    const stop = (values: WorktimeInput) => {
-        clearInterval(timer);
-        setIsRunning(false);
-        initialValues.finishDate = new Date().toISOString();
-        dispatch(worktimeCreation(values));
-    };
 
-  
     return (
         <div className="container">
-            <Formik onSubmit={stop} initialValues={initialValues}>
+            <Formik onSubmit={toggleTimer} initialValues={initialValues}>
                 <Form>
-                    <div className="row justify-content-center">
+                    <h1>Worktime</h1>
+                    <div className="row justify-content-center mt-5">
                         <div className="col-md-6 text-center border rounded p-4">
-                            <h1 className="mb-4">Timer</h1>
                             <h1 className="mb-4">
                                 {hours < 10 ? '0' + hours : hours}:
                                 {minutes < 10 ? '0' + minutes : minutes}:
                                 {seconds < 10 ? '0' + seconds : seconds}
                             </h1>
-                            <button className="btn btn-primary mt-2" disabled={isRunning} onClick={start}>
-                                Start
-                            </button>
-
-                            <button className="btn btn-primary mt-2" type="submit">
-                                Stop
+                            <button className="btn btn-primary" type="submit">
+                                {buttonText}
                             </button>
                         </div>
                     </div>

@@ -16,7 +16,8 @@ const App = () => {
     <>
       <BrowserRouter>
         <Routes>
-            <Route index path={routes.worktime} element={<WorktimePage />} />
+           
+            
             <Route index path={routes.login} element={<LoginPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to={routes.users.list} />} />
@@ -43,6 +44,13 @@ const App = () => {
                 </Page>
               }
             />
+              <Route
+                  index
+                  path={routes.worktime}
+                  element={
+                      <Page requiredPermissions={[PermissionType.Worktime]}>
+                          <WorktimePage />
+                      </Page>} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
