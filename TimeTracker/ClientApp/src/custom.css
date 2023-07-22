@@ -101,8 +101,7 @@ th {
     margin-bottom: 10px;
 }
 
-.btn-primary
-{
+.btn-primary {
     background-color: #64B5F6 !important;
     border: none;
 }
@@ -114,8 +113,7 @@ th {
     border: none;
 }
 
-.btn-secondary
-{
+.btn-secondary {
     background-color: #B0BEC5 !important;
     border: none;
 }
@@ -155,6 +153,10 @@ th {
     width: 100%;
     border-bottom: 3px solid #F4F5F9;
     margin-bottom: 10px;
+}
+
+.header-name {
+    font-size: larger;
 }
 
 .page {
@@ -197,7 +199,7 @@ ul.pagination li:not(.disabled):not(.active) a:hover {
 }
 
 ul.pagination .active a {
-    color: white!important;
+    color: white !important;
     background-color: #64B5F6;
 }
 
@@ -207,13 +209,13 @@ ul.pagination .active a {
     min-height: auto;
 }
 
-.approvers-picker div[class*="-placeholder"]  {
-    margin-left: 5px!important;
+.approvers-picker div[class*="-placeholder"] {
+    margin-left: 5px !important;
 }
 
 .approvers-picker #react-select-2-input {
-    background-color: transparent!important;
-    border-radius: 0!important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
 }
 
 /* ADMIN CHECKBOX START */
@@ -231,6 +233,18 @@ ul.pagination .active a {
     margin: 0;
 }
 
-.sortableColumn{
+.sortableColumn {
     cursor: pointer;
+}
+
+.btn-sm {
+    padding: 6px 16px;
+}
+
+td, th {
+    vertical-align: middle;
+}
+
+td.action-buttons {
+    text-align: center;
 }

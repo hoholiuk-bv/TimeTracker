@@ -12,3 +12,9 @@ export type PagingInput = {
   pageNumber: number;
   pageSize: number;
 }
+
+export enum DayOffApprovalStatus {
+  Pending = 'PENDING',
+  Approved = 'APPROVED',
+  Declined = 'DECLINED',
+}

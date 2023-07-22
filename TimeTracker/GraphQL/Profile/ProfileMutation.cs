@@ -36,6 +36,14 @@ namespace TimeTracker.GraphQL.Profile
             Field<AuthenticationResultType>("Authenticate")
                 .Description("Authenticates user.")
                 .Resolve(ResolveAuthenticate);
+
+            Field<BooleanGraphType>("Logout")
+               .Description("Logout user.")
+               .Authorize()
+               .Resolve(context => {
+                   httpContextAccessor.HttpContext!.Response.Headers.Remove("Authorization");
+                   return true;
+               });
         }
 
         private object? ResolveFirstUserRegister(IResolveFieldContext context)

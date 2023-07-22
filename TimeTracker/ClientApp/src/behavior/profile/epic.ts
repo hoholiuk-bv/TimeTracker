@@ -4,6 +4,7 @@ import {
   LOGIN_REQUESTED,
   USER_REGISTERED,
   USER_AUTHENTICATION_REQUESTED,
+  LOGOUT,
   ProfileActions,
   receiveFirstUserExistence,
   authenticate as authenticateUser,
@@ -11,7 +12,7 @@ import {
 } from './actions';
 import { Epic, ofType } from 'redux-observable';
 import { sendRequest } from '../graphApi';
-import { loginMutation, registerMutation, firstUserExistenceQuery, authencationMutation } from './queries';
+import { loginMutation, registerMutation, firstUserExistenceQuery, authencationMutation, logoutMutation } from './queries';
 
 const epic: Epic<ProfileActions | any> = (actions$, state$) => {
   const login$ = actions$.pipe(
@@ -61,7 +62,12 @@ const epic: Epic<ProfileActions | any> = (actions$, state$) => {
     )),
   );
 
-  return merge(login$, register$, requestFirstUserExistence$, requestAuthentication$);
+  const logout$ = actions$.pipe(
+    ofType(LOGOUT),
+    mergeMap(() => sendRequest(logoutMutation)),
+  );
+
+  return merge(login$, register$, requestFirstUserExistence$, requestAuthentication$, logout$);
 };
 
 export default epic;

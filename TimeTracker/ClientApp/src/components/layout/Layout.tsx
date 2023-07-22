@@ -6,15 +6,20 @@ import { requestAuthentication } from '../../behavior/profile';
 import { routes } from '../../behavior/routing';
 import { RootState } from '../../behavior/store';
 import { Navigation } from './Navigation';
+import { logout } from '../../behavior/profile/actions';
 
 export const Layout = () => {
   const dispatch = useDispatch();
-  const { authenticated } = useSelector((state: RootState) => state.profile);
+  const { authenticated, userInfo } = useSelector((state: RootState) => state.profile);
 
   useEffect(() => {
     if (authenticated == null)
       dispatch(requestAuthentication());
   }, [dispatch, authenticated]);
+
+  const handleLogoutButtonClick = () => {
+    dispatch(logout());
+  };
 
   if (authenticated == null)
     return null;
@@ -25,9 +30,16 @@ export const Layout = () => {
   return (
     <>
       <Container className='top-panel'>
-        <Row className='align-items-center justify-content-end'>
-          <Col></Col>
-        </Row>
+        <div className="text-end">
+          <Row>
+            <Col>
+              <span className="header-name">Hi, {userInfo?.name}</span>
+            </Col>
+            <Col>
+              <button className="btn btn-primary w-30" type="submit" onClick={handleLogoutButtonClick}>Log out</button>
+            </Col>
+          </Row>
+        </div>
       </Container>
       <div className="container">
         <div className="row">
