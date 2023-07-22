@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, NavLink, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 import { requestAuthentication } from '../../behavior/profile';
@@ -29,18 +29,12 @@ export const Layout = () => {
 
   return (
     <>
-      <Container className='top-panel'>
-        <div className="text-end">
-          <Row>
-            <Col>
-              <span className="header-name">Hi, {userInfo?.name}</span>
-            </Col>
-            <Col>
-              <button className="btn btn-primary w-30" type="submit" onClick={handleLogoutButtonClick}>Log out</button>
-            </Col>
-          </Row>
-        </div>
-      </Container>
+      <div className="text-end top-panel">
+        <Container className='display-flex flex-row top-panel-container align-items-center'>
+          <span className="header-name align-middle ">Hi, {userInfo?.name}</span>
+          <Button variant="link" onClick={handleLogoutButtonClick}>Logout</Button>
+        </Container>
+      </div>
       <div className="container">
         <div className="row">
           <Navigation />

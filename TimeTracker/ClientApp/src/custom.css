@@ -139,7 +139,8 @@ th {
 }
 
 .navigation-link:hover,
-.navigation-link-active {
+.navigation-link-active,
+.btn-link:hover {
     color: #42A5F5 !important;
     cursor: pointer;
 }
@@ -149,14 +150,17 @@ th {
 }
 
 .top-panel {
-    height: 60px;
     width: 100%;
     border-bottom: 3px solid #F4F5F9;
-    margin-bottom: 10px;
+    padding: 10px 0;
+}
+
+.top-panel-container {
+    padding: 0 40px;
 }
 
 .header-name {
-    font-size: larger;
+    font-size: 20px;
 }
 
 .page {
@@ -241,10 +245,16 @@ ul.pagination .active a {
     padding: 6px 16px;
 }
 
-td, th {
+td,
+th {
     vertical-align: middle;
 }
 
 td.action-buttons {
     text-align: center;
+}
+
+.btn-link {
+    text-decoration: none;
+    color: #64B5F6;
 }
