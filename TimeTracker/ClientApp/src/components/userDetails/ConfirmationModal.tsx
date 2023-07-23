@@ -14,7 +14,6 @@ type Props = {
 
 export const ConfirmationModal = ({ values, handleClose, selectedApprovers }: Props) => {
   const dispatch = useDispatch();
-
   const show: boolean = values !== null;
 
   const handleConfirmButtonClick = () => {
@@ -22,13 +21,13 @@ export const ConfirmationModal = ({ values, handleClose, selectedApprovers }: Pr
       const { hours, minutes, ...otherValues } = values;
       const workingHoursCount = (hours ?? 0) + (minutes ?? 0) / 100;
 
-      const userr: UpdateUserType = {
+      const user: UpdateUserType = {
         ...otherValues,
         approversIdList: selectedApprovers.map((options: any) => options.value),
         workingHoursCount: (hours !== null && hours < MaxWorkingHours) ? workingHoursCount : hours,
       };
 
-      dispatch(requestUserUpdate(userr));
+      dispatch(requestUserUpdate(user));
     }
 
     handleClose();

@@ -37,17 +37,16 @@ function onUserUpdateReceived(state: userCreationState, action: UpdatedUserRecei
   const updatedData = action.payload.userUpdate;
 
   const details: User = {
-    id: updatedData.id !== null ? updatedData.id : '',
-    name: updatedData.name !== null ? updatedData.name : '',
-    surname: updatedData.surname !== null ? updatedData.surname : '',
-    email: updatedData.email !== null ? updatedData.email : '',
-    isAdmin: updatedData.isAdmin !== null ? updatedData.isAdmin : false,
-    isActive: updatedData.isActive !== null ? updatedData.isActive : false,
-    employmentDate: updatedData.employmentDate !== null ? updatedData.employmentDate : '',
-    employmentType: updatedData.employmentType !== null ? updatedData.employmentType : '',
-    workingHoursCount: updatedData.workingHoursCount !== null ? updatedData.workingHoursCount : 0,
+    id: updatedData.id,
+    name: updatedData.name,
+    surname: updatedData.surname,
+    email: updatedData.email,
+    isAdmin: updatedData.isAdmin,
+    isActive: updatedData.isActive,
+    employmentDate: updatedData.employmentDate,
+    employmentType: updatedData.employmentType,
+    workingHoursCount: updatedData.workingHoursCount,
   };
 
   return {...state, details};
 }
-

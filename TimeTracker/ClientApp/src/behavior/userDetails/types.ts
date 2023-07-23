@@ -1,26 +1,26 @@
 ﻿export type UpdateUserInput = {
-    id: string | null;
-    name: string | null;
-    surname: string | null;
-    email: string | null;
-    employmentType: string | null;
-    employmentDate: string | null;
-    isAdmin: boolean | null;
-    isActive: boolean | null;
-    approversIdList: string[] | null;
-    hours: number | null;
-    minutes: number | null;
+    id: string;
+    name: string;
+    surname: string;
+    email: string;
+    employmentType: string;
+    employmentDate: string;
+    isAdmin: boolean;
+    isActive: boolean;
+    approversIdList: string[];
+    hours: number;
+    minutes: number;
 }
 
 export type UpdateUserType = {
-    id: string | null;
-    name: string | null;
-    surname: string | null;
-    email: string | null;
-    employmentType: string | null;
-    employmentDate: string | null;
-    isAdmin: boolean | null;
-    isActive: boolean | null;
-    approversIdList: string[] | null;
-    workingHoursCount: number | null;
+    id: string;
+    name: string;
+    surname: string;
+    email: string;
+    employmentType: string;
+    employmentDate: string;
+    isAdmin: boolean;
+    isActive: boolean;
+    approversIdList: string[];
+    workingHoursCount: number;
 }
