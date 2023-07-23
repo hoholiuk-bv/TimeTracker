@@ -9,6 +9,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Page } from './components/common/Page';
 import { PermissionType } from './behavior/profile/types';
 import { DaysOffPage } from './components/daysOff/DaysOffPage';
+import {UserDetails} from './components/userDetails/UserDetails';
 
 const App = () => {
   return (
@@ -32,6 +33,13 @@ const App = () => {
                 <Page requiredPermissions={[PermissionType.ManageUsers]}>
                   <UserListPage />
                 </Page>} />
+            <Route
+              path={routes.users.details}
+              element={
+                <Page requiredPermissions={[PermissionType.ManageUsers]}>
+                  <UserDetails />
+                </Page>
+              } />
             <Route
               index
               path={routes.daysoff}

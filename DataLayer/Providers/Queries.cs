@@ -86,6 +86,25 @@ namespace DataLayer.Providers
                 VALUES (@Id, @Name, @Surname, @Email, @Password, @Salt, @IsAdmin, @EmploymentDate, @EmploymentType, @WorkingHoursCount)
             ";
 
+            public const string Update = @"
+                UPDATE Users
+                SET
+                    Name = @Name,
+                    Surname = @Surname,
+                    Email = @Email,
+                    IsAdmin = @IsAdmin,
+                    IsActive = @IsActive,
+                    EmploymentDate = @EmploymentDate,
+                    EmploymentType = @EmploymentType,
+                    WorkingHoursCount = @WorkingHoursCount
+                WHERE
+                    Id = @Id;
+
+                SELECT Id, Name, Surname, Email, IsAdmin, IsActive, EmploymentDate, EmploymentType, WorkingHoursCount
+                FROM Users
+                WHERE Id = @Id
+            ";
+
             public const string CheckIfExists = "select top (1) [Id] from Users";
 
             public const string GetByEmail = "select * from Users where Email = @Email";
@@ -98,6 +117,18 @@ namespace DataLayer.Providers
             public const string Create = $@"
                 INSERT INTO [DayOffRequestApprovers] (UserId, ApproverId)
                 VALUES (@UserId, @ApproverId)
+            ";
+
+            public const string DeleteApproversByUserId = @"
+                DELETE DayOffRequestApprovers
+                WHERE UserId = @UserId
+            ";
+
+            public const string GetApproversByUserId = $@"
+                SELECT u.*
+                FROM Users u
+                INNER JOIN DayOffRequestApprovers d ON u.Id = d.ApproverId
+                WHERE d.UserId = @UserId;
             ";
         }
 

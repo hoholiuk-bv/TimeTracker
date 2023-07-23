@@ -1,37 +1,26 @@
-﻿export type CreationInput = {
+﻿export type UpdateUserInput = {
+    id: string | null;
     name: string | null;
     surname: string | null;
     email: string | null;
-    password: string | null;
     employmentType: string | null;
     employmentDate: string | null;
     isAdmin: boolean | null;
+    isActive: boolean | null;
     approversIdList: string[] | null;
     hours: number | null;
     minutes: number | null;
 }
 
-export type UserCreationType = {
+export type UpdateUserType = {
+    id: string | null;
     name: string | null;
     surname: string | null;
     email: string | null;
-    password: string | null;
     employmentType: string | null;
     employmentDate: string | null;
     isAdmin: boolean | null;
+    isActive: boolean | null;
     approversIdList: string[] | null;
     workingHoursCount: number | null;
-}
-
-export type User = {
-    id: string;
-    name: string;
-    surname: string;
-    email: string;
-    isActive: boolean;
-}
-
-export type ApproverOptions = {
-    value: string,
-    label: string
 }

@@ -238,6 +238,7 @@ ul.pagination .active a {
 
 .hide-action {
     color: #B0BEC5;
+    width: 28px;
 }
 
 .sortableColumn {

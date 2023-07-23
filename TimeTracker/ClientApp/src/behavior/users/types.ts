@@ -7,6 +7,7 @@ export type User = {
   isActive: boolean;
   employmentDate: string;
   employmentType: string;
+  workingHoursCount: number;
 }
 
 export type FilterType = {
