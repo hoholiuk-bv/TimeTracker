@@ -4,12 +4,15 @@ import { usersEpic } from './users';
 import {userCreationEpic} from './userCreation';
 import {worktimeCreationEpic} from './worktime';
 import { daysOffEpic } from './daysOff';
-
+import {approvalEpic} from './approvals';
+import {userDetailsEpic} from './userDetails';
 
 export default combineEpics(
   profileEpic,
   usersEpic,
-    userCreationEpic,
-    worktimeCreationEpic,
-  daysOffEpic
+  userCreationEpic,
+  daysOffEpic,
+  approvalEpic,
+  userDetailsEpic,
+  worktimeCreationEpic,
 );

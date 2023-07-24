@@ -1,21 +1,23 @@
-﻿using DataLayer;
-using GraphQL.Types;
+﻿using GraphQL.Types;
+using static DataLayer.Constants;
 
 namespace TimeTracker.GraphQL.Users.Types;
 
 public class CreateUserInputType : InputObjectGraphType<CreateUserInput>
 {
+
     public CreateUserInputType()
     {
         Name = "CreateUserInput";
-        Field<NonNullGraphType<StringGraphType>>("Name");
-        Field<NonNullGraphType<StringGraphType>>("Surname");
-        Field<NonNullGraphType<StringGraphType>>("Email");
-        Field<NonNullGraphType<StringGraphType>>("Password");
-        Field<NonNullGraphType<StringGraphType>>("EmploymentDate");
-        Field<BooleanGraphType>("IsAdmin");
-        Field<NonNullGraphType<StringGraphType>>("EmploymentType");
-        Field<NonNullGraphType<ListGraphType<GuidGraphType>>>("ApproversIdList");
+        Field(t => t.Name);
+        Field(t => t.Surname);
+        Field(t => t.Email);
+        Field(t => t.Password);
+        Field(t => t.EmploymentDate);
+        Field(t => t.IsAdmin, nullable: true);
+        Field(t => t.EmploymentType);
+        Field(t => t.ApproversIdList);
+        Field(t => t.WorkingHoursCount);
     }
 }
 
@@ -32,8 +34,10 @@ public class CreateUserInput
     public string EmploymentDate { get; set; } = null!;
 
     public bool IsAdmin { get; set; }
-        
-    public Constants.EmploymentType EmploymentType { get; set; }
 
-    public List<Guid> ApproversIdList { get; set; }
+    public EmploymentType EmploymentType { get; set; }
+
+    public List<Guid> ApproversIdList { get; set; } = null!;
+
+    public decimal WorkingHoursCount { get; set; }
 }

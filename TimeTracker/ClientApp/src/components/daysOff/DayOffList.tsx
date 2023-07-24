@@ -45,10 +45,7 @@ export const DayOffList = () => {
               <span>Finish date</span>
               <SortIcon sortingOrder={sorting.sortingField === 'FinishDate' ? sorting.sortingOrder : null} />
             </th>
-            <th className='sortableColumn' onClick={() => handleSortingColumnClick('Reason')}>
-              <span>Reason</span>
-              <SortIcon sortingOrder={sorting.sortingField === 'Reason' ? sorting.sortingOrder : null} />
-            </th>
+            <th>Approvals</th>
           </tr>
         </thead>
         <tbody>

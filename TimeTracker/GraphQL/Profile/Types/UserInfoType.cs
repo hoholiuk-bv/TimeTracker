@@ -11,6 +11,7 @@ namespace TimeTracker.GraphQL.Profile.Types
             Field<NonNullGraphType<GuidGraphType>>("Id");
             Field<NonNullGraphType<StringGraphType>>("Name");
             Field<NonNullGraphType<StringGraphType>>("Surname");
+            Field<NonNullGraphType<StringGraphType>>("Email");
             Field<NonNullGraphType<ListGraphType<EnumerationGraphType<PermissionType>>>>("Permissions");
         }
     }
@@ -22,6 +23,8 @@ namespace TimeTracker.GraphQL.Profile.Types
         public string Name { get; set; } = null!;
 
         public string Surname { get; set; } = null!;
+
+        public string Email { get; set; } = null!;
 
         public IEnumerable<PermissionType> Permissions { get; set; } = null!;
     }

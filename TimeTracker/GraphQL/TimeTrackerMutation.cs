@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using TimeTracker.GraphQL.Approvals;
 using TimeTracker.GraphQL.DaysOff;
 using TimeTracker.GraphQL.Profile;
 using TimeTracker.GraphQL.Users;
@@ -26,6 +27,10 @@ namespace TimeTracker.GraphQL
 
             Field<DaysOffMutation>("DaysOff")
                 .Description("Mutation for days off")
+                .Resolve(context => new { });
+
+            Field<ApprovalMutation>("Approvals")
+                .Description("Mutation for approvals")
                 .Resolve(context => new { });
         }
     }

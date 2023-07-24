@@ -18,6 +18,8 @@ using TimeTracker.GraphQL.Worktime.Types;
 using TimeTracker.GraphQL.DaysOff.Types;
 using TimeTracker.GraphQL.DaysOff;
 using TimeTracker.GraphQL.Common.Types;
+using TimeTracker.GraphQL.Approvals.Types;
+using TimeTracker.GraphQL.Approvals;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -82,21 +84,27 @@ builder.Services.AddTransient<WorktimeType>();
 builder.Services.AddTransient<WorktimeQuery>();
 builder.Services.AddTransient<WorktimeInputType>();
 builder.Services.AddTransient<WorktimeMutation>();
+builder.Services.AddTransient<ApproverType>();
 builder.Services.AddTransient<FilterInputType>();
 builder.Services.AddTransient<SortInputType>();
 builder.Services.AddTransient<PaginationInputType>();
 builder.Services.AddTransient<LoginInputType>();
 builder.Services.AddTransient<FirstUserRegisterInputType>();
 builder.Services.AddTransient<CreateUserInputType>();
+builder.Services.AddTransient<UpdateUserInputType>();
 builder.Services.AddTransient<AuthenticationResultType>();
 builder.Services.AddTransient<UserInfoType>();
 builder.Services.AddTransient<DaysOffQuery>();
+builder.Services.AddTransient<ApprovalType>();
+builder.Services.AddTransient<ApprovalQuery>();
+builder.Services.AddTransient<ApprovalMutation>();
 builder.Services.AddTransient<DayOffRequestType>();
 builder.Services.AddTransient<DayOffRequestInputType>();
 builder.Services.AddTransient<DaysOffMutation>();
 builder.Services.AddTransient<SortingInputType>();
 builder.Services.AddTransient<PagingInputType>();
 builder.Services.AddTransient<DayOffRequestApprovalType>();
+builder.Services.AddTransient<DayOffRequestApproverType>();
 builder.Services.AddGraphQL(a => a.AddSchema<TimeTrackerSchema>().AddSystemTextJson().AddAuthorizationRule());
 
 builder.Services.AddControllersWithViews();

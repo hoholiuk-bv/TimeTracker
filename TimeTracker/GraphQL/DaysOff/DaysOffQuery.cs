@@ -1,4 +1,5 @@
 ﻿using BusinessLayer;
+using DataLayer.Entities;
 using DataLayer.Models;
 using DataLayer.Providers;
 using GraphQL;
@@ -18,12 +19,33 @@ namespace TimeTracker.GraphQL.DaysOff
                 .Argument<SortingInputType>("Sorting")
                 .Resolve(context =>
                 {
-                    var userContext = context.RequestServices!.GetRequiredService<UserContext>();
+                    var currentUserId = context.RequestServices!.GetRequiredService<UserContext>().User!.Id;
                     var sorting = context.GetArgument<Sorting>("sorting");
                     var paging = context.GetArgument<Paging>("paging");
-                    var filter = new DayOffRequestFilter() { UserId = userContext.User!.Id };
+                    var filter = new DayOffRequestFilter() { UserId = currentUserId };
                     var requests = daysOffProvider.GetRequests(filter, sorting, paging);
+                    if (!requests.Any())
+                        return requests;
 
+                    var approvers = daysOffProvider.GetApprovers(currentUserId);
+                    var approvals = daysOffProvider.GetApprovals(requests.Select(r => r.Id).ToList());
+                    foreach (var request in requests)
+                    {
+                        var approvalResults = new List<DayOffRequestApprovalResult>();
+                        var requestApprovals = approvals.Where(approval => approval.RequestId == request.Id);
+                        var requestApproverIds = requestApprovals.Select(approval => approval.ApproverId);
+                        foreach (var approver in approvers)
+                        {
+                            var approval = new DayOffRequestApprovalResult()
+                            {
+                                Approver = approver,
+                                Status = requestApprovals.Single(a => a.ApproverId == approver.Id).Status,
+                            };
+                            approvalResults.Add(approval);
+                        }
+
+                        request.Approvals = approvalResults;
+                    }
                     return requests;
                 });
         }

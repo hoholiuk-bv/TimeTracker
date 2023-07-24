@@ -4,12 +4,12 @@ import {sendRequest} from '../graphApi';
 
 import {
   USER_LIST_REQUESTED,
-  EMPLOYMENT_TYPE_LIST_REQUESTED, 
-  receiveUserList, 
-  receiveEmploymentTypeList,
+  receiveUserList,
+  TOGGLE_ACTIVITY_STATUS_REQUESTED,
+  activityStatusToggled,
 } from './actions';
 
-import {getEmploymentTypeListQuery, getUsersQuery} from './queries';
+import { getUsersQuery, getToggleActivityStatusQuery } from './queries';
 
 const epic: Epic<any> = (actions$, state$) => {
   const requestUsers$ = actions$.pipe(
@@ -24,14 +24,15 @@ const epic: Epic<any> = (actions$, state$) => {
     )),
   );
 
-  const requestEmploymentTypeList$ = actions$.pipe(
-    ofType(EMPLOYMENT_TYPE_LIST_REQUESTED),
-    mergeMap(() => sendRequest(getEmploymentTypeListQuery).pipe(
-      map(({users}) => receiveEmploymentTypeList(users.employmentTypeList))
+  const requestUpdatingIsActiveStatus$ = actions$.pipe(
+    ofType(TOGGLE_ACTIVITY_STATUS_REQUESTED),
+    map(action => action.payload),
+    mergeMap((variables) => sendRequest(getToggleActivityStatusQuery, { id: variables.id }).pipe(
+      map(({users}) => activityStatusToggled(users.toggleActivityStatus))
     )),
   );
-
-  return merge(requestUsers$, requestEmploymentTypeList$);
+  
+  return merge(requestUsers$, requestUpdatingIsActiveStatus$);
 };
 
 export default epic;

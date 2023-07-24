@@ -22,8 +22,8 @@ namespace TimeTracker.GraphQL.DaysOff.Types
             Field<EnumerationGraphType<Constants.DayOffReason>>("Reason")
                 .Description("The reason for the days off.");
 
-            //Field<ListGraphType<DayOffRequestApprovalType>>("Approvals")
-            //    .Description("The approvals for day off request.");
+            Field<ListGraphType<DayOffRequestApprovalType>>("Approvals")
+                .Description("The approvals for day off request.");
         }
     }
 }

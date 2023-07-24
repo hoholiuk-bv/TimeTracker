@@ -36,6 +36,14 @@ namespace TimeTracker.GraphQL.Profile
             Field<AuthenticationResultType>("Authenticate")
                 .Description("Authenticates user.")
                 .Resolve(ResolveAuthenticate);
+
+            Field<BooleanGraphType>("Logout")
+               .Description("Logout user.")
+               .Authorize()
+               .Resolve(context => {
+                   httpContextAccessor.HttpContext!.Response.Headers.Remove("Authorization");
+                   return true;
+               });
         }
 
         private object? ResolveFirstUserRegister(IResolveFieldContext context)
@@ -53,6 +61,7 @@ namespace TimeTracker.GraphQL.Profile
                 Surname = input.Surname,
                 Email = input.Email,
                 Password = authenticationService.GenerateHash(input.Password, salt),
+                WorkingHoursCount = Constants.MaxWorkingHours,
             };
 
             userProvider.Save(user);
@@ -76,7 +85,8 @@ namespace TimeTracker.GraphQL.Profile
         {
             var input = context.GetArgument<LoginInput>("input");
             var user = userProvider.GetByEmail(input.Email);
-            if (user == null)
+
+            if (user == null || !user.IsActive)
                 return null;
 
             if (authenticationService.Authenticate(user, input.Password, out var token))
@@ -120,6 +130,7 @@ namespace TimeTracker.GraphQL.Profile
                 Id = authenticatedUser.Id,
                 Name = authenticatedUser.Name,
                 Surname = authenticatedUser.Surname,
+                Email = authenticatedUser.Email,
                 Permissions = userContext.GetGrantedPermissions()
             };
         }

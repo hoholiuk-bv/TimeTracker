@@ -18,9 +18,13 @@ namespace DataLayer.Entities
 
         public bool IsAdmin { get; set; }
 
+        public bool IsActive { get; set; }
+
         public DateTime EmploymentDate { get; set; }
 
         public EmploymentType EmploymentType { get; set; }
+
+        public decimal WorkingHoursCount { get; set; }
     }
     
    

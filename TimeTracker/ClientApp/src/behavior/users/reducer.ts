@@ -2,26 +2,24 @@ import {createReducer} from '@reduxjs/toolkit';
 import type {User} from './types';
 import {
   USER_LIST_RECEIVED,
-  EMPLOYMENT_TYPE_LIST_RECEIVED,
   UserListReceivedAction,
-  EmploymentTypeListReceivedAction
+  ACTIVITY_STATUS_TOGGLED,
+  ActivityStatusToggledAction,
 } from './actions';
 
 export type UsersState = {
   list: User[];
   totalUsersCount: number;
-  employmentTypeList: string[];
 };
 
 const initialState: UsersState = {
   list: [],
   totalUsersCount: -1,
-  employmentTypeList: [],
 };
 
 export default createReducer(initialState, {
   [USER_LIST_RECEIVED]: onUsersReceived,
-  [EMPLOYMENT_TYPE_LIST_RECEIVED]: onEmploymentTypeListReceived,
+  [ACTIVITY_STATUS_TOGGLED]: onActivityStatusToggled,
 });
 
 function onUsersReceived(state: UsersState, action: UserListReceivedAction): UsersState {
@@ -30,7 +28,17 @@ function onUsersReceived(state: UsersState, action: UserListReceivedAction): Use
   return {...state, list, totalUsersCount};
 }
 
-function onEmploymentTypeListReceived(state: UsersState, action: EmploymentTypeListReceivedAction): UsersState {
-  const employmentTypeList = action.payload.employmentTypeList;
-  return {...state, employmentTypeList};
+function onActivityStatusToggled(state: UsersState, action: ActivityStatusToggledAction): UsersState {
+  const userIndex = state.list.findIndex((user) => user.id === action.payload.id);
+
+  if (userIndex !== -1) {
+    const user = { ...state.list[userIndex] };
+    const updatedUser = { ...user, isActive: !user.isActive };
+    const updatedList = [...state.list];
+    updatedList[userIndex] = updatedUser;
+
+    return { ...state, list: updatedList };
+  }
+
+  return state;
 }

@@ -2,10 +2,12 @@
 {
     public static class Constants
     {
-        public enum EmploymentType : byte
+        public const decimal MaxWorkingHours = 8.0m;
+        
+        public enum EmploymentType
         {
-            FullTime = 0,
-            PartTime = 1,
+            FullTime,
+            PartTime,
         }
 
         public enum DayOffReason
@@ -15,16 +17,17 @@
             DayOff
         }
 
+        public enum DayOffApprovalStatus
+        {
+            Pending,
+            Approved,
+            Declined
+        }
+
         public enum SortingOrder
         {
             Ascending,
             Descending
         }
-
-        public static readonly Dictionary<EmploymentType, string> EmploymentTypeMappings = new Dictionary<EmploymentType, string>
-        {
-            { EmploymentType.FullTime, "full-time" },
-            { EmploymentType.PartTime, "part-time" },
-        };
     }
 }

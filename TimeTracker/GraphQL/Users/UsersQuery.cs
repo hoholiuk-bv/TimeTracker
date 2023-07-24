@@ -2,14 +2,13 @@
 using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Users.Types;
-using static DataLayer.Constants;
 using DataLayer.Models;
 
 namespace TimeTracker.GraphQL.Users
 {
     public class UsersQuery : ObjectGraphType
     {
-        public UsersQuery(IUserProvider userProvider) 
+        public UsersQuery(IUserProvider userProvider, IDayOffRequestApproversProvider dayOffRequestApproversProvider) 
         {
             Field<ListGraphType<UserType>>("list")
                 .Description("Get list of users")
@@ -25,6 +24,19 @@ namespace TimeTracker.GraphQL.Users
                     return userProvider.GetAllUsers(filter, sorting, pagination).ToList();
                 });
 
+            Field<UserType>("user")
+                .Description("Get user by Id")
+                .Argument<StringGraphType>("id", "User ID")
+                .Resolve(context =>
+                {
+                    string? id = context.GetArgument<string?>("id");
+
+                    if (id == null || !Guid.TryParse(id, out _))
+                        return null;
+
+                    return userProvider.GetById(id);
+                });
+
             Field<IntGraphType>("totalUsersCount")
                 .Description("Get number of users")
                 .Argument<FilterInputType>("filter", "Filter type")
@@ -34,11 +46,13 @@ namespace TimeTracker.GraphQL.Users
                     return userProvider.GetTotalUsersCount(filter);
                 });
 
-            Field<ListGraphType<StringGraphType>>("employmentTypeList")
-                .Description("Get all employment types")
+            Field<ListGraphType<ApproverType>>("approverList")
+                .Description("Get list of approvers by user ID")
+                .Argument<GuidGraphType>("id", "User ID")
                 .Resolve(context =>
                 {
-                    return Enum.GetNames(typeof(EmploymentType)).ToList();
+                    Guid id = context.GetArgument<Guid>("id");
+                    return dayOffRequestApproversProvider.GetApproversByUserId(id);
                 });
         }
     }

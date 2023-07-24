@@ -33,3 +33,10 @@ export const firstUserExistenceQuery = `
     checkFirstUserExistence
   }
 }`;
+
+export const logoutMutation = `
+mutation {
+  profile {
+    logOut
+  }
+}`;
