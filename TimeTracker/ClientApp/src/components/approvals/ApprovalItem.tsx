@@ -1,5 +1,5 @@
-import React from 'react';
-import { ApprovalType } from '../../behavior/approvals/types';
+import React, { useState } from 'react';
+import { DayOffApproval } from '../../behavior/approvals/types';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { useDispatch } from 'react-redux';
@@ -7,37 +7,43 @@ import { changeApprovalStatus } from '../../behavior/approvals/actions';
 import { DayOffApprovalStatus } from '../../behavior/common/types';
 
 type Props = {
-  item: ApprovalType
+  item: DayOffApproval
 }
 
 
 export const ApprovalItem = ({ item }: Props) => {
-
+  const { employeeName, employeeSurname, startDate, finishDate, status, isEditable } = item;
+  const [showActionButtons, setShowActionButtons] = useState(status === DayOffApprovalStatus.Pending && isEditable);
   const dispatch = useDispatch();
   const handleStatusChange = (status: DayOffApprovalStatus) => {
     dispatch(changeApprovalStatus(item.requestId, status));
+    setShowActionButtons(false);
   };
 
   return (
     <>
       <tr>
         <td>
-          {item.employeeName} {item.employeeSurname}
+          {employeeName} {employeeSurname}
         </td>
         <td>
-          {item.startDate}
+          {startDate}
         </td>
         <td>
-          {item.finishDate}
+          {finishDate}
         </td>
         <td>
-          {item.status}
+          {status}
         </td>
         <td className='action-buttons'>
-          <ButtonGroup size='sm'>
-            <Button size='sm' onClick={() => handleStatusChange(DayOffApprovalStatus.Approved)}>Approve</Button>
-            <Button size='sm' onClick={() =>  handleStatusChange(DayOffApprovalStatus.Declined)}>Decline</Button>
-          </ButtonGroup>
+          {showActionButtons &&
+            <ButtonGroup size='sm'>
+              <Button size='sm' onClick={() => handleStatusChange(DayOffApprovalStatus.Approved)}>Approve</Button>
+              <Button size='sm' onClick={() => handleStatusChange(DayOffApprovalStatus.Declined)}>Decline</Button>
+            </ButtonGroup>}
+          {!showActionButtons && isEditable &&
+            <Button size='sm' onClick={() => setShowActionButtons(true)}>Change</Button>
+          }
         </td>
       </tr>
     </>

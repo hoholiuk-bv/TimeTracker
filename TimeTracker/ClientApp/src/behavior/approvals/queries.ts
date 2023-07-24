@@ -8,6 +8,7 @@ query($sorting: SortingInput!, $paging: PagingInput!) {
       employeeName
       employeeSurname
       status
+      isEditable
     }
   }
 }`;

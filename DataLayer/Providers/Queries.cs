@@ -123,7 +123,7 @@ namespace DataLayer.Providers
                                                     FROM [TimeTracker].[dbo].[DayOffRequests]
                                                     JOIN DayOffRequestApprovers on DayOffRequestApprovers.UserId = [DayOffRequests].UserId  
                                                     JOIN Users on Users.Id = DayOffRequestApprovers.UserId 
-                                                    JOIN DayOffRequestApprovals on DayOffRequestApprovals.ApproverId = DayOffRequestApprovers.ApproverId
+                                                    JOIN DayOffRequestApprovals on DayOffRequestApprovals.RequestId = DayOffRequests.Id 
 													WHERE DayOffRequestApprovers.ApproverId = @ApproverId
                                                     {AddSorting(sorting)}
                                                     {AddPaging(paging)}";

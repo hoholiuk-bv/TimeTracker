@@ -1,4 +1,4 @@
-import { ApprovalType, } from './types';
+import { DayOffApproval } from './types';
 import { SortingInput, PagingInput } from '../common/types';
 import { DayOffApprovalStatus } from '../common/types';
 
@@ -9,7 +9,7 @@ export const requestApprovalsList = (sorting: SortingInput, paging: PagingInput)
 });
 
 export const APPROVALS_LIST_RECEIVED = 'APPROVALS_LIST_RECEIVED' as const;
-export const receiveApprovalsList = (list: ApprovalType[]) => ({
+export const receiveApprovalsList = (list: DayOffApproval[]) => ({
   type: APPROVALS_LIST_RECEIVED,
   payload: { list }
 });

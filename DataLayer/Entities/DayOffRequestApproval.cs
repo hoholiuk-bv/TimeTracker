@@ -12,7 +12,9 @@ public class DayOffRequestApproval
 
     public DateTime StartDate { get; set; }
 
-    public DateTime FinishDate { get; set; } 
+    public DateTime FinishDate { get; set; }
 
     public DayOffApprovalStatus Status { get; set; }
+
+    public bool IsEditable => StartDate.Date > DateTime.Now.Date;
 }

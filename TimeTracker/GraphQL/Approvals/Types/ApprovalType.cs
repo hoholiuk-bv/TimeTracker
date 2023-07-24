@@ -27,6 +27,9 @@ namespace TimeTracker.GraphQL.Approvals.Types
 
             Field<NonNullGraphType<EnumerationGraphType<DayOffApprovalStatus>>>("Status")
                 .Description("The status of day off request.");
+
+            Field<BooleanGraphType>("IsEditable")
+                .Description("The flag indicating whether approval is editable.");
         }
     }
 }

@@ -1,11 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { ApprovalType } from './types';
+import { DayOffApproval } from './types';
 import { PagingInput, SortingInput, SortingOrder } from '../common/types';
 import { ApprovalsListSortingChangedAction, APPROVALS_LIST_RECEIVED, APPROVALS_LIST_SORTING_CHANGED } from './actions';
 import { ApprovalsReceivedAction } from './actions';
 
 export type ApprovalsState = {
-  list: ApprovalType[],
+  list: DayOffApproval[],
   paging: PagingInput,
   sorting: SortingInput,
 };
