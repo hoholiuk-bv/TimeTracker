@@ -1,8 +1,8 @@
 export const requestMutation = `
 mutation($input: DayOffRequestInput!) {
-  daysOff { 
+  daysOff {
     requestDayOff(input: $input)
-   } 
+   }
  }`;
 
 export const getDaysOffListQuery = `
@@ -13,6 +13,13 @@ daysOff {
       startDate
       finishDate
       reason
+      approvals {
+        status
+        approver {
+          name
+          surname
+        }
       }
     }
-  }`;
+  }
+}`;

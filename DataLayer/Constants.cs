@@ -21,6 +21,13 @@
             Descending
         }
 
+        public enum DayOffApprovalStatus
+        {
+            Pending,
+            Approved,
+            Declined
+        }
+
         public static readonly Dictionary<EmploymentType, string> EmploymentTypeMappings = new Dictionary<EmploymentType, string>
         {
             { EmploymentType.FullTime, "full-time" },
