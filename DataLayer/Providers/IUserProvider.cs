@@ -6,7 +6,7 @@ namespace DataLayer.Providers
     public interface IUserProvider
     {
         int Save(User user);
-
+        
         bool CheckIfAnyExists();
 
         User? GetByEmail(string email);

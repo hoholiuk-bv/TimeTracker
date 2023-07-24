@@ -11,6 +11,7 @@ export type RegisterInput = {
 }
 
 export type UserInfo = {
+  id: string;
   name: string;
   surname: string;
   email: string;
@@ -20,4 +21,5 @@ export type UserInfo = {
 export enum PermissionType {
   ManageUsers = 'MANAGE_USERS',
   ConfigureCalendar = 'CONFIGURE_CALENDAR',
+  Worktime = 'WORKTIME',
 }

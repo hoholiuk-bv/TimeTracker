@@ -127,6 +127,7 @@ namespace TimeTracker.GraphQL.Profile
 
             return new UserInfo()
             {
+                Id = authenticatedUser.Id,
                 Name = authenticatedUser.Name,
                 Surname = authenticatedUser.Surname,
                 Email = authenticatedUser.Email,

@@ -26,4 +26,6 @@ namespace DataLayer.Entities
 
         public decimal WorkingHoursCount { get; set; }
     }
+    
+   
 }

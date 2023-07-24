@@ -12,11 +12,15 @@ using System.Text;
 using TimeTracker.Middleware;
 using BusinessLayer;
 using BusinessLayer.Permissions;
+using DataLayer.Entities;
+using TimeTracker.GraphQL.Worktime;
+using TimeTracker.GraphQL.Worktime.Types;
 using TimeTracker.GraphQL.DaysOff.Types;
 using TimeTracker.GraphQL.DaysOff;
 using TimeTracker.GraphQL.Common.Types;
 using TimeTracker.GraphQL.Approvals.Types;
 using TimeTracker.GraphQL.Approvals;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +64,7 @@ builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 builder.Services.AddSingleton<IUserProvider, UserProvider>();
 builder.Services.AddSingleton<IDayOffRequestApproversProvider, DayOffRequestApproversProvider>();
 builder.Services.AddSingleton<IDaysOffProvider, DaysOffProvider>();
+builder.Services.AddSingleton<IWorktimeProvider, WorktimeProvider>();
 builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<UserContext>();
@@ -73,7 +78,12 @@ builder.Services.AddTransient<UsersQuery>();
 builder.Services.AddTransient<TimeTrackerQuery>();
 builder.Services.AddTransient<ProfileMutation>();
 builder.Services.AddTransient<ProfileQuery>();
+builder.Services.AddTransient<WorktimeMutation>();
 builder.Services.AddTransient<UserType>();
+builder.Services.AddTransient<WorktimeType>();
+builder.Services.AddTransient<WorktimeQuery>();
+builder.Services.AddTransient<WorktimeInputType>();
+builder.Services.AddTransient<WorktimeMutation>();
 builder.Services.AddTransient<ApproverType>();
 builder.Services.AddTransient<FilterInputType>();
 builder.Services.AddTransient<SortInputType>();
@@ -119,6 +129,7 @@ app.UseGraphQL();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
+
 
 app.MapFallbackToFile("index.html");
 

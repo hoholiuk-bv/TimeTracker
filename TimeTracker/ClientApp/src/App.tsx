@@ -8,9 +8,10 @@ import { CreationForm } from './components/creationForm/CreationForm';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Page } from './components/common/Page';
 import { PermissionType } from './behavior/profile/types';
+import { WorktimePage } from './components/worktimePage/WorktimePage';
 import { DaysOffPage } from './components/daysOff/DaysOffPage';
 import { ApprovalsPage } from './components/approvals/ApprovalsPage';
-import {UserDetails} from './components/userDetails/UserDetails';
+import { UserDetails } from './components/userDetails/UserDetails';
 
 const App = () => {
   return (
@@ -59,6 +60,13 @@ const App = () => {
                 </Page>
               }
             />
+            <Route
+              index
+              path={routes.worktime}
+              element={
+                <Page requiredPermissions={[PermissionType.Worktime]}>
+                  <WorktimePage />
+                </Page>} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

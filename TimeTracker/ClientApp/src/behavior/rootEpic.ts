@@ -1,7 +1,8 @@
 import { combineEpics } from 'redux-observable';
 import { profileEpic } from './profile';
 import { usersEpic } from './users';
-import { userCreationEpic } from './userCreation';
+import {userCreationEpic} from './userCreation';
+import {worktimeCreationEpic} from './worktime';
 import { daysOffEpic } from './daysOff';
 import {approvalEpic} from './approvals';
 import {userDetailsEpic} from './userDetails';
@@ -12,5 +13,6 @@ export default combineEpics(
   userCreationEpic,
   daysOffEpic,
   approvalEpic,
-  userDetailsEpic
+  userDetailsEpic,
+  worktimeCreationEpic,
 );

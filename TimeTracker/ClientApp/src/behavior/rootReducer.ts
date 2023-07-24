@@ -6,6 +6,7 @@ import { usersReducer } from './users';
 import { userCreationReducer } from './userCreation';
 import {userDetailsReducer} from './userDetails';
 
+
 export default combineReducers({
   users: usersReducer,
   profile: profileReducer,
