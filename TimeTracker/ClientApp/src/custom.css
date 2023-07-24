@@ -258,3 +258,15 @@ td.action-buttons {
     text-decoration: none;
     color: #64B5F6;
 }
+
+.color-green {
+    color: #43A047 !important;
+}
+
+.color-red {
+    color: #D32F2F !important;
+}
+
+.color-orange {
+    color: #FF9800 !important;
+}

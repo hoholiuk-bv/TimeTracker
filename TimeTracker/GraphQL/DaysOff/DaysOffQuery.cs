@@ -6,7 +6,6 @@ using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Common.Types;
 using TimeTracker.GraphQL.DaysOff.Types;
-using static DataLayer.Constants;
 
 namespace TimeTracker.GraphQL.DaysOff
 {
@@ -37,12 +36,12 @@ namespace TimeTracker.GraphQL.DaysOff
                         var requestApproverIds = requestApprovals.Select(approval => approval.ApproverId);
                         foreach (var approver in approvers)
                         {
-
-                            var approval = new DayOffRequestApprovalResult();
-                            approval.Approver = approver;
-                            approval.Status = requestApproverIds.Contains(approver.Id)
-                                ? requestApprovals.Single(approval => approval.ApproverId == approver.Id).IsApproved ? DayOffApprovalStatus.Approved : DayOffApprovalStatus.Declined
-                                : DayOffApprovalStatus.Pending;
+                            var approval = new DayOffRequestApprovalResult()
+                            {
+                                Approver = approver,
+                                Status = requestApprovals.Single(a => a.ApproverId == approver.Id).Status,
+                            };
+                            approvalResults.Add(approval);
                         }
 
                         request.Approvals = approvalResults;

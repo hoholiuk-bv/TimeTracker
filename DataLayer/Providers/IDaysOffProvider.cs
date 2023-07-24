@@ -14,7 +14,7 @@ public interface IDaysOffProvider
 
     void CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId);
 
-    List<DayOffRequestApproval> GetApprovalResults(List<Guid> requestIds);
+    List<DayOffRequestApproval> GetApprovals(List<Guid> requestIds);
 
     List<DayOffRequestApproval> GetApprovals(Sorting sorting, Paging paging, Guid approverId);
 
