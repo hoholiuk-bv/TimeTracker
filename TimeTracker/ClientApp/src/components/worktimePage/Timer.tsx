@@ -28,6 +28,7 @@ export const Timer = ({user}: Props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        console.log('effect');
         if (isRunning) {
             timer = setInterval(() => {
                 setSeconds((s) => {

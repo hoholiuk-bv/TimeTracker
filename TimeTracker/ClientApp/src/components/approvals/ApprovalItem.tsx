@@ -34,7 +34,7 @@ export const ApprovalItem = ({ item }: Props) => {
           {finishDate}
         </td>
         <td className={getApprovalStatusClass(status)}>
-          {DayOffRequestStatusTitle[status]}
+          {status=== DayOffApprovalStatus.Pending && !isEditable ? 'Outdated' : DayOffRequestStatusTitle[status]}
         </td>
         <td className='action-buttons'>
           {showActionButtons &&
