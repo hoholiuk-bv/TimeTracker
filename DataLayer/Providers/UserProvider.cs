@@ -8,10 +8,10 @@ namespace DataLayer.Providers
     {
         public UserProvider(IConfiguration configuration) : base(configuration) { }
 
-        public IEnumerable<User> GetAllUsers(FilterModel? filter, Sorting? sort, Paging? pagination)
+        public IEnumerable<User> GetAllUsers(UserFilter? filter, Sorting? sort, Paging? pagination)
             => Query<User>(Queries.Users.GetAll(filter, sort, pagination), filter);
 
-        public int GetTotalUsersCount(FilterModel? filter) 
+        public int GetTotalUsersCount(UserFilter? filter) 
             => Query<int>(Queries.Users.GetTotalUsersCount(filter), filter).First();
 
         public bool CheckIfAnyExists()

@@ -10,7 +10,7 @@ export const Navigation = () => {
 
   return (
     <div className="col-2">
-        <NavigationLink
+      <NavigationLink
         to={routes.worktime}
         icon={faClock}
         text='Worktime'

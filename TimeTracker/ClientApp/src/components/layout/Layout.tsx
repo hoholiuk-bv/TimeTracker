@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Col, Container, NavLink, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 import { requestAuthentication } from '../../behavior/profile';
@@ -35,14 +35,14 @@ export const Layout = () => {
           <Button variant="link" onClick={handleLogoutButtonClick}>Logout</Button>
         </Container>
       </div>
-      <div className="container">
-        <div className="row">
+      <Container>
+        <Row>
           <Navigation />
-          <div className="col">
+          <Col>
             <Outlet />
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };

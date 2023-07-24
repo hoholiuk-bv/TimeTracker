@@ -11,13 +11,13 @@ namespace DataLayer.Providers
 
         User? GetByEmail(string email);
 
-        IEnumerable<User> GetAllUsers(FilterModel? filter, Sorting? sorting, Paging? pagination);
+        IEnumerable<User> GetAllUsers(UserFilter? filter, Sorting? sorting, Paging? pagination);
 
         User? GetById(string id);
 
         User? Update(User user);
 
-        int GetTotalUsersCount(FilterModel? filter);
+        int GetTotalUsersCount(UserFilter? filter);
 
         int ToggleActivityStatus(Guid id);
     }

@@ -2,7 +2,7 @@
 
 namespace DataLayer.Models
 {
-    public class FilterModel
+    public class UserFilter
     {
         public string SearchText { get; set; }
 
@@ -12,7 +12,7 @@ namespace DataLayer.Models
 
         public IEnumerable<EmploymentType> EmploymentTypes { get; set; }
 
-        public FilterModel(string searchText = "", DateTime? startEmploymentDate = null, DateTime? endEmploymentDate = null, IEnumerable<EmploymentType>? employmentTypes = null) 
+        public UserFilter(string searchText = "", DateTime? startEmploymentDate = null, DateTime? endEmploymentDate = null, IEnumerable<EmploymentType>? employmentTypes = null) 
         {
             SearchText = searchText;
             StartEmploymentDate = startEmploymentDate;

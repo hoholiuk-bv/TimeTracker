@@ -1,9 +1,9 @@
 import React from 'react';
-import { DayOffType } from '../../behavior/daysOff/types';
+import { DayOffRequest } from '../../behavior/daysOff/types';
 import { DayOffRequestStatusTitle, getApprovalStatusClass } from '../common/helpers';
 
 type Props = {
-  item: DayOffType
+  item: DayOffRequest
 }
 
 export const DayOffItem = ({ item }: Props) => {

@@ -64,7 +64,7 @@ const App = () => {
               index
               path={routes.worktime}
               element={
-                <Page requiredPermissions={[PermissionType.Worktime]}>
+                <Page>
                   <WorktimePage />
                 </Page>} />
             <Route path="*" element={<NotFound />} />

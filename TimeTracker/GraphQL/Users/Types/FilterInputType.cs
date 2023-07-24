@@ -3,7 +3,7 @@ using GraphQL.Types;
 
 namespace TimeTracker.GraphQL.Users.Types
 {
-    public class FilterInputType : InputObjectGraphType<FilterModel>
+    public class FilterInputType : InputObjectGraphType<UserFilter>
     {
         public FilterInputType()
         {
