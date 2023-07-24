@@ -1,20 +1,25 @@
 import React, { useEffect } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, NavLink, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 import { requestAuthentication } from '../../behavior/profile';
 import { routes } from '../../behavior/routing';
 import { RootState } from '../../behavior/store';
 import { Navigation } from './Navigation';
+import { logout } from '../../behavior/profile/actions';
 
 export const Layout = () => {
   const dispatch = useDispatch();
-  const { authenticated } = useSelector((state: RootState) => state.profile);
+  const { authenticated, userInfo } = useSelector((state: RootState) => state.profile);
 
   useEffect(() => {
     if (authenticated == null)
       dispatch(requestAuthentication());
   }, [dispatch, authenticated]);
+
+  const handleLogoutButtonClick = () => {
+    dispatch(logout());
+  };
 
   if (authenticated == null)
     return null;
@@ -24,11 +29,12 @@ export const Layout = () => {
 
   return (
     <>
-      <Container className='top-panel'>
-        <Row className='align-items-center justify-content-end'>
-          <Col></Col>
-        </Row>
-      </Container>
+      <div className="text-end top-panel">
+        <Container className='display-flex flex-row top-panel-container align-items-center'>
+          <span className="header-name align-middle ">Hi, {userInfo?.name}</span>
+          <Button variant="link" onClick={handleLogoutButtonClick}>Logout</Button>
+        </Container>
+      </div>
       <div className="container">
         <div className="row">
           <Navigation />

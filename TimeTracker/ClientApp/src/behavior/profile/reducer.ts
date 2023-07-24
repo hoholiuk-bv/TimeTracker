@@ -1,5 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { AuthenticateAction, FirstUserExistenceReceiveAction, FIRST_USER_EXISTENCE_RECEIVED, LoginReceiveAction, LOGIN_RECIEVED, USER_AUTHENTICATED } from './actions';
+import {
+  AuthenticateAction,
+  FirstUserExistenceReceiveAction,
+  LoginReceiveAction,
+  LogoutAction,
+  FIRST_USER_EXISTENCE_RECEIVED,
+  LOGIN_RECIEVED,
+  USER_AUTHENTICATED,
+  LOGOUT
+} from './actions';
 import type { UserInfo } from './types';
 
 export type ProfileState = {
@@ -20,6 +29,7 @@ export default createReducer(initialState, {
   [FIRST_USER_EXISTENCE_RECEIVED]: onUserExistenceReceived,
   [USER_AUTHENTICATED]: onUserAuthenticated,
   [LOGIN_RECIEVED]: onLoginReceived,
+  [LOGOUT]: onLogout
 });
 
 function onLoginReceived(state: ProfileState, action: LoginReceiveAction) {
@@ -45,4 +55,9 @@ function onUserAuthenticated(state: ProfileState, action: AuthenticateAction) {
   }
 
   return { ...state, userInfo, authenticated: userInfo != null };
+}
+
+function onLogout(state: ProfileState, action: LogoutAction) {
+  localStorage.removeItem('auth-token');
+  return { ...state, authenticated: null, userInfo: null };
 }

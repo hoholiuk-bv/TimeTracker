@@ -15,6 +15,13 @@
             DayOff
         }
 
+        public enum DayOffApprovalStatus
+        {
+            Pending,
+            Approved,
+            Declined
+        }
+
         public enum SortingOrder
         {
             Ascending,
