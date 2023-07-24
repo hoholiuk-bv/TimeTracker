@@ -3,6 +3,7 @@ using DataLayer.Models;
 using Microsoft.Extensions.Configuration;
 using static DataLayer.Constants;
 using static DataLayer.Providers.Queries;
+
 namespace DataLayer.Providers;
 
 public class DaysOffProvider : Provider, IDaysOffProvider
@@ -29,4 +30,10 @@ public class DaysOffProvider : Provider, IDaysOffProvider
 
     public void CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId)
         => Execute(DaysOff.CreateApprovals(approverIds, requestId));
+
+    public void CreateApproverForUser(Guid userId, Guid approverId)
+        => Execute(DayOffRequestApprovers.Create, new { UserId = userId, ApproverId = approverId });
+
+    public void DeleteApproversForUser(Guid userId)
+        => Execute(DayOffRequestApprovers.DeleteApproversByUserId, new { UserId = userId });
 }

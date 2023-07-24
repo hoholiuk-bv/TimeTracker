@@ -11,7 +11,7 @@ export const ListPage = ({users}: Props) => {
     if (!users) {
         return null;
     }
-    
+
     return (
         <div className="container">
             <div className="worktime">

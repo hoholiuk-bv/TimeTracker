@@ -26,27 +26,28 @@ namespace TimeTracker.GraphQL.Profile
             Field<AuthenticationResultType>("Login")
                 .Description("Authenticates user. Returns authentication info in case of success.")
                 .Argument<NonNullGraphType<LoginInputType>>("input")
-                .Resolve(ResolveLogin);
+                .Resolve(context => ResolveLogin(context));
 
             Field<AuthenticationResultType>("FirstUserRegister")
                 .Description("Registers first user into system.")
                 .Argument<NonNullGraphType<FirstUserRegisterInputType>>("input")
-                .Resolve(ResolveFirstUserRegister);
+                .Resolve(context => ResolveFirstUserRegister(context));
 
             Field<AuthenticationResultType>("Authenticate")
                 .Description("Authenticates user.")
-                .Resolve(ResolveAuthenticate);
+                .Resolve(context => ResolveAuthenticate(context));
 
             Field<BooleanGraphType>("Logout")
                .Description("Logout user.")
                .Authorize()
-               .Resolve(context => {
+               .Resolve(context =>
+               {
                    httpContextAccessor.HttpContext!.Response.Headers.Remove("Authorization");
                    return true;
                });
         }
 
-        private object? ResolveFirstUserRegister(IResolveFieldContext context)
+        private AuthenticationResult? ResolveFirstUserRegister(IResolveFieldContext context)
         {
             var input = context.GetArgument<FirstUserRegisterInput>("input");
             var salt = authenticationService.GenerateSalt();
@@ -80,8 +81,8 @@ namespace TimeTracker.GraphQL.Profile
 
             return null;
         }
-        
-        private object? ResolveLogin(IResolveFieldContext context)
+
+        private AuthenticationResult? ResolveLogin(IResolveFieldContext context)
         {
             var input = context.GetArgument<LoginInput>("input");
             var user = userProvider.GetByEmail(input.Email);
@@ -104,7 +105,7 @@ namespace TimeTracker.GraphQL.Profile
             return null;
         }
 
-        private object? ResolveAuthenticate(IResolveFieldContext context)
+        private AuthenticationResult? ResolveAuthenticate(IResolveFieldContext context)
         {
             var httpContext = httpContextAccessor.HttpContext;
 

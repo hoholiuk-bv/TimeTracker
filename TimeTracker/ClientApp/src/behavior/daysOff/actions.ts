@@ -1,5 +1,5 @@
 import { PagingInput, SortingInput } from '../common/types';
-import { DayOffRequestInput, DayOffType } from './types';
+import { DayOffRequestInput, DayOffRequest } from './types';
 
 export const DAY_OFF_REQUESTED = 'DAY_OFF_REQUESTED' as const;
 export const requestDayOff = (input: DayOffRequestInput) => ({
@@ -14,7 +14,7 @@ export const requestDaysOffList = (sorting: SortingInput, paging: PagingInput) =
 });
 
 export const DAYS_OFF_LIST_RECEIVED = 'DAYS_OFF_LIST_RECEIVED' as const;
-export const receiveDaysOffList = (list: DayOffType[]) => ({
+export const receiveDaysOffList = (list: DayOffRequest[]) => ({
   type: DAYS_OFF_LIST_RECEIVED,
   payload: { list }
 });

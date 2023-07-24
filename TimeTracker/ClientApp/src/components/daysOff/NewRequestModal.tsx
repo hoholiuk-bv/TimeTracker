@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { FormLabel, Row, Col } from 'react-bootstrap';
+import { FormLabel, Row, Col, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import { FormGroup } from '../common/elements/FormGroup';
 import { DayOffRequestInput, DayOffRequestType } from '../../behavior/daysOff/types';
@@ -8,7 +8,6 @@ import { useDispatch } from 'react-redux';
 import { requestDayOff } from '../../behavior/daysOff/actions';
 import { required } from '../../behavior/validators';
 import { ValidationMessage } from '../common/validation/ValidationMessage';
-import { DayOffRequestTypeNames } from '../../behavior/daysOff/helpers';
 
 type Props = {
   show: boolean;
@@ -55,8 +54,8 @@ export const NewRequestModal = ({ show, handleClose }: Props) => {
               </Row>
             </Modal.Body>
             <Modal.Footer>
-              <button className="btn btn-secondary" onClick={handleClose}>Close</button>
-              <button className="btn btn-primary" type="submit" onClick={handleClose}>Save</button>
+              <Button type='button' variant='secondary' onClick={handleClose}>Close</Button>
+              <Button type='submit' onClick={handleClose}>Save</Button>
             </Modal.Footer>
           </Form>
         </Formik>

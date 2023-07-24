@@ -1,17 +1,21 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { SortingOrder } from '../../behavior/common/types';
-import { RootState } from '../../behavior/store';
+import React from 'react';
+import Alert from 'react-bootstrap/Alert';
+import { useDispatch } from 'react-redux';
+import { SortingInput, SortingOrder } from '../../behavior/common/types';
 import { ApprovalItem } from './ApprovalItem';
 import { SortIcon } from '../common/elements/SortIcon';
-import { requestApprovalsList, changeApprovalsListSorting } from '../../behavior/approvals/actions';
+import { changeApprovalsListSorting } from '../../behavior/approvals/actions';
+import { DayOffApproval } from '../../behavior/approvals/types';
 
-export const ApprovalList = () => {
+type Props = {
+  approvals: DayOffApproval[]
+  sorting: SortingInput,
+}
+
+export const ApprovalList = ({ approvals, sorting }: Props) => {
   const defaultSortingField = 'EmployeeName';
 
   const dispatch = useDispatch();
-  const { list: approvals, sorting } = useSelector((state: RootState) => state.approvals);
-  useEffect(() => { dispatch(requestApprovalsList(sorting, { pageNumber: 1, pageSize: 10 })); }, [dispatch, sorting]);
   const handleSortingColumnClick = (fieldName: string) => {
     let newSortingField = fieldName;
     let newSortingOrder = sorting.sortingOrder;
@@ -31,6 +35,11 @@ export const ApprovalList = () => {
     }
     dispatch(changeApprovalsListSorting({ sortingOrder: newSortingOrder, sortingField: newSortingField }));
   };
+
+  if (!approvals.length)
+    return (
+      <Alert variant='secondary'>No approvals found.</Alert>
+    );
 
   return (
     <>

@@ -21,7 +21,7 @@ type DayOffApprovalType = {
   }
 }
 
-export type DayOffType = {
+export type DayOffRequest = {
   id: string;
   startDate: string;
   finishDate: string;

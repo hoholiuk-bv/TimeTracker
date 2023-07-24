@@ -1,17 +1,21 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { SortingOrder } from '../../behavior/common/types';
-import { requestDaysOffList, changeDaysOffListSorting } from '../../behavior/daysOff/actions';
-import { RootState } from '../../behavior/store';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { SortingInput, SortingOrder } from '../../behavior/common/types';
+import { changeDaysOffListSorting } from '../../behavior/daysOff/actions';
 import { DayOffItem } from './DayOffItem';
 import { SortIcon } from '../common/elements/SortIcon';
+import { DayOffRequest } from '../../behavior/daysOff/types';
+import { Alert } from 'react-bootstrap';
 
-export const DayOffList = () => {
+type Props = {
+  requests: DayOffRequest[];
+  sorting: SortingInput;
+}
+
+export const DayOffList = ({ requests, sorting }: Props) => {
   const defaultSortingField = 'StartDate';
 
   const dispatch = useDispatch();
-  const { list: daysOff, sorting } = useSelector((state: RootState) => state.daysOff);
-  useEffect(() => { dispatch(requestDaysOffList(sorting, { pageNumber: 1, pageSize: 10 })); }, [dispatch, sorting]);
   const handleSortingColumnClick = (fieldName: string) => {
     let newSortingField = fieldName;
     let newSortingOrder = sorting.sortingOrder;
@@ -32,6 +36,11 @@ export const DayOffList = () => {
     dispatch(changeDaysOffListSorting({ sortingOrder: newSortingOrder, sortingField: newSortingField }));
   };
 
+  if (!requests.length)
+    return (
+      <Alert variant='secondary'>No day off requests found.</Alert>
+    );
+
   return (
     <>
       <table className="table table-striped">
@@ -49,10 +58,10 @@ export const DayOffList = () => {
           </tr>
         </thead>
         <tbody>
-          {daysOff.map(dayOff =>
+          {requests.map(request =>
             <DayOffItem
-              key={dayOff.id}
-              item={dayOff}
+              key={request.id}
+              item={request}
             />)}
         </tbody>
       </table>

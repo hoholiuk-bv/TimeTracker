@@ -1,16 +1,16 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { PagingInput, SortingInput, SortingOrder } from '../common/types';
 import { DaysOffListReceivedAction, DaysOffListSortingChangedAction, DAYS_OFF_LIST_RECEIVED, DAYS_OFF_LIST_SORTING_CHANGED } from './actions';
-import { DayOffType } from './types';
+import { DayOffRequest } from './types';
 
 export type DaysOffState = {
-  list: DayOffType[],
+  list: DayOffRequest[] | null,
   paging: PagingInput,
   sorting: SortingInput,
 };
 
 const initialState: DaysOffState = {
-  list: [],
+  list: null,
   paging: {
     pageNumber: 1,
     pageSize: 10,
