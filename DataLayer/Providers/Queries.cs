@@ -1,5 +1,7 @@
 ﻿using DataLayer.Models;
+using System;
 using System.Data;
+using static DataLayer.Constants;
 
 namespace DataLayer.Providers
 {
@@ -147,9 +149,32 @@ namespace DataLayer.Providers
                                                   JOIN Users ON (Users.Id=DayOffRequestApprovers.ApproverId)
                                                   WHERE DayOffRequestApprovers.UserId=@UserId";
 
-            public static string GetApprovals = @"SELECT *
+            public static string GetApprovalResults = @"SELECT *
                                                   FROM DayOffRequestApprovals
                                                   WHERE RequestId IN @RequestIds";
+
+            public static string GetApprovals(Sorting sorting, Paging paging) => $@"SELECT  
+                                                    [DayOffRequests].Id as RequestId
+                                                    ,[StartDate]
+                                                    ,[FinishDate]
+	                                                ,[Users].Name as EmployeeName
+	                                                ,[Users].Surname as EmployeeSurname
+ 	                                                ,DayOffRequestApprovals.Status
+                                                    FROM [TimeTracker].[dbo].[DayOffRequests]
+                                                    JOIN DayOffRequestApprovers on DayOffRequestApprovers.UserId = [DayOffRequests].UserId  
+                                                    JOIN Users on Users.Id = DayOffRequestApprovers.UserId 
+                                                    JOIN DayOffRequestApprovals on DayOffRequestApprovals.RequestId = DayOffRequests.Id AND DayOffRequestApprovals.ApproverId = DayOffRequestApprovers.ApproverId
+													WHERE DayOffRequestApprovers.ApproverId = @ApproverId
+                                                    {AddSorting(sorting)}
+                                                    {AddPaging(paging)}";
+
+            public static string ChangeApprovalStatus = @"UPDATE DayOffRequestApprovals
+                                                        SET Status = @Status
+                                                        WHERE RequestId = @RequestId AND ApproverId = @ApproverId";
+
+            public static string CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId) =>
+                $@"INSERT INTO DayOffRequestApprovals 
+                   VALUES {string.Join(',', approverIds.Select(approverId => $"('{requestId}','{approverId}', {(int)DayOffApprovalStatus.Pending})"))}";
         }
 
         private static string AddSorting(Sorting sorting)

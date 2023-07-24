@@ -9,6 +9,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Page } from './components/common/Page';
 import { PermissionType } from './behavior/profile/types';
 import { DaysOffPage } from './components/daysOff/DaysOffPage';
+import { ApprovalsPage } from './components/approvals/ApprovalsPage';
 import {UserDetails} from './components/userDetails/UserDetails';
 
 const App = () => {
@@ -46,6 +47,15 @@ const App = () => {
               element={
                 <Page>
                   <DaysOffPage />
+                </Page>
+              }
+            />
+            <Route
+              index
+              path={routes.approvals}
+              element={
+                <Page>
+                  <ApprovalsPage />
                 </Page>
               }
             />

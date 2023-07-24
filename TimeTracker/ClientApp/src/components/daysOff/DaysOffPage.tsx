@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { DayOffList } from './DayOffList';
 import { NewRequestModal } from './NewRequestModal';
 
@@ -10,7 +11,7 @@ export const DaysOffPage = () => {
   return (
     <>
       <h1 className="mb-3">Days off</h1>
-      <button className="btn btn-primary w-500 mt-2" onClick={handleShow}>Request a day off</button>
+      <Button className="my-2" onClick={handleShow}>Request a day off</Button>
       <NewRequestModal show={show} handleClose={handleClose}/>
       <DayOffList />
     </>

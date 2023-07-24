@@ -53,19 +53,6 @@ export const NewRequestModal = ({ show, handleClose }: Props) => {
                   </FormGroup>
                 </Col>
               </Row>
-              <Row>
-                <Col>
-                  <FormGroup>
-                    <FormLabel htmlFor='reason'>Days off reason</FormLabel>
-                    <Field as="select" className="form-select" name="reason" validate={required}>
-                      <option value={DayOffRequestType.Vacation}>{DayOffRequestTypeNames[DayOffRequestType.Vacation]}</option>
-                      <option value={DayOffRequestType.SickLeave}>{DayOffRequestTypeNames[DayOffRequestType.SickLeave]}</option>
-                      <option value={DayOffRequestType.DayOff}>{DayOffRequestTypeNames[DayOffRequestType.DayOff]}</option>
-                    </Field>
-                    <ValidationMessage fieldName='type' />
-                  </FormGroup>
-                </Col>
-              </Row>
             </Modal.Body>
             <Modal.Footer>
               <button className="btn btn-secondary" onClick={handleClose}>Close</button>
