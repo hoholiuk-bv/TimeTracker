@@ -12,7 +12,7 @@ public class DaysOffProvider : Provider, IDaysOffProvider
     public void CreateRequest(DayOffRequest dayOffRequest)
         => Execute(DaysOff.Create, dayOffRequest);
 
-    public List<DayOffRequestApproval> GetApprovalResults(List<Guid> requestIds)
+    public List<DayOffRequestApproval> GetApprovals(List<Guid> requestIds)
         => Query<DayOffRequestApproval>(DaysOff.GetApprovalResults, new { RequestIds = requestIds });
 
     public List<DayOffRequestApprover> GetApprovers(Guid userId)

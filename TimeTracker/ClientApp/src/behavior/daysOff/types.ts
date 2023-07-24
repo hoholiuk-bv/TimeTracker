@@ -1,3 +1,5 @@
+import { DayOffApprovalStatus } from '../common/types';
+
 export type DayOffRequestInput = {
   startDate: string;
   finishDate: string;
@@ -10,9 +12,19 @@ export enum DayOffRequestType {
   DayOff = 'DAY_OFF'
 }
 
+type DayOffApprovalType = {
+  status: DayOffApprovalStatus,
+  approver: {
+    id: string,
+    name: string,
+    surname: string,
+  }
+}
+
 export type DayOffType = {
   id: string;
   startDate: string;
   finishDate: string;
   reason: DayOffRequestType;
+  approvals: DayOffApprovalType[];
 }

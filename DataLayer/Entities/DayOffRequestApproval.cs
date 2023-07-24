@@ -6,6 +6,8 @@ public class DayOffRequestApproval
 {
     public Guid RequestId { get; set; }
 
+    public Guid ApproverId { get; set; }
+
     public string EmployeeName { get; set; } = null!;
 
     public string EmployeeSurname { get; set; } = null!;

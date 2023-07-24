@@ -123,14 +123,14 @@ namespace DataLayer.Providers
                                                     FROM [TimeTracker].[dbo].[DayOffRequests]
                                                     JOIN DayOffRequestApprovers on DayOffRequestApprovers.UserId = [DayOffRequests].UserId  
                                                     JOIN Users on Users.Id = DayOffRequestApprovers.UserId 
-                                                    JOIN DayOffRequestApprovals on DayOffRequestApprovals.RequestId = DayOffRequests.Id 
+                                                    JOIN DayOffRequestApprovals on DayOffRequestApprovals.RequestId = DayOffRequests.Id AND DayOffRequestApprovals.ApproverId = DayOffRequestApprovers.ApproverId
 													WHERE DayOffRequestApprovers.ApproverId = @ApproverId
                                                     {AddSorting(sorting)}
                                                     {AddPaging(paging)}";
 
-            public static string ChangeApprovalStatus = "UPDATE DayOffRequestApprovals " +
-                "                                        SET Status = @Status " +
-                "                                        WHERE RequestId = @RequestId AND ApproverId = @ApproverId";
+            public static string ChangeApprovalStatus = @"UPDATE DayOffRequestApprovals
+                                                        SET Status = @Status
+                                                        WHERE RequestId = @RequestId AND ApproverId = @ApproverId";
 
             public static string CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId) =>
                 $@"INSERT INTO DayOffRequestApprovals 

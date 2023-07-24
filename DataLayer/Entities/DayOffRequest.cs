@@ -1,4 +1,5 @@
-﻿using static DataLayer.Constants;
+﻿using DataLayer.Models;
+using static DataLayer.Constants;
 
 namespace DataLayer.Entities
 {
@@ -14,6 +15,6 @@ namespace DataLayer.Entities
 
         public DayOffReason Reason { get; set; }
 
-        public IList<DayOffRequestApproval> Approvals { get; set; } = new List<DayOffRequestApproval>();
+        public IList<DayOffRequestApprovalResult> Approvals { get; set; } = new List<DayOffRequestApprovalResult>();
     }
 }

@@ -34,18 +34,18 @@ export const UserListPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="p-5 pt-3">
-      <h2 className="mb-4 h1">Users</h2>
-      <UserSearchPanel filter={filter} setFilter={setFilter} employmentTypeList={employmentTypeList}/>
+    <>
+      <h1 className="mb-3">Users</h1>
+      <UserSearchPanel filter={filter} setFilter={setFilter} employmentTypeList={employmentTypeList} />
       {totalUsersCount === 0 && (
         <div className="h5 alert alert-danger">User not found.</div>
       )}
       {userList.length > 0 && (
         <>
-          <UserTable userList={userList} sorting={sorting} setSorting={setSorting}/>
-          <UserPagination totalUsersCount={totalUsersCount} pagination={pagination} setPagination={setPagination}/>
+          <UserTable userList={userList} sorting={sorting} setSorting={setSorting} />
+          <UserPagination totalUsersCount={totalUsersCount} pagination={pagination} setPagination={setPagination} />
         </>
       )}
-    </div>
+    </>
   );
 };

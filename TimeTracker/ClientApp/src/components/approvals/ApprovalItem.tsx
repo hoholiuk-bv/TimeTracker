@@ -5,6 +5,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { useDispatch } from 'react-redux';
 import { changeApprovalStatus } from '../../behavior/approvals/actions';
 import { DayOffApprovalStatus } from '../../behavior/common/types';
+import { DayOffRequestStatusTitle, getApprovalStatusClass } from '../common/helpers';
 
 type Props = {
   item: DayOffApproval
@@ -32,8 +33,8 @@ export const ApprovalItem = ({ item }: Props) => {
         <td>
           {finishDate}
         </td>
-        <td>
-          {status}
+        <td className={getApprovalStatusClass(status)}>
+          {DayOffRequestStatusTitle[status]}
         </td>
         <td className='action-buttons'>
           {showActionButtons &&
