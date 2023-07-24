@@ -1,48 +1,73 @@
-﻿import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { employmentType, employmentTypeForDisplay, User } from '../../behavior/users/types';
+import { useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../behavior/store';
+import { Field, Form, Formik } from 'formik';
 import { Col, FormLabel, Row } from 'react-bootstrap';
-import { Formik, Form, Field } from 'formik';
-import type { CreationInput } from '../../behavior/userCreation/types';
-import { useDispatch } from 'react-redux';
-import { userCreation } from '../../behavior/userCreation/actions';
+import { FormGroup } from '../common/elements/FormGroup';
 import { email, maxLength, required, validate } from '../../behavior/validators';
 import { ValidationMessage } from '../common/validation/ValidationMessage';
-import { useNavigate } from 'react-router-dom';
-import { routes } from '../../behavior/routing';
-import { FormGroup } from '../common/elements/FormGroup';
-import { employmentType, employmentTypeForDisplay } from '../../behavior/users/types';
 import { MaxWorkingHours } from '../../behavior/common/types';
-import { ApproversPicker } from './ApproversPicker';
+import { receiveUser, requestApprovers, requestUser } from '../../behavior/userDetails/actions';
 import { ApproverOptions } from '../../behavior/userCreation/types';
+import { ApproversPicker } from '../creationForm/ApproversPicker';
+import type { User as Approver } from '../../behavior/userCreation/types';
+import { UpdateUserInput } from '../../behavior/userDetails/types';
+import { ConfirmationModal } from './ConfirmationModal';
+import { UserInfo } from '../../behavior/profile/types';
 
-const initialValues: CreationInput = {
-  name: null,
-  surname: null,
-  email: null,
-  password: null,
-  employmentType: null,
-  employmentDate: null,
-  isAdmin: null,
-  approversIdList : [],
-  hours: null,
-  minutes: null,
-};
-
-export const CreationForm = () => {
+export const UserDetails = () => {
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const currentUserInfo: UserInfo | null = useSelector((state: RootState) => state.profile.userInfo);
+  const user: User | null = useSelector((state: RootState) => state.userDetails.details);
+  const approvers: Approver[] = useSelector((state: RootState) => state.userDetails.approvers);
   const [selectedApprovers, setSelectedApprovers] = useState<ApproverOptions[]>([]);
+  const [updateUserValues, setUpdateUserValues] = useState<UpdateUserInput | null>(null);
+  const confirmationModalClose = () => setUpdateUserValues(null);
+  const confirmationModalShow = (values: UpdateUserInput) => setUpdateUserValues(values);
 
-  const onSubmit = (values: CreationInput) => {
-    const { hours, minutes, ...otherValues } = values;
-    const workingHoursCount = (hours ?? 0) + (minutes ?? 0) / 100;
+  useEffect(() => {
+    dispatch(receiveUser(null));
+  }, []);
 
-    dispatch(userCreation({
-      ...otherValues,
-      approversIdList: selectedApprovers.map(options => options.value),
-      workingHoursCount: (hours !== null && hours < MaxWorkingHours) ? workingHoursCount : hours,
+  useEffect(() => {
+    if(id !== undefined) {
+      dispatch(requestUser(id));
+      dispatch(requestApprovers(id));
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    const approverOptions: ApproverOptions[] = approvers.map((approver) => ({
+      value: approver.id,
+      label: approver.name + ' ' + approver.surname + ' (' + approver.email + ')'
     }));
 
-    navigate(routes.users.list);
+    setSelectedApprovers(approverOptions);
+  }, [approvers, setSelectedApprovers]);
+
+  if(user === null)
+    return (<div className="h5 alert alert-danger">User not found.</div>);
+
+  const onSubmit = (values: UpdateUserInput) => {
+    confirmationModalShow(values);
+    console.log('onSubmit: ', values);
+  };
+
+  const initialValues: UpdateUserInput = {
+    id: user.id,
+    name: user.name,
+    surname: user.surname,
+    email: user.email,
+    employmentType: user.employmentType,
+    employmentDate: new Date(user.employmentDate).toLocaleDateString('en-CA'),
+    isAdmin: user.isAdmin,
+    isActive: user.isActive,
+    approversIdList : [],
+    hours: Math.floor(user.workingHoursCount),
+    minutes: Math.round((user.workingHoursCount % 1) * 100),
   };
 
   return (
@@ -50,7 +75,7 @@ export const CreationForm = () => {
       <Formik onSubmit={onSubmit} initialValues={initialValues}>
         {({values}) => (
           <Form>
-            <h1 className="mb-3">New user</h1>
+            <h1 className="mb-3">{user.name} {user.surname}</h1>
             <Row>
               <Col>
                 <FormGroup>
@@ -82,9 +107,9 @@ export const CreationForm = () => {
               </Col>
               <Col>
                 <FormGroup>
-                  <FormLabel htmlFor='password'>Password</FormLabel>
-                  <Field type="password" className="form-control" name="password" validate={required} />
-                  <ValidationMessage fieldName='password' />
+                  <FormLabel htmlFor='employmentDate'>Employment date</FormLabel>
+                  <Field name="employmentDate" type="date" className="form-control" validate={required} />
+                  <ValidationMessage fieldName='employmentDate' />
                 </FormGroup>
               </Col>
             </Row>
@@ -102,6 +127,8 @@ export const CreationForm = () => {
                   </Field>
                   <ValidationMessage fieldName='employmentType' />
                 </FormGroup>
+              </Col>
+              <Col>
                 {values.employmentType && values.employmentType === employmentType.PartTime && (
                   <Row>
                     <Col>
@@ -122,34 +149,36 @@ export const CreationForm = () => {
                   </Row>
                 )}
               </Col>
-              <Col>
-                <FormGroup>
-                  <FormLabel htmlFor='employmentDate'>Employment date</FormLabel>
-                  <Field name="employmentDate" type="date" className="form-control" validate={required} />
-                  <ValidationMessage fieldName='employmentDate' />
-                </FormGroup>
-              </Col>
             </Row>
             <Row>
               <Col className="approvers-group">
                 <FormGroup>
                   <FormLabel htmlFor='approversIdList'>Approvers</FormLabel>
-                  <ApproversPicker selectedApprovers={selectedApprovers} setSelectedApprovers={setSelectedApprovers} excludeUserId={null}/>
+                  <ApproversPicker selectedApprovers={selectedApprovers} setSelectedApprovers={setSelectedApprovers} excludeUserId={user.id}/>
                 </FormGroup>
               </Col>
             </Row>
             <Row>
               <Col className="admin-checkbox-group mt-2 d-flex justify-content-end align-items-center gap-4">
-                <FormGroup>
-                  <FormLabel htmlFor='isAdmin'>Admin user</FormLabel>
-                  <Field type="checkbox" name="isAdmin" id="isAdmin" />
-                </FormGroup>
-                <button className="btn btn-primary" type="submit">Create</button>
+                {currentUserInfo && currentUserInfo.email !== user.email && (
+                  <>
+                    <FormGroup>
+                      <FormLabel htmlFor='isActive'>User is active</FormLabel>
+                      <Field type="checkbox" name="isActive" id="isActive" />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormLabel htmlFor='isAdmin'>Admin user</FormLabel>
+                      <Field type="checkbox" name="isAdmin" id="isAdmin" />
+                    </FormGroup>
+                  </>
+                )}
+                <button className="btn btn-primary">Save</button>
               </Col>
             </Row>
           </Form>
         )}
       </Formik>
+      <ConfirmationModal selectedApprovers={selectedApprovers} values={updateUserValues} handleClose={confirmationModalClose} />
     </>
   );
 };

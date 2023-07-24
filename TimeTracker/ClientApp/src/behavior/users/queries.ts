@@ -15,8 +15,10 @@ query(
       surname
       email
       isAdmin
+      isActive
       employmentDate
       employmentType
+      workingHoursCount
     }
     totalUsersCount(
       filter: $filter
@@ -24,9 +26,11 @@ query(
   }
 }`;
 
-export const getEmploymentTypeListQuery = `
-query {
+export const getToggleActivityStatusQuery = `
+mutation(
+  $id: Guid!
+) {
   users {
-    employmentTypeList
+    toggleActivityStatus(id: $id)
   }
 }`;

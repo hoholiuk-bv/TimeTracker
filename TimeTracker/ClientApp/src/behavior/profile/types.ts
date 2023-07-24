@@ -13,6 +13,7 @@ export type RegisterInput = {
 export type UserInfo = {
   name: string;
   surname: string;
+  email: string;
   permissions: PermissionType[]
 }
 

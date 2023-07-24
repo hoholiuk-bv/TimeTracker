@@ -4,8 +4,10 @@ export type User = {
   surname: string;
   email: string;
   isAdmin: boolean;
+  isActive: boolean;
   employmentDate: string;
   employmentType: string;
+  workingHoursCount: number;
 }
 
 export type FilterType = {
@@ -13,11 +15,6 @@ export type FilterType = {
   startEmploymentDate: string | null;
   endEmploymentDate: string | null;
   employmentTypes: string[];
-}
-
-export type PaginationType = {
-  pageSize: number;
-  pageNumber: number;
 }
 
 export enum employmentType {

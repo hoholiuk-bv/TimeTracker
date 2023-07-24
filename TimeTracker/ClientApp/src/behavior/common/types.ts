@@ -18,3 +18,5 @@ export enum DayOffApprovalStatus {
   Approved = 'APPROVED',
   Declined = 'DECLINED',
 }
+
+export const MaxWorkingHours = 8.0;

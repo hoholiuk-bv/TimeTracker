@@ -61,6 +61,7 @@ namespace TimeTracker.GraphQL.Profile
                 Surname = input.Surname,
                 Email = input.Email,
                 Password = authenticationService.GenerateHash(input.Password, salt),
+                WorkingHoursCount = Constants.MaxWorkingHours,
             };
 
             userProvider.Save(user);
@@ -84,7 +85,8 @@ namespace TimeTracker.GraphQL.Profile
         {
             var input = context.GetArgument<LoginInput>("input");
             var user = userProvider.GetByEmail(input.Email);
-            if (user == null)
+
+            if (user == null || !user.IsActive)
                 return null;
 
             if (authenticationService.Authenticate(user, input.Password, out var token))
@@ -127,6 +129,7 @@ namespace TimeTracker.GraphQL.Profile
             {
                 Name = authenticatedUser.Name,
                 Surname = authenticatedUser.Surname,
+                Email = authenticatedUser.Email,
                 Permissions = userContext.GetGrantedPermissions()
             };
         }

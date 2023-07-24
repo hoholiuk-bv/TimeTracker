@@ -3,18 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { Field, Formik, Form } from 'formik';
 import { employmentType, employmentTypeForDisplay, FilterType } from '../../behavior/users/types';
-import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../behavior/routing';
 import { RemoveFilterButton } from './RemoveFilterButton';
 
 type Props = {
-  employmentTypeList: any;
   filter: FilterType;
   setFilter: any;
 }
 
-export const UserSearchPanel = ({employmentTypeList, filter, setFilter}: Props) => {
+export const UserSearchPanel = ({filter, setFilter}: Props) => {
   const navigate = useNavigate();
 
   const initialValues: FilterType = {
@@ -81,10 +79,10 @@ export const UserSearchPanel = ({employmentTypeList, filter, setFilter}: Props) 
       let employmentDateContent;
 
       if(filter.endEmploymentDate !== '' && filter.endEmploymentDate !== null) {
-        employmentDateContent = `${format(new Date(filter.startEmploymentDate), 'dd.MM.yyyy')} - ${format(new Date(filter.endEmploymentDate), 'dd.MM.yyyy')}`;
+        employmentDateContent = `${new Date(filter.startEmploymentDate).toLocaleDateString()} - ${new Date(filter.endEmploymentDate).toLocaleDateString()}`;
       }
       else {
-        employmentDateContent = format(new Date(filter.startEmploymentDate), 'dd.MM.yyyy');
+        employmentDateContent = new Date(filter.startEmploymentDate).toLocaleDateString();
       }
 
       removeFilterButtons.push(
@@ -128,7 +126,7 @@ export const UserSearchPanel = ({employmentTypeList, filter, setFilter}: Props) 
                       </div>
                       <span className="h5 mt-2">Employment type</span>
                       <Field name="employmentTypes" as="select" className="form-select" multiple>
-                        {employmentTypeList.map((type: string) => (
+                        {Object.keys(employmentType).map((type: string) => (
                           <option key={type} value={employmentType[type as keyof typeof employmentType]}>
                             {employmentTypeForDisplay[type as keyof typeof employmentTypeForDisplay]}
                           </option>

@@ -1,4 +1,4 @@
-const authenticationSegment = 'userInfo { name surname permissions } token';
+const authenticationSegment = 'userInfo { name surname email permissions } token';
 
 export const loginMutation = `
 mutation($input: LoginInput!) {
