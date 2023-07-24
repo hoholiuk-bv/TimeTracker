@@ -40,14 +40,21 @@ export const receiveFirstUserExistence = (firstUserExists: boolean) => ({
   payload: { firstUserExists }
 });
 
+export const LOGOUT = 'LOGOUT' as const;
+export const logout = () => ({
+  type: LOGOUT,
+});
+
 export type LoginRequestAction = ReturnType<typeof requestLogin>;
 export type LoginReceiveAction = ReturnType<typeof receiveLogin>;
 export type AuthenticateAction = ReturnType<typeof authenticate>;
 export type RegisterAction = ReturnType<typeof register>;
 export type FirstUserExistenceReceiveAction = ReturnType<typeof receiveFirstUserExistence>;
+export type LogoutAction = ReturnType<typeof logout>;
 export type ProfileActions = ReturnType<
   | typeof requestLogin
   | typeof receiveLogin
   | typeof register
   | typeof receiveFirstUserExistence
-  | typeof authenticate>
+  | typeof authenticate
+  | typeof logout>

@@ -4,6 +4,7 @@ using DataLayer.Providers;
 using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.DaysOff.Types;
+using static DataLayer.Constants;
 
 namespace TimeTracker.GraphQL.DaysOff;
 
@@ -18,23 +19,28 @@ public class DaysOffMutation : ObjectGraphType
         Field<NonNullGraphType<BooleanGraphType>>("RequestDayOff")
             .Description("Creates a request for a day off.")
             .Argument<NonNullGraphType<DayOffRequestInputType>>("input")
-            .Resolve(ResolveRequest);
+            .Resolve(context => ResolveRequest(context));
     }
-    private object? ResolveRequest(IResolveFieldContext context)
+    private bool ResolveRequest(IResolveFieldContext context)
     {
         var input = context.GetArgument<DayOffRequestInput>("input");
-        var userContext = context.RequestServices!.GetRequiredService<UserContext>();
+        var currentUserId = context.RequestServices!.GetRequiredService<UserContext>().User!.Id;
 
-        var newRequest = new DayOffRequest()
+        var request = new DayOffRequest()
         {
             Id = Guid.NewGuid(),
-            UserId = userContext.User!.Id,
+            UserId = currentUserId,
             StartDate = DateTime.Parse(input.StartDate),
             FinishDate = DateTime.Parse(input.FinishDate),
-            Reason = input.Reason
+            Reason = DayOffReason.Vacation
         };
 
-        daysOffProvider.CreateRequest(newRequest);
+        daysOffProvider.CreateRequest(request);
+        var approverIds = daysOffProvider.GetApprovers(currentUserId).Select(approver=> approver.Id);
+        if (!approverIds.Any())
+            return true;
+
+        daysOffProvider.CreateApprovals(approverIds, request.Id);
 
         return true;
     }
