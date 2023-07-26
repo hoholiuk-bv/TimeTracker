@@ -30,7 +30,7 @@ export const UserDetails = () => {
 
   useEffect(() => {
     dispatch(receiveUser(null));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if(id !== undefined) {
@@ -53,7 +53,6 @@ export const UserDetails = () => {
 
   const onSubmit = (values: UpdateUserInput) => {
     confirmationModalShow(values);
-    console.log('onSubmit: ', values);
   };
 
   const initialValues: UpdateUserInput = {
@@ -160,7 +159,7 @@ export const UserDetails = () => {
             </Row>
             <Row>
               <Col className="admin-checkbox-group mt-2 d-flex justify-content-end align-items-center gap-4">
-                {currentUserInfo && currentUserInfo.email !== user.email && (
+                {currentUserInfo && currentUserInfo.id !== user.id && (
                   <>
                     <FormGroup>
                       <FormLabel htmlFor='isActive'>User is active</FormLabel>

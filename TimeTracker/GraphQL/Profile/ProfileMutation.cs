@@ -131,7 +131,6 @@ namespace TimeTracker.GraphQL.Profile
                 Id = authenticatedUser.Id,
                 Name = authenticatedUser.Name,
                 Surname = authenticatedUser.Surname,
-                Email = authenticatedUser.Email,
                 Permissions = userContext.GetGrantedPermissions()
             };
         }

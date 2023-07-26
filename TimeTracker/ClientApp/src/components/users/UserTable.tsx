@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { UserRow } from './UserRow';
 import { User } from '../../behavior/users/types';
 import { SortingInput, SortingOrder } from '../../behavior/common/types';
 import { SortIcon } from '../common/elements/SortIcon';
-import { ConfirmationModal } from './ConfirmationModal';
 
 type Props = {
   userList: User[];
@@ -12,9 +11,6 @@ type Props = {
 };
 
 export const UserTable = ({ userList, sorting, setSorting }: Props) => {
-  const [userId, setUserId] = useState('');
-  const confirmationModalClose = () => setUserId('');
-  const confirmationModalShow = (userId: string) => setUserId(userId);
   const defaultSortingField = 'EmploymentDate';
 
   const handleSortingColumnClick = (fieldName: string) => {
@@ -23,11 +19,11 @@ export const UserTable = ({ userList, sorting, setSorting }: Props) => {
     }
     else {
       switch (sorting.sortingOrder) {
-      case SortingOrder.Ascending:
-        setSorting(previousSorting => ({ ...previousSorting, sortingOrder: SortingOrder.Descending }));
-        break;
-      case SortingOrder.Descending:
-        setSorting({ sortingField: defaultSortingField, sortingOrder: SortingOrder.Ascending });
+        case SortingOrder.Ascending:
+          setSorting(previousSorting => ({ ...previousSorting, sortingOrder: SortingOrder.Descending }));
+          break;
+        case SortingOrder.Descending:
+          setSorting({ sortingField: defaultSortingField, sortingOrder: SortingOrder.Ascending });
       }
     }
   };
@@ -57,11 +53,10 @@ export const UserTable = ({ userList, sorting, setSorting }: Props) => {
         </thead>
         <tbody>
           {userList.map((user) => (
-            <UserRow key={user.id} user={user} confirmationModalShow={confirmationModalShow} />
+            <UserRow key={user.id} user={user} />
           ))}
         </tbody>
       </table>
-      <ConfirmationModal userId={userId} handleClose={confirmationModalClose}/>
     </>
   );
 };

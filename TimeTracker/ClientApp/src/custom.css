@@ -244,9 +244,9 @@ ul.pagination .active a {
     color: #42A5F5;
 }
 
-.hide-action {
+.hidden-marker {
     color: #B0BEC5;
-    width: 28px;
+    margin-left: 0.5em;
 }
 
 .sortableColumn {
