@@ -30,6 +30,9 @@ namespace TimeTracker.GraphQL.Approvals.Types
 
             Field<BooleanGraphType>("IsEditable")
                 .Description("The flag indicating whether approval is editable.");
+
+            Field<StringGraphType>("DeclineReason")
+                .Description("The reason of approval rejection.");
         }
     }
 }

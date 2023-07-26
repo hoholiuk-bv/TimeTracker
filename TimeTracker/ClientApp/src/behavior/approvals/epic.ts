@@ -20,15 +20,15 @@ const epic: Epic<ApprovalsActions | any> = (actions$, state$) => {
     )),
   );
 
-  const toggleApprovalStatus$ = actions$.pipe(
+  const changeApprovalStatus$ = actions$.pipe(
     ofType(CHANGE_APPROVAL_STATUS),
     map(action => action.payload),
-    mergeMap(({ requestId, status }) => sendRequest(changeApprovalStatusMutation, { requestId, status }).pipe(
+    mergeMap(({ requestId, status, declineReason }) => sendRequest(changeApprovalStatusMutation, { requestId, status, declineReason }).pipe(
       map(() => requestApprovalsList(state$.value.approvals.sorting, state$.value.approvals.paging))
     )),
   );
 
-  return merge(requestApprovalsList$, toggleApprovalStatus$);
+  return merge(requestApprovalsList$, changeApprovalStatus$);
 };
 
 export default epic;

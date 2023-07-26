@@ -7,7 +7,7 @@ import { SortIcon } from '../common/elements/SortIcon';
 import { requestApprovalsList, changeApprovalsListSorting } from '../../behavior/approvals/actions';
 
 export const ApprovalList = () => {
-  const defaultSortingField = 'EmployeeName';
+  const defaultSortingField = 'StartDate';
 
   const dispatch = useDispatch();
   const { list: approvals, sorting } = useSelector((state: RootState) => state.approvals);

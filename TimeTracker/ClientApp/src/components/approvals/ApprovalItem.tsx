@@ -6,20 +6,26 @@ import { useDispatch } from 'react-redux';
 import { changeApprovalStatus } from '../../behavior/approvals/actions';
 import { DayOffApprovalStatus } from '../../behavior/common/types';
 import { DayOffRequestStatusTitle, getApprovalStatusClass } from '../common/helpers';
+import { DeclineReasonModal } from './DeclineReasonModal';
+import { Tooltip } from '../common/elements/Tooltip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
   item: DayOffApproval
 }
 
-
 export const ApprovalItem = ({ item }: Props) => {
-  const { employeeName, employeeSurname, startDate, finishDate, status, isEditable } = item;
+  const { employeeName, employeeSurname, startDate, finishDate, status, isEditable, declineReason } = item;
   const [showActionButtons, setShowActionButtons] = useState(status === DayOffApprovalStatus.Pending && isEditable);
   const dispatch = useDispatch();
-  const handleStatusChange = (status: DayOffApprovalStatus) => {
-    dispatch(changeApprovalStatus(item.requestId, status));
+  const handleStatusChange = (status: DayOffApprovalStatus, declineReason?: string) => {
+    dispatch(changeApprovalStatus(item.requestId, status, declineReason));
     setShowActionButtons(false);
   };
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <>
@@ -34,13 +40,17 @@ export const ApprovalItem = ({ item }: Props) => {
           {finishDate}
         </td>
         <td className={getApprovalStatusClass(status)}>
-          {DayOffRequestStatusTitle[status]}
+          {status === DayOffApprovalStatus.Pending && !isEditable ? 'Outdated' : DayOffRequestStatusTitle[status]}
+          {status === DayOffApprovalStatus.Declined &&
+            <Tooltip text={declineReason}><span className="ms-2"><FontAwesomeIcon icon={faCircleInfo} /></span>
+            </Tooltip>}
         </td>
         <td className='action-buttons'>
           {showActionButtons &&
             <ButtonGroup size='sm'>
               <Button size='sm' onClick={() => handleStatusChange(DayOffApprovalStatus.Approved)}>Approve</Button>
-              <Button size='sm' onClick={() => handleStatusChange(DayOffApprovalStatus.Declined)}>Decline</Button>
+              <Button size='sm' onClick={handleShow}>Decline</Button>
+              <DeclineReasonModal show={show} handleClose={handleClose} handleStatusChange={handleStatusChange} />
             </ButtonGroup>}
           {!showActionButtons && isEditable &&
             <Button size='sm' onClick={() => setShowActionButtons(true)}>Change</Button>
