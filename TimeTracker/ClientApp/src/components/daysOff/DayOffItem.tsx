@@ -1,5 +1,5 @@
 import React from 'react';
-import { DayOffType } from '../../behavior/daysOff/types';
+import { DayOffRequest } from '../../behavior/daysOff/types';
 import { DayOffRequestStatusTitle, getApprovalStatusClass } from '../common/helpers';
 import { Tooltip } from '../common/elements/Tooltip';
 import { DayOffApprovalStatus } from '../../behavior/common/types';
@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
-  item: DayOffType
+  item: DayOffRequest
 }
 
 export const DayOffItem = ({ item }: Props) => {

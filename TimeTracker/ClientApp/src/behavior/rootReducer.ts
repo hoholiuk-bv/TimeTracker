@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import { daysOffReducer } from './daysOff';
-import {approvalsReducer} from './approvals';
+import { approvalsReducer } from './approvals';
 import { profileReducer } from './profile';
 import { usersReducer } from './users';
 import { userCreationReducer } from './userCreation';
-import {userDetailsReducer} from './userDetails';
+import { userDetailsReducer } from './userDetails';
 
 
 export default combineReducers({

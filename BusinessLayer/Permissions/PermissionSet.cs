@@ -10,7 +10,7 @@
             {
                 new ManageUsersPermission(),
                 new ConfigureCalendarPermission(),
-                new WorktimePermission()
+                new UseWorktimeTimerPermission()
             };
         }
     }
@@ -19,6 +19,6 @@
     {
         ManageUsers,
         ConfigureCalendar,
-        Worktime
+        UseWorktimeTimer,
     }
 }

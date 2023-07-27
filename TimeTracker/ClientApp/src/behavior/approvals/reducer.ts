@@ -5,13 +5,13 @@ import { ApprovalsListSortingChangedAction, APPROVALS_LIST_RECEIVED, APPROVALS_L
 import { ApprovalsReceivedAction } from './actions';
 
 export type ApprovalsState = {
-  list: DayOffApproval[],
+  list: DayOffApproval[] | null,
   paging: PagingInput,
   sorting: SortingInput,
 };
 
 const initialState: ApprovalsState = {
-  list: [],
+  list: null,
   paging: {
     pageNumber: 1,
     pageSize: 10,

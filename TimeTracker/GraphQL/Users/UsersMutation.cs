@@ -12,13 +12,13 @@ namespace TimeTracker.GraphQL.Users
     {
         private readonly IUserProvider userProvider;
         private readonly IAuthenticationService authenticationService;
-        private readonly IDayOffRequestApproversProvider dayOffRequestApproversProvider;
+        private readonly IDaysOffProvider dayOffProvider;
 
-        public UsersMutation(IUserProvider userProvider, IDayOffRequestApproversProvider dayOffRequestApproversProvider, IAuthenticationService authenticationService)
+        public UsersMutation(IUserProvider userProvider, IDaysOffProvider dayOffProvider, IAuthenticationService authenticationService)
         {
             this.userProvider = userProvider;
             this.authenticationService = authenticationService;
-            this.dayOffRequestApproversProvider = dayOffRequestApproversProvider;
+            this.dayOffProvider = dayOffProvider;
 
             Field<BooleanGraphType>("UserCreation")
                 .Description("Create a new user")
@@ -59,10 +59,10 @@ namespace TimeTracker.GraphQL.Users
 
                     if (updatedUser != null)
                     {
-                        dayOffRequestApproversProvider.DeleteApproversByUserId(updatedUser.Id);
+                        dayOffProvider.DeleteApproversForUser(updatedUser.Id);
 
                         foreach (Guid approverId in input.ApproversIdList)
-                            dayOffRequestApproversProvider.Create(user.Id, approverId);
+                            dayOffProvider.CreateApproverForUser(user.Id, approverId);
                     }
 
                     return updatedUser;
@@ -94,7 +94,7 @@ namespace TimeTracker.GraphQL.Users
             if (isUserCreated)
             {
                 foreach (Guid approverId in approversIdentificators)
-                    dayOffRequestApproversProvider.Create(user.Id, approverId);
+                    dayOffProvider.CreateApproverForUser(user.Id, approverId);
 
                 return true;
             }

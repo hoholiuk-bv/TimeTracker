@@ -3,12 +3,13 @@ using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Users.Types;
 using DataLayer.Models;
+using TimeTracker.GraphQL.DaysOff.Types;
 
 namespace TimeTracker.GraphQL.Users
 {
     public class UsersQuery : ObjectGraphType
     {
-        public UsersQuery(IUserProvider userProvider, IDayOffRequestApproversProvider dayOffRequestApproversProvider) 
+        public UsersQuery(IUserProvider userProvider, IDaysOffProvider daysOffProvider)
         {
             Field<ListGraphType<UserType>>("list")
                 .Description("Get list of users")
@@ -17,7 +18,7 @@ namespace TimeTracker.GraphQL.Users
                 .Argument<PaginationInputType>("pagination", "Pagination type")
                 .Resolve(context =>
                 {
-                    FilterModel? filter = context.GetArgument<FilterModel?>("filter");
+                    UserFilter? filter = context.GetArgument<UserFilter?>("filter");
                     Sorting? sorting = context.GetArgument<Sorting?>("sorting");
                     Paging? pagination = context.GetArgument<Paging?>("pagination");
 
@@ -42,17 +43,17 @@ namespace TimeTracker.GraphQL.Users
                 .Argument<FilterInputType>("filter", "Filter type")
                 .Resolve(context =>
                 {
-                    FilterModel? filter = context.GetArgument<FilterModel?>("filter");
+                    UserFilter? filter = context.GetArgument<UserFilter?>("filter");
                     return userProvider.GetTotalUsersCount(filter);
                 });
 
-            Field<ListGraphType<ApproverType>>("approverList")
+            Field<ListGraphType<DayOffRequestApproverType>>("approverList")
                 .Description("Get list of approvers by user ID")
                 .Argument<GuidGraphType>("id", "User ID")
                 .Resolve(context =>
                 {
                     Guid id = context.GetArgument<Guid>("id");
-                    return dayOffRequestApproversProvider.GetApproversByUserId(id);
+                    return daysOffProvider.GetApprovers(id);
                 });
         }
     }

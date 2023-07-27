@@ -126,8 +126,8 @@ th {
     border: none;
 }
 
-.table-striped > tbody > tr:nth-child(odd) > td,
-.table-striped > tbody > tr:nth-child(odd) > th {
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
     background-color: #F4F5F9 !important;
     box-shadow: none;
 }
@@ -263,7 +263,7 @@ th {
 }
 
 td.action-buttons {
-    text-align: center;
+    text-align: end;
 }
 
 .btn-link {
@@ -281,4 +281,8 @@ td.action-buttons {
 
 .color-orange {
     color: #FF9800 !important;
+}
+
+.alert-secondary {
+    background-color: #F4F5F9 !important;
 }

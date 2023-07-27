@@ -9,7 +9,7 @@ namespace DataLayer.Providers
     {
         public static class Users
         {
-            public static string GetAll(FilterModel? filter, Sorting? sort, Paging? pagination)
+            public static string GetAll(UserFilter? filter, Sorting? sort, Paging? pagination)
             {
                 string filterQuery = AddFiltering(filter);
 
@@ -30,7 +30,7 @@ namespace DataLayer.Providers
                 return sqlQuery;
             }
 
-            public static string GetTotalUsersCount(FilterModel? filter)
+            public static string GetTotalUsersCount(UserFilter? filter)
             {
                 string filterQuery = AddFiltering(filter);
 
@@ -43,7 +43,7 @@ namespace DataLayer.Providers
                 return sqlQuery;
             }
 
-            private static string AddFiltering(FilterModel? filter)
+            private static string AddFiltering(UserFilter? filter)
             {
                 if (filter == null)
                     return "";
@@ -145,7 +145,7 @@ namespace DataLayer.Providers
                 {AddSorting(sorting)} 
                 {AddPaging(paging)}";
 
-            public static string GetApprovers = @"SELECT Users.Id, Users.Name, Users.Surname 
+            public static string GetApprovers = @"SELECT Users.Id, Users.Name, Users.Surname, Users.Email
                                                   FROM DayOffRequestApprovers 
                                                   JOIN Users ON (Users.Id=DayOffRequestApprovers.ApproverId)
                                                   WHERE DayOffRequestApprovers.UserId=@UserId";
@@ -177,7 +177,7 @@ namespace DataLayer.Providers
 
             public static string CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId) =>
                 $@"INSERT INTO DayOffRequestApprovals 
-                   VALUES {string.Join(',', approverIds.Select(approverId => $"('{requestId}','{approverId}', {(int)DayOffApprovalStatus.Pending})"))}";
+                   VALUES {string.Join(',', approverIds.Select(approverId => $"('{requestId}','{approverId}', {(int)DayOffApprovalStatus.Pending}, NULL)"))}";
         }
 
         public static class Worktime

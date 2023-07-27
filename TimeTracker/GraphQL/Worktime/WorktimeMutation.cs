@@ -1,14 +1,12 @@
-﻿    using BusinessLayer.Authentication;
-    using DataLayer.Entities;
-    using DataLayer.Providers;
-    using GraphQL;
-    using GraphQL.Types;
-    using TimeTracker.GraphQL.Users.Types;
-    using TimeTracker.GraphQL.Worktime.Types;
+﻿using BusinessLayer.Authentication;
+using DataLayer.Providers;
+using GraphQL;
+using GraphQL.Types;
+using TimeTracker.GraphQL.Worktime.Types;
 
-    namespace TimeTracker.GraphQL.Worktime;
+namespace TimeTracker.GraphQL.Worktime;
 
-    public class WorktimeMutation : ObjectGraphType
+public class WorktimeMutation : ObjectGraphType
     {
         private readonly IWorktimeProvider worktimeProvider;
         public WorktimeMutation(IWorktimeProvider worktimeProvider, IAuthenticationService authenticationService)

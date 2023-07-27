@@ -12,5 +12,6 @@ public class DayOffRequestApproverType : ObjectGraphType<DayOffRequestApprover>
         Field<IdGraphType>("Id");
         Field<StringGraphType>("Name");
         Field<StringGraphType>("Surname");
+        Field<StringGraphType>("Email");
     }
 }
