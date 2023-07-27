@@ -1,10 +1,10 @@
-import {mergeMap, map, merge} from 'rxjs';
-import {Epic, ofType} from 'redux-observable';
-import {sendRequest} from '../graphApi';
+import { mergeMap, map, merge } from 'rxjs';
+import { Epic, ofType } from 'redux-observable';
+import { sendRequest } from '../graphApi';
 
 import {
   USER_LIST_REQUESTED,
-  receiveUserList,
+  userListReceived,
   TOGGLE_ACTIVITY_STATUS_REQUESTED,
   activityStatusToggled,
 } from './actions';
@@ -20,7 +20,7 @@ const epic: Epic<any> = (actions$, state$) => {
       sorting: variables.sorting, 
       pagination: variables.pagination
     }).pipe(
-      map(({users}) => receiveUserList(users.list, users.totalUsersCount))
+      map(({users}) => userListReceived(users.list, users.totalUsersCount))
     )),
   );
 

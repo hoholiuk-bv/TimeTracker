@@ -1,45 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { RootState } from '../../behavior/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestUserList } from '../../behavior/users/actions';
 import { UserPagination } from './UserPagination';
 import { UserSearchPanel } from './UserSearchPanel';
 import { UserTable } from './UserTable';
-import { FilterType } from '../../behavior/users/types';
-import { PagingInput, SortingInput, SortingOrder } from '../../behavior/common/types';
 import { Alert } from 'react-bootstrap';
 
 export const UserListPage = () => {
   const dispatch = useDispatch();
-  const userList = useSelector((state: RootState) => state.users.list);
-  const totalUsersCount = useSelector((state: RootState) => state.users.totalUsersCount);
-
-  const [filter, setFilter] = useState<FilterType>({ searchText: '', startEmploymentDate: null, endEmploymentDate: null, employmentTypes: [] });
-  const [sorting, setSorting] = useState<SortingInput>({ sortingField: 'EmploymentDate', sortingOrder: SortingOrder.Ascending });
-  const [pagination, setPagination] = useState<PagingInput>({ pageSize: 10, pageNumber: 1 });
+  const { list, totalUsersCount, sorting, filtering, paging } = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
-    setPagination((prevPagination: any) => ({
-      ...prevPagination,
-      pageNumber: 1
-    }));
-  }, [filter]);
+    dispatch(requestUserList(filtering, sorting, paging));
+  }, [dispatch, filtering, sorting, paging]);
 
-  useEffect(() => {
-    dispatch(requestUserList(filter, sorting, pagination));
-  }, [dispatch, filter, sorting, pagination]);
+  if (list === null)
+    return null;
 
   return (
     <>
       <h1 className="mb-3">Users</h1>
-      <UserSearchPanel filter={filter} setFilter={setFilter} />
+      <UserSearchPanel filtering={filtering} />
       {totalUsersCount === 0 && (
         <Alert variant='secondary'>User not found.</Alert>
       )}
-      {userList.length > 0 && (
+      {list.length > 0 && (
         <>
-          <UserTable userList={userList} sorting={sorting} setSorting={setSorting} />
-          <UserPagination totalUsersCount={totalUsersCount} pagination={pagination} setPagination={setPagination} />
+          <UserTable userList={list} sorting={sorting} />
+          <UserPagination totalUsersCount={totalUsersCount} paging={paging} />
         </>
       )}
     </>
