@@ -1,5 +1,4 @@
 ﻿using DataLayer.Models;
-using System;
 using System.Data;
 using static DataLayer.Constants;
 
@@ -76,12 +75,6 @@ namespace DataLayer.Providers
 
                 return filterQuery;
             }
-
-            public const string ToggleActivityStatus = @"
-                UPDATE Users
-                SET IsActive = IsActive ^ 1
-                WHERE Id = @Id;
-            ";
 
             public const string Save = @"
                 INSERT INTO Users (Id, Name, Surname, Email, Password, Salt, IsAdmin, EmploymentDate, EmploymentType, WorkingHoursCount)

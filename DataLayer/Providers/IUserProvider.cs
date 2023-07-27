@@ -18,7 +18,5 @@ namespace DataLayer.Providers
         User? Update(User user);
 
         int GetTotalUsersCount(UserFilter? filter);
-
-        int ToggleActivityStatus(Guid id);
     }
 }

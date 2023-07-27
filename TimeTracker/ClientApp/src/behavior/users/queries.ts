@@ -25,12 +25,3 @@ query(
     )
   }
 }`;
-
-export const getToggleActivityStatusQuery = `
-mutation(
-  $id: Guid!
-) {
-  users {
-    toggleActivityStatus(id: $id)
-  }
-}`;

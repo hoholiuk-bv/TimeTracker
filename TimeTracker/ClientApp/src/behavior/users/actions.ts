@@ -15,18 +15,6 @@ export const userListReceived = (userList: User[], totalUsersCount: number) => (
   payload: { userList, totalUsersCount },
 });
 
-export const TOGGLE_ACTIVITY_STATUS_REQUESTED = 'TOGGLE_ACTIVITY_STATUS_REQUESTED' as const;
-export const requestToggleActivityStatus = (id: string) => ({
-  type: TOGGLE_ACTIVITY_STATUS_REQUESTED,
-  payload: { id },
-});
-
-export const ACTIVITY_STATUS_TOGGLED = 'ACTIVITY_STATUS_TOGGLED' as const;
-export const activityStatusToggled = (id: string) => ({
-  type: ACTIVITY_STATUS_TOGGLED,
-  payload: { id },
-});
-
 export const USER_LIST_SORTING_CHANGED = 'USER_LIST_SORTING_CHANGED' as const;
 export const changeUserListSorting = (sorting: SortingInput) => ({
   type: USER_LIST_SORTING_CHANGED,
@@ -46,7 +34,6 @@ export const changeUserListPaging = (paging: PagingInput) => ({
 });
 
 export type UserListReceivedAction = ReturnType<typeof userListReceived>;
-export type ActivityStatusToggledAction = ReturnType<typeof activityStatusToggled>;
 export type UserListSortingChangedAction = ReturnType<typeof changeUserListSorting>;
 export type UserListFilteringChangedAction = ReturnType<typeof changeUserListFiltering>;
 export type UserListPagingChangedAction = ReturnType<typeof changeUserListPaging>;
