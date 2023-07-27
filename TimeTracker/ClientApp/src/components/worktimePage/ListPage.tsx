@@ -29,5 +29,5 @@ export const ListPage = ({ users }: Props) => {
             </div>
         </div>
 
-    );
+  );
 };

@@ -14,6 +14,7 @@ export enum DayOffRequestType {
 
 type DayOffApprovalType = {
   status: DayOffApprovalStatus,
+  declineReason: string | null,
   approver: {
     id: string,
     name: string,

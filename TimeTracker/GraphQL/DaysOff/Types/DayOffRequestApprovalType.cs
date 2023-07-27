@@ -11,6 +11,7 @@ namespace TimeTracker.GraphQL.DaysOff.Types
             Name = "DayOffRequestApproval";
             Field<NonNullGraphType<DayOffRequestApproverType>>("Approver");
             Field<NonNullGraphType<EnumerationGraphType<DayOffApprovalStatus>>>("Status");
+            Field<StringGraphType>("DeclineReason");
         }
     }
 }

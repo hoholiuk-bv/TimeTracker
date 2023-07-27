@@ -19,4 +19,6 @@ public class DayOffRequestApproval
     public DayOffApprovalStatus Status { get; set; }
 
     public bool IsEditable => StartDate.Date > DateTime.Now.Date;
+
+    public string DeclineReason { get; set; } = null!;
 }

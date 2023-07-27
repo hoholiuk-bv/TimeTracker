@@ -15,6 +15,7 @@ daysOff {
       reason
       approvals {
         status
+        declineReason
         approver {
           name
           surname
