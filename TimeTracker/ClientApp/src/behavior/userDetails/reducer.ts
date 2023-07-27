@@ -1,15 +1,15 @@
 import { createReducer } from '@reduxjs/toolkit';
 import type { User } from '../users/types';
-import type { User as Approver } from '../userCreation/types';
+import type { ApproverInfo } from '../userCreation/types';
 import {
   USER_RECEIVED, UserReceivedAction,
   APPROVERS_RECEIVED, ApproversReceivedAction,
-  USER_UPDATE_RECEIVED, UpdatedUserReceivedAction
+  USER_UPDATED, UpdatedUserReceivedAction
 } from './actions';
 
 export type userCreationState = {
   details: User | null,
-  approvers: Approver[],
+  approvers: ApproverInfo[],
 };
 
 const initialState: userCreationState = {
@@ -20,7 +20,7 @@ const initialState: userCreationState = {
 export default createReducer(initialState, {
   [USER_RECEIVED]: onUserReceived,
   [APPROVERS_RECEIVED]: onApproversReceived,
-  [USER_UPDATE_RECEIVED]: onUserUpdateReceived,
+  [USER_UPDATED]: onUserUpdateReceived,
 });
 
 function onUserReceived(state: userCreationState, action: UserReceivedAction): userCreationState {

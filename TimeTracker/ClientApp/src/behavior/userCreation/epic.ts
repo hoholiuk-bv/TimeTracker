@@ -1,15 +1,13 @@
 ﻿import { mergeMap, map, merge } from 'rxjs';
 import {
   USER_CREATION,
-  SHORT_USER_LIST_REQUESTED,
-  CreationActions,
-  receiveUserList,
+  SHORT_USER_LIST_REQUESTED, receiveUserList,
 } from './actions';
 import { Epic, ofType } from 'redux-observable';
 import { sendRequest } from '../graphApi';
 import { creationMutation, getUsersQuery } from './queries';
 
-const epic: Epic<CreationActions | any> = (actions$, state$) => {
+const epic: Epic<any> = (actions$, state$) => {
   const requestUsers$ = actions$.pipe(
     ofType(SHORT_USER_LIST_REQUESTED),
     map(action => action.payload),

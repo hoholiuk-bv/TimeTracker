@@ -4,14 +4,14 @@ import { Layout } from './components/layout/Layout';
 import { UserListPage } from './components/users/UserListPage';
 import { routes } from './behavior/routing';
 import { NotFound } from './components/common/NotFound';
-import { CreationForm } from './components/creationForm/CreationForm';
+import { UserCreationPage } from './components/userCreation/UserCreationPage';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Page } from './components/common/Page';
 import { PermissionType } from './behavior/profile/types';
 import { WorktimePage } from './components/worktimePage/WorktimePage';
 import { DaysOffPage } from './components/daysOff/DaysOffPage';
 import { ApprovalsPage } from './components/approvals/ApprovalsPage';
-import { UserDetails } from './components/userDetails/UserDetails';
+import { UserDetailsPage } from './components/userDetails/UserDetailsPage';
 
 const App = () => {
   return (
@@ -25,7 +25,7 @@ const App = () => {
               path={routes.users.creation}
               element={
                 <Page requiredPermissions={[PermissionType.ManageUsers]}>
-                  <CreationForm />
+                  <UserCreationPage />
                 </Page>
               } />
             <Route
@@ -39,7 +39,7 @@ const App = () => {
               path={routes.users.details}
               element={
                 <Page requiredPermissions={[PermissionType.ManageUsers]}>
-                  <UserDetails />
+                  <UserDetailsPage />
                 </Page>
               } />
             <Route

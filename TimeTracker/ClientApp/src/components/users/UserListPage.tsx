@@ -6,7 +6,8 @@ import { UserPagination } from './UserPagination';
 import { UserSearchPanel } from './UserSearchPanel';
 import { UserTable } from './UserTable';
 import { FilterType } from '../../behavior/users/types';
-import {PagingInput, SortingInput, SortingOrder} from '../../behavior/common/types';
+import { PagingInput, SortingInput, SortingOrder } from '../../behavior/common/types';
+import { Alert } from 'react-bootstrap';
 
 export const UserListPage = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ export const UserListPage = () => {
       <h1 className="mb-3">Users</h1>
       <UserSearchPanel filter={filter} setFilter={setFilter} />
       {totalUsersCount === 0 && (
-        <div className="h5 alert alert-danger">User not found.</div>
+        <Alert variant='secondary'>User not found.</Alert>
       )}
       {userList.length > 0 && (
         <>
