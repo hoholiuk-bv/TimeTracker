@@ -9,13 +9,14 @@ query($sorting: SortingInput!, $paging: PagingInput!) {
       employeeSurname
       status
       isEditable
+      declineReason
     }
   }
 }`;
 
 export const changeApprovalStatusMutation = `
-mutation($requestId: ID!, $status: DayOffApprovalStatus!) {
+mutation($requestId: ID!, $status: DayOffApprovalStatus!, $declineReason: String) {
   approvals {
-    changeApprovalStatus(requestId: $requestId, status: $status)
+    changeApprovalStatus(requestId: $requestId, status: $status, declineReason: $declineReason)
   }
 }`;

@@ -7,5 +7,7 @@ namespace DataLayer.Entities
         public DayOffRequestApprover Approver { get; set; } = null!;
 
         public DayOffApprovalStatus Status { get; set; }
+
+        public string DeclineReason { get; set; } = null!;
     }
 }

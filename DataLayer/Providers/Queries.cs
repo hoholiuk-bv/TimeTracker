@@ -161,21 +161,23 @@ namespace DataLayer.Providers
 	                                                ,[Users].Name as EmployeeName
 	                                                ,[Users].Surname as EmployeeSurname
  	                                                ,DayOffRequestApprovals.Status
+                                                    ,DayOffRequestApprovals.DeclineReason
                                                     FROM [TimeTracker].[dbo].[DayOffRequests]
                                                     JOIN DayOffRequestApprovers on DayOffRequestApprovers.UserId = [DayOffRequests].UserId  
                                                     JOIN Users on Users.Id = DayOffRequestApprovers.UserId 
-                                                    JOIN DayOffRequestApprovals on DayOffRequestApprovals.RequestId = DayOffRequests.Id AND DayOffRequestApprovals.ApproverId = DayOffRequestApprovers.ApproverId
+                                                    JOIN DayOffRequestApprovals on DayOffRequestApprovals.RequestId = DayOffRequests.Id 
+                                                    AND DayOffRequestApprovals.ApproverId = DayOffRequestApprovers.ApproverId
 													WHERE DayOffRequestApprovers.ApproverId = @ApproverId
                                                     {AddSorting(sorting)}
                                                     {AddPaging(paging)}";
 
             public static string ChangeApprovalStatus = @"UPDATE DayOffRequestApprovals
-                                                        SET Status = @Status
+                                                        SET Status = @Status, DeclineReason = @DeclineReason
                                                         WHERE RequestId = @RequestId AND ApproverId = @ApproverId";
 
             public static string CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId) =>
                 $@"INSERT INTO DayOffRequestApprovals 
-                   VALUES {string.Join(',', approverIds.Select(approverId => $"('{requestId}','{approverId}', {(int)DayOffApprovalStatus.Pending})"))}";
+                   VALUES {string.Join(',', approverIds.Select(approverId => $"('{requestId}','{approverId}', {(int)DayOffApprovalStatus.Pending}, NULL)"))}";
         }
 
         public static class Worktime

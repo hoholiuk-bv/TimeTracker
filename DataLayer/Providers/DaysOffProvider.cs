@@ -25,8 +25,8 @@ public class DaysOffProvider : Provider, IDaysOffProvider
     public List<DayOffRequestApproval> GetApprovals(Sorting sorting, Paging paging, Guid approverId)
         => Query<DayOffRequestApproval>(DaysOff.GetApprovals(sorting, paging), new { ApproverId = approverId });
 
-    public void ChangeApprovalStatus(Guid requestId, Guid approverId, DayOffApprovalStatus status)
-        => Execute(DaysOff.ChangeApprovalStatus, new { requestId, approverId, status });
+    public void ChangeApprovalStatus(Guid requestId, Guid approverId, DayOffApprovalStatus status, string declineReason)
+        => Execute(DaysOff.ChangeApprovalStatus, new { requestId, approverId, status, declineReason });
 
     public void CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId)
         => Execute(DaysOff.CreateApprovals(approverIds, requestId));
