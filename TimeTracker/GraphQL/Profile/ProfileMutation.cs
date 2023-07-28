@@ -65,7 +65,7 @@ namespace TimeTracker.GraphQL.Profile
                 WorkingHoursCount = Constants.MaxWorkingHours,
             };
 
-            userProvider.Save(user);
+            userProvider.Create(user);
 
             if (authenticationService.Authenticate(user, input.Password, out var token))
             {

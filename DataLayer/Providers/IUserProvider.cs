@@ -5,7 +5,7 @@ namespace DataLayer.Providers
 {
     public interface IUserProvider
     {
-        int Save(User user);
+        int Create(User user);
         
         bool CheckIfAnyExists();
 

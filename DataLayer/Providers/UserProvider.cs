@@ -17,8 +17,8 @@ namespace DataLayer.Providers
         public bool CheckIfAnyExists()
             => Query<User>(Queries.Users.CheckIfExists).Any();
 
-        public int Save(User user)
-            => Execute(Queries.Users.Save, user); 
+        public int Create(User user)
+            => Execute(Queries.Users.Create, user); 
         
         public User? Update(User user)
             => Query<User>(Queries.Users.Update, user).First();

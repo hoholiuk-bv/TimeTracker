@@ -76,7 +76,7 @@ namespace DataLayer.Providers
                 return filterQuery;
             }
 
-            public const string Save = @"
+            public const string Create = @"
                 INSERT INTO Users (Id, Name, Surname, Email, Password, Salt, IsAdmin, EmploymentDate, EmploymentType, WorkingHoursCount)
                 VALUES (@Id, @Name, @Surname, @Email, @Password, @Salt, @IsAdmin, @EmploymentDate, @EmploymentType, @WorkingHoursCount)
             ";

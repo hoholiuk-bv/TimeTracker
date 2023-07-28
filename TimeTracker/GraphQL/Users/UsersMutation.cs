@@ -79,7 +79,7 @@ namespace TimeTracker.GraphQL.Users
 
             List<Guid> approversIdentificators = input.ApproversIdList;
 
-            bool isUserCreated = 0 < userProvider.Save(user);
+            bool isUserCreated = 0 < userProvider.Create(user);
 
             if (isUserCreated)
             {
