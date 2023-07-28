@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { User } from '../../behavior/users/types';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../behavior/store';
 import { receiveUser, requestApprovers, requestUser } from '../../behavior/userDetails/actions';
-import {ApproverOptions, UserFormProps} from '../../behavior/userCreation/types';
-import type { ApproverInfo as Approver } from '../../behavior/userCreation/types';
+import { ApproverOptions, UserFormProps } from '../../behavior/userCreation/types';
 import { UserUpdateInput } from '../../behavior/userDetails/types';
 import { ConfirmationModal } from './ConfirmationModal';
 import { Alert } from 'react-bootstrap';
@@ -14,8 +12,7 @@ import { UserForm } from '../userCreation/UserForm';
 export const UserDetailsPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const user: User | null = useSelector((state: RootState) => state.userDetails.details);
-  const approvers: Approver[] = useSelector((state: RootState) => state.userDetails.approvers);
+  const { user, approvers } = useSelector((state: RootState) => state.userDetails);
   const [selectedApprovers, setSelectedApprovers] = useState<ApproverOptions[]>([]);
   const [updateUserValues, setUpdateUserValues] = useState<UserUpdateInput | null>(null);
   const confirmationModalClose = () => setUpdateUserValues(null);

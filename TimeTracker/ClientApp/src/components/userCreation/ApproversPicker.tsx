@@ -14,8 +14,8 @@ type Props = {
 
 export const ApproversPicker = ({selectedApprovers, setSelectedApprovers, excludeUserId}: Props) => {
   const dispatch = useDispatch();
-  const filter: FilterType = { searchText: '', startEmploymentDate: null, endEmploymentDate: null, employmentTypes: [] };
   const userList = useSelector((state: RootState) => state.userCreation.list);
+  const filter: FilterType = { searchText: '', startEmploymentDate: null, endEmploymentDate: null, employmentTypes: [] };
   const filteredUsers = userList.filter((user: ApproverInfo) => user.isActive && (!excludeUserId || user.id !== excludeUserId));
   const approversOptions: ApproverOptions[] = filteredUsers.map(user => ({
     value: user.id,

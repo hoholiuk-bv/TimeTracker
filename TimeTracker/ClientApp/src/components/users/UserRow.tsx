@@ -21,7 +21,7 @@ export const UserRow = ({ user }: Props) => {
     <tr>
       <td>
         {user.name + ' ' + user.surname}
-        {!user.isActive && <FontAwesomeIcon icon={faEyeSlash} className="hidden-marker" title="User is deactivated" />}
+        {!user.isActive && <FontAwesomeIcon icon={faEyeSlash} className="hidden-marker" title="User deactivated" />}
       </td>
       <td>
         {user.email}
