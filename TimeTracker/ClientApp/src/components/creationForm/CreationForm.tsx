@@ -39,7 +39,7 @@ export const CreationForm = () => {
     dispatch(userCreation({
       ...otherValues,
       approversIdList: selectedApprovers.map(options => options.value),
-      workingHoursCount: (hours !== null && hours < MaxWorkingHours) ? workingHoursCount : hours,
+      workingHoursCount: (hours !== null && hours < MaxWorkingHours) ? workingHoursCount : MaxWorkingHours,
     }));
 
     navigate(routes.users.list);
