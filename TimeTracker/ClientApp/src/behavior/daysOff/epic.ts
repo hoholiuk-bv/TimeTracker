@@ -24,7 +24,7 @@ const epic: Epic<DayOffActions | any> = (actions$, state$) => {
     ofType(DAYS_OFF_LIST_REQUESTED),
     map(action => action.payload),
     mergeMap(({ sorting, paging, filter }) => sendRequest(getDaysOffListQuery, { sorting, paging, filter }).pipe(
-      map(({ daysOff: { list } }) => receiveDaysOffList(list))
+      map(({ daysOff: { list, requestsCount } }) => receiveDaysOffList(list, requestsCount))
     )),
   );
 

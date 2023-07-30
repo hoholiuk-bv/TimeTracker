@@ -138,6 +138,11 @@ namespace DataLayer.Providers
                 {AddSorting(sorting)} 
                 {AddPaging(paging)}";
 
+            public static string GetRequestsCount(DayOffRequestFilter filter) => $@"
+                    SELECT COUNT (*)
+                    FROM DayOffRequests
+                    WHERE UserId='{filter.UserId}'";
+
             public static string GetApprovers = @"SELECT Users.Id, Users.Name, Users.Surname, Users.Email
                                                   FROM DayOffRequestApprovers 
                                                   JOIN Users ON (Users.Id=DayOffRequestApprovers.ApproverId)

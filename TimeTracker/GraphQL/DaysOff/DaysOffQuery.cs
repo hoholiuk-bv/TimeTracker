@@ -23,6 +23,11 @@ namespace TimeTracker.GraphQL.DaysOff
                 .Argument<SortingInputType>("Sorting")
                 .Argument<DayOffRequestFilterInputType>("Filter")
                 .Resolve(context => ResolveList(context));
+
+            Field<IntGraphType>("RequestsCount")
+                .Description("Get requests count")
+                .Argument<DayOffRequestFilterInputType>("Filter")
+                .Resolve(context => ResolveRequestsCount(context));
         }
 
         private List<DayOffRequest> ResolveList(IResolveFieldContext context)
@@ -57,6 +62,12 @@ namespace TimeTracker.GraphQL.DaysOff
                 request.Approvals = approvalResults;
             }
             return requests;
+        }
+
+        private int ResolveRequestsCount(IResolveFieldContext context)
+        {
+            var filter = context.GetArgument<DayOffRequestFilter>("filter");
+            return daysOffProvider.GetRequestsCount(filter);
         }
     }
 }

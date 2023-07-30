@@ -10,6 +10,8 @@ public interface IDaysOffProvider
 
     List<DayOffRequest> GetRequests(DayOffRequestFilter filter, Sorting sorting, Paging paging);
 
+    int GetRequestsCount(DayOffRequestFilter filter);
+
     List<DayOffRequestApprover> GetApprovers(Guid userId);
 
     void CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId);

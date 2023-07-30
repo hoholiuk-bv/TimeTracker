@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { RootState } from '../../behavior/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { requestUserList } from '../../behavior/users/actions';
-import { UserPagination } from './UserPagination';
+import { changeUserListPaging, requestUserList } from '../../behavior/users/actions';
 import { UserSearchPanel } from './UserSearchPanel';
 import { UserTable } from './UserTable';
 import { Alert } from 'react-bootstrap';
+import { Pagination } from '../common/elements/Pagination';
 
 export const UserListPage = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,10 @@ export const UserListPage = () => {
       {list.length > 0 && (
         <>
           <UserTable userList={list} sorting={sorting} />
-          <UserPagination totalUsersCount={totalUsersCount} paging={paging} />
+          <div className="d-flex justify-content-between">
+            <span><strong>Total records: {totalUsersCount}</strong></span>
+            <Pagination paging={paging} pagingUpdateAction={changeUserListPaging} itemCount={totalUsersCount} />
+          </div>
         </>
       )}
     </>

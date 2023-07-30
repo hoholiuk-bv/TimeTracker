@@ -22,5 +22,8 @@ daysOff {
         }
       }
     }
+    requestsCount(
+      filter: $filter
+    )
   }
 }`;
