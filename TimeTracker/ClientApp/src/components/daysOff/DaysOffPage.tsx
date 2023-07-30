@@ -9,9 +9,13 @@ import { RootState } from '../../behavior/store';
 export const DaysOffPage = () => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-  const { list, sorting } = useSelector((state: RootState) => state.daysOff);
+  const { list, sorting, filter } = useSelector((state: RootState) => state.daysOff);
+  const currentUserId = useSelector((state: RootState) => state.profile.userInfo?.id);
 
-  useEffect(() => { dispatch(requestDaysOffList(sorting, { pageNumber: 1, pageSize: 10 })); }, [dispatch, sorting]);
+  useEffect(() => {
+    if(currentUserId)
+      dispatch(requestDaysOffList(sorting, { pageNumber: 1, pageSize: 10 }, {...filter, userId: currentUserId}));
+  }, [dispatch, sorting, filter]);
 
   if (list === null)
     return null;

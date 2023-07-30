@@ -1,12 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { PagingInput, SortingInput, SortingOrder } from '../common/types';
-import { DaysOffListReceivedAction, DaysOffListSortingChangedAction, DAYS_OFF_LIST_RECEIVED, DAYS_OFF_LIST_SORTING_CHANGED } from './actions';
-import { DayOffRequest } from './types';
+import {
+  DAYS_OFF_LIST_RECEIVED, DaysOffListReceivedAction,
+  DAYS_OFF_LIST_SORTING_CHANGED, DaysOffListSortingChangedAction,
+  DAYS_OFF_LIST_FILTER_CHANGED, DaysOffListFilterChangedAction
+} from './actions';
+import {DayOffRequest, DayOffRequestFilterInput} from './types';
 
 export type DaysOffState = {
   list: DayOffRequest[] | null,
   paging: PagingInput,
   sorting: SortingInput,
+  filter: DayOffRequestFilterInput
 };
 
 const initialState: DaysOffState = {
@@ -18,12 +23,17 @@ const initialState: DaysOffState = {
   sorting: {
     sortingField: 'StartDate',
     sortingOrder: SortingOrder.Ascending,
+  },
+  filter: {
+    requestId: null,
+    userId: null,
   }
 };
 
 export default createReducer(initialState, {
   [DAYS_OFF_LIST_RECEIVED]: onDaysOffReceived,
   [DAYS_OFF_LIST_SORTING_CHANGED]: onDaysOffListSortingChanged,
+  [DAYS_OFF_LIST_FILTER_CHANGED]: onDaysOffListFilterChanged,
 });
 
 function onDaysOffReceived(state: DaysOffState, action: DaysOffListReceivedAction) {
@@ -36,4 +46,10 @@ function onDaysOffListSortingChanged(state: DaysOffState, action: DaysOffListSor
   const { sorting } = action.payload;
 
   return { ...state, sorting };
+}
+
+function onDaysOffListFilterChanged(state: DaysOffState, action: DaysOffListFilterChangedAction) {
+  const { filter } = action.payload;
+
+  return { ...state, filter };
 }

@@ -29,3 +29,8 @@ export type DayOffRequest = {
   reason: DayOffRequestType;
   approvals: DayOffApprovalType[];
 }
+
+export type DayOffRequestFilterInput = {
+  requestId: string | null;
+  userId: string | null;
+}
