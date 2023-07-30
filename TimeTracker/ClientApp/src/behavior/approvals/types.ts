@@ -8,5 +8,5 @@ export type DayOffApproval = {
   finishDate: string;
   status: DayOffApprovalStatus;
   isEditable: boolean;
+  declineReason: string | null;
 }
-

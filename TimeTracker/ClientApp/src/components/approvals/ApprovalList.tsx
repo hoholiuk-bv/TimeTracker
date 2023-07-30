@@ -13,7 +13,7 @@ type Props = {
 }
 
 export const ApprovalList = ({ approvals, sorting }: Props) => {
-  const defaultSortingField = 'EmployeeName';
+  const defaultSortingField = 'StartDate';
 
   const dispatch = useDispatch();
   const handleSortingColumnClick = (fieldName: string) => {

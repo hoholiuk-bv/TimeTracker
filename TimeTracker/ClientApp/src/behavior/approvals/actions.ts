@@ -15,9 +15,9 @@ export const receiveApprovalsList = (list: DayOffApproval[]) => ({
 });
 
 export const CHANGE_APPROVAL_STATUS = 'CHANGE_APPROVAL_STATUS' as const;
-export const changeApprovalStatus = (requestId: string, status: DayOffApprovalStatus) => ({
+export const changeApprovalStatus = (requestId: string, status: DayOffApprovalStatus, declineReason?: string) => ({
   type: CHANGE_APPROVAL_STATUS,
-  payload: { requestId, status }
+  payload: { requestId, status, declineReason }
 });
 
 export const APPROVALS_LIST_SORTING_CHANGED = 'APPROVALS_LIST_SORTING_CHANGED' as const;
@@ -29,7 +29,7 @@ export const changeApprovalsListSorting = (sorting: SortingInput) => ({
 export type ApprovalsRequestAction = ReturnType<typeof requestApprovalsList>;
 export type ApprovalsReceivedAction = ReturnType<typeof receiveApprovalsList>;
 export type ApprovalToggleStatusAction = ReturnType<typeof changeApprovalStatus>;
-export type ApprovalsListSortingChangedAction = ReturnType<typeof changeApprovalsListSorting>;
+export type ApprovalsListSortingChangedAction = ReturnType<typeof changeApprovalsListSorting>
 
 export type ApprovalsActions = ReturnType<
   | typeof requestApprovalsList

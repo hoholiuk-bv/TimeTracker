@@ -36,7 +36,7 @@ public class DaysOffMutation : ObjectGraphType
         };
 
         daysOffProvider.CreateRequest(request);
-        var approverIds = daysOffProvider.GetApprovers(currentUserId).Select(approver=> approver.Id);
+        var approverIds = daysOffProvider.GetApprovers(currentUserId).Select(approver => approver.Id);
         if (!approverIds.Any())
             return true;
 

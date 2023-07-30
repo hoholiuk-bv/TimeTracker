@@ -17,7 +17,7 @@ const initialState: ApprovalsState = {
     pageSize: 10,
   },
   sorting: {
-    sortingField: 'EmployeeName',
+    sortingField: 'StartDate',
     sortingOrder: SortingOrder.Ascending,
   }
 };
