@@ -5,6 +5,7 @@ using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Users.Types;
 using DataLayer;
+using DataLayer.Models;
 
 namespace TimeTracker.GraphQL.Users
 {
@@ -41,7 +42,7 @@ namespace TimeTracker.GraphQL.Users
                 .Resolve(context =>
                 {
                     var input = context.GetArgument<UpdateUserInput>("user");
-                    
+
                     var user = new User()
                     {
                         Id = Guid.Parse(input.Id),
@@ -63,6 +64,8 @@ namespace TimeTracker.GraphQL.Users
 
                         foreach (Guid approverId in input.ApproversIdList)
                             dayOffProvider.CreateApproverForUser(user.Id, approverId);
+
+                        UpdateDayOffApprovals(updatedUser.Id, input.ApproversIdList);
                     }
 
                     return updatedUser;
@@ -100,6 +103,26 @@ namespace TimeTracker.GraphQL.Users
             }
 
             return false;
+        }
+
+        private void UpdateDayOffApprovals(Guid userId, List<Guid> newApproverIds)
+        {
+            var filter = new DayOffRequestFilter() { UserId = userId, StartDate = DateTime.Now };
+            var activeRequestIds = dayOffProvider.GetActiveRequests(filter).Select(r => r.Id).ToList();
+            var activeApprovals = dayOffProvider.GetApprovals(activeRequestIds).GroupBy(a => a.RequestId);
+
+            foreach (var activeRequest in activeApprovals)
+            {
+                var activeApprovalIds = activeRequest.Select(a => a.ApproverId);
+                var removedApproverIds = activeRequest.Where(a => !newApproverIds.Contains(a.ApproverId)).Select(a => a.ApproverId);
+                var addedApproverIds = newApproverIds.Where(i => !activeApprovalIds.Contains(i));
+
+                if (addedApproverIds.Any())
+                    dayOffProvider.CreateApprovals(addedApproverIds, activeRequest.Key);
+
+                if (removedApproverIds.Any())
+                    dayOffProvider.DeleteApprovals(removedApproverIds, activeRequest.Key);
+            }
         }
     }
 }

@@ -22,6 +22,9 @@ public class DaysOffProvider : Provider, IDaysOffProvider
     public List<DayOffRequest> GetRequests(DayOffRequestFilter filter, Sorting sorting, Paging paging)
         => Query<DayOffRequest>(DaysOff.GetRequests(filter, sorting, paging));
 
+    public List<DayOffRequest> GetActiveRequests(DayOffRequestFilter filter)
+        => Query<DayOffRequest>(DaysOff.GetActiveRequests(filter));
+
     public List<DayOffRequestApproval> GetApprovals(Sorting sorting, Paging paging, Guid approverId)
         => Query<DayOffRequestApproval>(DaysOff.GetApprovals(sorting, paging), new { ApproverId = approverId });
 
@@ -30,6 +33,9 @@ public class DaysOffProvider : Provider, IDaysOffProvider
 
     public void CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId)
         => Execute(DaysOff.CreateApprovals(approverIds, requestId));
+
+    public void DeleteApprovals(IEnumerable<Guid> approverIds, Guid requestId)
+        => Execute(DaysOff.DeleteApprovals, new { ApproverIds = approverIds, RequestId = requestId });
 
     public void CreateApproverForUser(Guid userId, Guid approverId)
         => Execute(DayOffRequestApprovers.Create, new { UserId = userId, ApproverId = approverId });

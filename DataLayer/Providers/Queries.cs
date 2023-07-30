@@ -112,7 +112,7 @@ namespace DataLayer.Providers
             public const string GetByEmail = "select * from Users where Email = @Email";
 
             public const string GetById = "select * from Users where Id = @Id";
-            
+
         }
 
         public static class DayOffRequestApprovers
@@ -139,11 +139,14 @@ namespace DataLayer.Providers
         {
             public const string Create = "insert into DayOffRequests values(@Id, @UserId, @StartDate, @FinishDate, @Reason)";
 
-            public static string GetRequests(DayOffRequestFilter filter, Sorting sorting, Paging paging) =>
+            public static string GetRequests(DayOffRequestFilter filter, Sorting? sorting = null, Paging? paging = null) =>
                 $@"SELECT * FROM DayOffRequests 
                 WHERE UserId='{filter.UserId}'
                 {AddSorting(sorting)} 
                 {AddPaging(paging)}";
+
+            public static string GetActiveRequests(DayOffRequestFilter filter) =>
+                $@"{GetRequests(filter)} AND StartDate > '{filter.StartDate}'";
 
             public static string GetApprovers = @"SELECT Users.Id, Users.Name, Users.Surname, Users.Email
                                                   FROM DayOffRequestApprovers 
@@ -175,7 +178,9 @@ namespace DataLayer.Providers
 
             public static string CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId) =>
                 $@"INSERT INTO DayOffRequestApprovals 
-                   VALUES {string.Join(',', approverIds.Select(approverId => $"('{requestId}','{approverId}', {(int)DayOffApprovalStatus.Pending})"))}";
+                   VALUES {string.Join(',', approverIds.Select(approverId => $"('{requestId}','{approverId}', {(int)DayOffApprovalStatus.Pending}, NULL)"))}";
+
+            public static string DeleteApprovals = $@"DELETE DayOffRequestApprovals WHERE ApproverId IN @ApproverIds AND RequestId = @RequestId";
         }
 
         public static class Worktime
@@ -185,10 +190,10 @@ namespace DataLayer.Providers
             public const string GetWorktimeRecords = "select * from WorktimeRecords ORDER BY FinishDate DESC";
         }
 
-        private static string AddSorting(Sorting sorting)
-            => $@"ORDER BY {sorting.SortingField} {(sorting.SortingOrder == Constants.SortingOrder.Descending ? "DESC" : "ASC")}";
+        private static string AddSorting(Sorting? sorting)
+            => sorting != null ? $@"ORDER BY {sorting.SortingField} {(sorting.SortingOrder == SortingOrder.Descending ? "DESC" : "ASC")}" : string.Empty;
 
-        private static string AddPaging(Paging paging)
-            => $@"OFFSET ({paging.PageNumber} - 1) * {paging.PageSize} ROWS FETCH NEXT {paging.PageSize} ROWS ONLY";
+        private static string AddPaging(Paging? paging)
+            => paging != null ? $@"OFFSET ({paging.PageNumber} - 1) * {paging.PageSize} ROWS FETCH NEXT {paging.PageSize} ROWS ONLY" : string.Empty;
     }
 }
