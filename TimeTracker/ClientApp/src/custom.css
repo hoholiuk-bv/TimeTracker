@@ -126,8 +126,8 @@ th {
     border: none;
 }
 
-.table-striped>tbody>tr:nth-child(odd)>td,
-.table-striped>tbody>tr:nth-child(odd)>th {
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
     background-color: #F4F5F9 !important;
     box-shadow: none;
 }
@@ -287,3 +287,52 @@ td.action-buttons {
     background-color: #F4F5F9 !important;
 }
 
+/*worktime*/
+
+.session-start-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-left: 6rem;
+}
+
+.session-start-message .alert {
+    background: rgba(46, 139, 87, 0.7);
+    padding: 0.2rem;
+}
+
+.session-start-message p {
+    padding: 0.25rem;
+}
+
+.session-start-message .btn-close {
+    width: 0.75rem;
+    height: 0.75rem;
+    font-size: 0.75rem;
+}
+
+.session-end-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-left: 6rem;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.session-end-message .alert {
+    background: rgba(255, 0, 0, 0.7);
+    padding: 0.2rem;
+}
+
+.session-end-message p {
+    padding: 0.25rem;
+}
+
+.session-end-message .btn-close {
+    width: 0.75rem;
+    height: 0.75rem;
+    font-size: 0.75rem;
+}

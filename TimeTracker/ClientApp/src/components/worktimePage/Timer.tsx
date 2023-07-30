@@ -4,6 +4,8 @@ import {WorktimeInput} from '../../behavior/worktime/types';
 import {Field, Form, Formik} from 'formik';
 import {worktimeCreation} from '../../behavior/worktime/actions';
 import {UserInfo} from '../../behavior/profile/types';
+import '../../custom.css';
+
 
 type Props = {
     user: UserInfo;
@@ -103,7 +105,7 @@ export const Timer = ({user}: Props) => {
             }
         }
     }, []);
-    
+
 
     useEffect(() => {
         localStorage.setItem('seconds', seconds.toString());
@@ -183,8 +185,6 @@ export const Timer = ({user}: Props) => {
 
             setShowSessionStartMessage(true);
             setSessionEndMessageVisible(false);
-
-
         }
     };
 
@@ -208,7 +208,7 @@ export const Timer = ({user}: Props) => {
     useEffect(() => {
         localStorage.setItem(timerKey, JSON.stringify({isRunning, startTime: Date.now()}));
     }, [isRunning]);
-    
+
 
     return (
         <div className="container">
@@ -228,25 +228,30 @@ export const Timer = ({user}: Props) => {
                 </Form>
             </Formik>
             {showSessionStartMessage && (
-                <div className="position-fixed top-50 start-50 translate-middle col-md-2 text-center row justify-content-center mt-5" style={{ marginLeft: '6rem' }}>
-                    <div className="alert alert-success text-white rounded d-flex justify-content-between align-items-center" style={{ background: 'rgba(46, 139, 87, 0.7)', padding: '0.2rem' }}>
-                        <p className="m-0" style={{ padding: '0.25rem' }}>
+                <div className='session-start-message'>
+                    <div className={'alert alert-success text-white rounded d-flex justify-content-between align-items-center'}>
+                        <p className="m-0">
                             Session started at {initialValues.startDate ? new Date(initialValues.startDate).toLocaleTimeString() : ''}
                         </p>
-                        <button type="button" className="btn-close text-white" onClick={closeSessionStartMessage} style={{ width: '0.75rem', height: '0.75rem', fontSize: '0.75rem' }}></button>
+                        <button
+                            type="button"
+                            className="btn-close text-white"
+                            onClick={closeSessionStartMessage}
+                        ></button>
                     </div>
                 </div>
             )}
             {isSessionEndMessageVisible && (
-                <div
-                    className="position-fixed top-50 start-50 translate-middle col-md-2 text-center row justify-content-center mt-5"
-                    style={{ marginLeft: '6rem', opacity: 1, transition: 'opacity 0.5s ease' }}
-                >
-                    <div className="alert alert-danger text-white rounded d-flex justify-content-between align-items-center" style={{ background: 'rgba(255, 0, 0, 0.7)', padding: '0.2rem' }}>
-                        <p className="m-0" style={{ padding: '0.25rem' }}>
+                <div className='session-end-message'>
+                    <div className={'alert alert-danger text-white rounded d-flex justify-content-between align-items-center'}>
+                        <p className="m-0">
                             Session ended at {new Date().toLocaleTimeString()}
                         </p>
-                        <button type="button" className="btn-close text-white" onClick={handleStopButtonClick} style={{ width: '0.75rem', height: '0.75rem', fontSize: '0.75rem' }}></button>
+                        <button
+                            type="button"
+                            className="btn-close text-white"
+                            onClick={handleStopButtonClick}
+                        ></button>
                     </div>
                 </div>
             )}
