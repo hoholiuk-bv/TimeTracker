@@ -50,9 +50,10 @@ namespace TimeTracker.GraphQL.DaysOff
                     var approval = new DayOffRequestApprovalResult()
                     {
                         Approver = approver,
-                        Status = requestApprovals.Single(a => a.ApproverId == approver.Id).Status,
+                        Status = approval.Status,
+                        DeclineReason = approval.DeclineReason,
                     };
-                    approvalResults.Add(approval);
+                    approvalResults.Add(approvalResult);
                 }
 
                 request.Approvals = approvalResults;
