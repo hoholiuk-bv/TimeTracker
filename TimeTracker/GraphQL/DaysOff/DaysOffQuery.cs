@@ -36,11 +36,13 @@ namespace TimeTracker.GraphQL.DaysOff
             var sorting = context.GetArgument<Sorting>("sorting");
             var paging = context.GetArgument<Paging>("paging");
             var filter = context.GetArgument<DayOffRequestFilter>("filter");
+            if (filter?.UserId == null)
+                filter.UserId = currentUserId;
             var requests = daysOffProvider.GetRequests(filter, sorting, paging);
             if (!requests.Any())
                 return requests;
 
-            var approvers = daysOffProvider.GetApprovers(filter.UserId);
+            var approvers = daysOffProvider.GetApprovers(filter.UserId.Value);
             var approvals = daysOffProvider.GetApprovals(requests.Select(r => r.Id).ToList());
             foreach (var request in requests)
             {
