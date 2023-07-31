@@ -1,6 +1,6 @@
-﻿import type { User } from './types';
+﻿import type { ApproverInfo } from './types';
 import { FilterType } from '../users/types';
-import {UserCreationType} from './types';
+import { UserCreationType } from './types';
 
 export const USER_CREATION = 'USER_CREATION' as const;
 export const userCreation = (userCreationInput: UserCreationType) => ({
@@ -15,7 +15,7 @@ export const requestUserList = (filter: FilterType) => ({
 });
 
 export const SHORT_USER_LIST_RECEIVED = 'SHORT_USER_LIST_RECEIVED' as const;
-export const receiveUserList = (userList: User[]) => ({
+export const receiveUserList = (userList: ApproverInfo[]) => ({
   type: SHORT_USER_LIST_RECEIVED,
   payload: { userList },
 });

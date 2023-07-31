@@ -100,6 +100,7 @@ builder.Services.AddTransient<ApprovalQuery>();
 builder.Services.AddTransient<ApprovalMutation>();
 builder.Services.AddTransient<DayOffRequestType>();
 builder.Services.AddTransient<DayOffRequestInputType>();
+builder.Services.AddTransient<DayOffRequestFilterInputType>();
 builder.Services.AddTransient<DaysOffMutation>();
 builder.Services.AddTransient<SortingInputType>();
 builder.Services.AddTransient<PagingInputType>();

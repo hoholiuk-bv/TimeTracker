@@ -17,14 +17,11 @@ namespace DataLayer.Providers
         public bool CheckIfAnyExists()
             => Query<User>(Queries.Users.CheckIfExists).Any();
 
-        public int Save(User user)
-            => Execute(Queries.Users.Save, user); 
+        public int Create(User user)
+            => Execute(Queries.Users.Create, user); 
         
         public User? Update(User user)
             => Query<User>(Queries.Users.Update, user).First();
-        
-        public int ToggleActivityStatus(Guid id)
-            => Execute(Queries.Users.ToggleActivityStatus, new { Id = id });
 
         public User? GetByEmail(string email)
             => Query<User>(Queries.Users.GetByEmail, new { Email = email }).FirstOrDefault();

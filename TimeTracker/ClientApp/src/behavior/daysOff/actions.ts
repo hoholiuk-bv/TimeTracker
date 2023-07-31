@@ -1,5 +1,5 @@
 import { PagingInput, SortingInput } from '../common/types';
-import { DayOffRequestInput, DayOffRequest } from './types';
+import { DayOffRequestInput, DayOffRequest, DayOffRequestFilterInput } from './types';
 
 export const DAY_OFF_REQUESTED = 'DAY_OFF_REQUESTED' as const;
 export const requestDayOff = (input: DayOffRequestInput) => ({
@@ -8,15 +8,15 @@ export const requestDayOff = (input: DayOffRequestInput) => ({
 });
 
 export const DAYS_OFF_LIST_REQUESTED = 'DAYS_OFF_LIST_REQUESTED' as const;
-export const requestDaysOffList = (sorting: SortingInput, paging: PagingInput) => ({
+export const requestDaysOffList = (sorting: SortingInput, paging: PagingInput, filter: DayOffRequestFilterInput) => ({
   type: DAYS_OFF_LIST_REQUESTED,
-  payload: { sorting, paging }
+  payload: { sorting, paging, filter }
 });
 
 export const DAYS_OFF_LIST_RECEIVED = 'DAYS_OFF_LIST_RECEIVED' as const;
-export const receiveDaysOffList = (list: DayOffRequest[]) => ({
+export const receiveDaysOffList = (list: DayOffRequest[], requestsCount: number) => ({
   type: DAYS_OFF_LIST_RECEIVED,
-  payload: { list }
+  payload: { list, requestsCount }
 });
 
 export const DAYS_OFF_LIST_SORTING_CHANGED = 'DAYS_OFF_LIST_SORTING_CHANGED' as const;
@@ -25,13 +25,29 @@ export const changeDaysOffListSorting = (sorting: SortingInput) => ({
   payload: { sorting }
 });
 
+export const DAYS_OFF_LIST_PAGING_CHANGED = 'DAYS_OFF_LIST_PAGING_CHANGED' as const;
+export const changeDaysOffListPaging = (paging: PagingInput) => ({
+  type: DAYS_OFF_LIST_PAGING_CHANGED,
+  payload: { paging }
+});
+
+export const DAYS_OFF_LIST_FILTER_CHANGED = 'DAYS_OFF_LIST_FILTER_CHANGED' as const;
+export const changeDaysOffListFilter = (filter: DayOffRequestFilterInput) => ({
+  type: DAYS_OFF_LIST_FILTER_CHANGED,
+  payload: { filter }
+});
+
 export type DaysOffRequestAction = ReturnType<typeof requestDayOff>;
 export type DaysOffListRequestedAction = ReturnType<typeof requestDaysOffList>;
 export type DaysOffListReceivedAction = ReturnType<typeof receiveDaysOffList>;
 export type DaysOffListSortingChangedAction = ReturnType<typeof changeDaysOffListSorting>;
+export type DaysOffListPagingChangedAction = ReturnType<typeof changeDaysOffListPaging>;
+export type DaysOffListFilterChangedAction = ReturnType<typeof changeDaysOffListFilter>;
 
 export type DayOffActions = ReturnType<
   | typeof requestDaysOffList
   | typeof receiveDaysOffList
   | typeof requestDayOff
-  | typeof changeDaysOffListSorting>
+  | typeof changeDaysOffListSorting
+  | typeof changeDaysOffListPaging
+  | typeof changeDaysOffListFilter>

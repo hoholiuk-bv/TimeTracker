@@ -1,15 +1,11 @@
-import {mergeMap, map, merge} from 'rxjs';
-import {Epic, ofType} from 'redux-observable';
-import {sendRequest} from '../graphApi';
-
+import { mergeMap, map, merge } from 'rxjs';
+import { Epic, ofType } from 'redux-observable';
+import { sendRequest } from '../graphApi';
+import { getUsersQuery } from './queries';
 import {
   USER_LIST_REQUESTED,
-  receiveUserList,
-  TOGGLE_ACTIVITY_STATUS_REQUESTED,
-  activityStatusToggled,
+  userListReceived,
 } from './actions';
-
-import { getUsersQuery, getToggleActivityStatusQuery } from './queries';
 
 const epic: Epic<any> = (actions$, state$) => {
   const requestUsers$ = actions$.pipe(
@@ -20,19 +16,11 @@ const epic: Epic<any> = (actions$, state$) => {
       sorting: variables.sorting, 
       pagination: variables.pagination
     }).pipe(
-      map(({users}) => receiveUserList(users.list, users.totalUsersCount))
-    )),
-  );
-
-  const requestUpdatingIsActiveStatus$ = actions$.pipe(
-    ofType(TOGGLE_ACTIVITY_STATUS_REQUESTED),
-    map(action => action.payload),
-    mergeMap((variables) => sendRequest(getToggleActivityStatusQuery, { id: variables.id }).pipe(
-      map(({users}) => activityStatusToggled(users.toggleActivityStatus))
+      map(({users}) => userListReceived(users.list, users.totalUsersCount))
     )),
   );
   
-  return merge(requestUsers$, requestUpdatingIsActiveStatus$);
+  return merge(requestUsers$);
 };
 
 export default epic;
