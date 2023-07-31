@@ -16,7 +16,7 @@
     }
 
     public enum PermissionType
-    {
+    {   
         ManageUsers,
         ConfigureCalendar,
         UseWorktimeTimer,
