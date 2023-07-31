@@ -48,7 +48,7 @@ export const Timer = ({user}: Props) => {
     };
 
 
-    const clearTimerValues = () => {
+    const continueTimer = () => {
         const startDateFromLocalStorage = localStorage.getItem('startDate');
 
         if (startDateFromLocalStorage) {
@@ -63,6 +63,8 @@ export const Timer = ({user}: Props) => {
             setMinutes(minutes);
             setSeconds(seconds);
 
+            setIsRunning(true);
+
             return timeDifference;
 
         } else {
@@ -71,7 +73,13 @@ export const Timer = ({user}: Props) => {
     };
 
     useEffect(() => {
-        clearTimerValues();
+        const now = Date.now();
+        if (initialValues.startDate) {
+            const startDateAsTimestamp = new Date(initialValues.startDate).getTime();
+            if (startDateAsTimestamp < now) {
+                continueTimer();
+            }
+        }
     }, [hours, minutes, seconds]);
 
 
@@ -82,31 +90,7 @@ export const Timer = ({user}: Props) => {
             localStorage.setItem(timerKey, JSON.stringify({isRunning, startTime: Date.now(), remainingTime}));
         }
     };
-
-    useEffect(() => {
-        if (storedTimerData) {
-            const {isRunning: storedIsRunning, startTime: storedStartTime, remainingTime} = JSON.parse(storedTimerData);
-            const now = Date.now();
-            const elapsedTime = Math.floor((now - storedStartTime) / 1000);
-            const totalSeconds = remainingTime - elapsedTime;
-
-            if (storedIsRunning && elapsedTime < remainingTime) {
-                const remainingHours = Math.floor(totalSeconds / 3600);
-                const remainingMinutes = Math.floor((totalSeconds % 3600) / 60);
-                const remainingSecondsMod = totalSeconds % 60;
-
-                setSeconds(remainingSecondsMod);
-                setMinutes(remainingMinutes);
-                setHours(remainingHours);
-
-                if (elapsedTime < remainingTime) {
-                    setIsRunning(true);
-                }
-            }
-        }
-    }, []);
-
-
+    
     useEffect(() => {
         localStorage.setItem('seconds', seconds.toString());
         localStorage.setItem('minutes', minutes.toString());
