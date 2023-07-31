@@ -1,35 +1,39 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { UserRow } from './UserRow';
 import { User } from '../../behavior/users/types';
 import { SortingInput, SortingOrder } from '../../behavior/common/types';
 import { SortIcon } from '../common/elements/SortIcon';
-import { ConfirmationModal } from './ConfirmationModal';
+import { useDispatch } from 'react-redux';
+import { changeUserListSorting } from '../../behavior/users/actions';
 
 type Props = {
   userList: User[];
   sorting: SortingInput;
-  setSorting: React.Dispatch<React.SetStateAction<SortingInput>>;
 };
 
-export const UserTable = ({ userList, sorting, setSorting }: Props) => {
-  const [userId, setUserId] = useState('');
-  const confirmationModalClose = () => setUserId('');
-  const confirmationModalShow = (userId: string) => setUserId(userId);
+export const UserTable = ({ userList, sorting }: Props) => {
+  const dispatch = useDispatch();
   const defaultSortingField = 'EmploymentDate';
 
   const handleSortingColumnClick = (fieldName: string) => {
+    let newSortingField = fieldName;
+    let newSortingOrder = sorting.sortingOrder;
+
     if (fieldName !== sorting.sortingField) {
-      setSorting({ sortingField: fieldName, sortingOrder: SortingOrder.Ascending });
-    }
-    else {
+      newSortingField = fieldName;
+      newSortingOrder = SortingOrder.Ascending;
+    } else {
       switch (sorting.sortingOrder) {
-      case SortingOrder.Ascending:
-        setSorting(previousSorting => ({ ...previousSorting, sortingOrder: SortingOrder.Descending }));
-        break;
-      case SortingOrder.Descending:
-        setSorting({ sortingField: defaultSortingField, sortingOrder: SortingOrder.Ascending });
+        case SortingOrder.Ascending:
+          newSortingOrder = SortingOrder.Descending;
+          break;
+        case SortingOrder.Descending:
+          newSortingOrder = SortingOrder.Ascending;
+          newSortingField = defaultSortingField;
       }
     }
+
+    dispatch(changeUserListSorting({ sortingOrder: newSortingOrder, sortingField: newSortingField }));
   };
 
   return (
@@ -57,11 +61,10 @@ export const UserTable = ({ userList, sorting, setSorting }: Props) => {
         </thead>
         <tbody>
           {userList.map((user) => (
-            <UserRow key={user.id} user={user} confirmationModalShow={confirmationModalShow} />
+            <UserRow key={user.id} user={user} />
           ))}
         </tbody>
       </table>
-      <ConfirmationModal userId={userId} handleClose={confirmationModalClose}/>
     </>
   );
 };

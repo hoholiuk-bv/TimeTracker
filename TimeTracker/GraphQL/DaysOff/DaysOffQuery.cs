@@ -21,7 +21,13 @@ namespace TimeTracker.GraphQL.DaysOff
                 .Description("Gets the list of day off requests.")
                 .Argument<PagingInputType>("Paging")
                 .Argument<SortingInputType>("Sorting")
+                .Argument<DayOffRequestFilterInputType>("Filter")
                 .Resolve(context => ResolveList(context));
+
+            Field<IntGraphType>("RequestsCount")
+                .Description("Get requests count")
+                .Argument<DayOffRequestFilterInputType>("Filter")
+                .Resolve(context => ResolveRequestsCount(context));
         }
 
         private List<DayOffRequest> ResolveList(IResolveFieldContext context)
@@ -29,12 +35,12 @@ namespace TimeTracker.GraphQL.DaysOff
             var currentUserId = context.RequestServices!.GetRequiredService<UserContext>().User!.Id;
             var sorting = context.GetArgument<Sorting>("sorting");
             var paging = context.GetArgument<Paging>("paging");
-            var filter = new DayOffRequestFilter() { UserId = currentUserId };
+            var filter = context.GetArgument<DayOffRequestFilter>("filter");
             var requests = daysOffProvider.GetRequests(filter, sorting, paging);
             if (!requests.Any())
                 return requests;
 
-            var approvers = daysOffProvider.GetApprovers(currentUserId);
+            var approvers = daysOffProvider.GetApprovers(filter.UserId);
             var approvals = daysOffProvider.GetApprovals(requests.Select(r => r.Id).ToList());
             foreach (var request in requests)
             {
@@ -56,6 +62,12 @@ namespace TimeTracker.GraphQL.DaysOff
                 request.Approvals = approvalResults;
             }
             return requests;
+        }
+
+        private int ResolveRequestsCount(IResolveFieldContext context)
+        {
+            var filter = context.GetArgument<DayOffRequestFilter>("filter");
+            return daysOffProvider.GetRequestsCount(filter);
         }
     }
 }

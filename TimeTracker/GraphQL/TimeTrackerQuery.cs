@@ -1,6 +1,7 @@
 ﻿using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Approvals;
+using TimeTracker.GraphQL.Calendar;
 using TimeTracker.GraphQL.DaysOff;
 using TimeTracker.GraphQL.Profile;
 using TimeTracker.GraphQL.Users;
@@ -32,6 +33,10 @@ namespace TimeTracker.GraphQL
 
             Field<ApprovalQuery>("Approvals")
                 .Description("Queries for approvals")
+                .Resolve(context => new { });
+
+            Field<CalendarQuery>("Calendar")
+                .Description("Queries for calendar")
                 .Resolve(context => new { });
         }
     }

@@ -1,5 +1,4 @@
 ﻿using DataLayer.Models;
-using System;
 using System.Data;
 using static DataLayer.Constants;
 
@@ -77,13 +76,7 @@ namespace DataLayer.Providers
                 return filterQuery;
             }
 
-            public const string ToggleActivityStatus = @"
-                UPDATE Users
-                SET IsActive = IsActive ^ 1
-                WHERE Id = @Id;
-            ";
-
-            public const string Save = @"
+            public const string Create = @"
                 INSERT INTO Users (Id, Name, Surname, Email, Password, Salt, IsAdmin, EmploymentDate, EmploymentType, WorkingHoursCount)
                 VALUES (@Id, @Name, @Surname, @Email, @Password, @Salt, @IsAdmin, @EmploymentDate, @EmploymentType, @WorkingHoursCount)
             ";
@@ -112,7 +105,7 @@ namespace DataLayer.Providers
             public const string GetByEmail = "select * from Users where Email = @Email";
 
             public const string GetById = "select * from Users where Id = @Id";
-            
+
         }
 
         public static class DayOffRequestApprovers
@@ -144,6 +137,11 @@ namespace DataLayer.Providers
                 WHERE UserId='{filter.UserId}'
                 {AddSorting(sorting)} 
                 {AddPaging(paging)}";
+
+            public static string GetRequestsCount(DayOffRequestFilter filter) => $@"
+                    SELECT COUNT (*)
+                    FROM DayOffRequests
+                    WHERE UserId='{filter.UserId}'";
 
             public static string GetApprovers = @"SELECT Users.Id, Users.Name, Users.Surname, Users.Email
                                                   FROM DayOffRequestApprovers 
@@ -185,6 +183,42 @@ namespace DataLayer.Providers
             public const string SaveWorktime = "insert into WorktimeRecords values(@Id, @UserId, @StartDate, @FinishDate, @IsAutoCreated, @LastEditorId)";
 
             public const string GetWorktimeRecords = "select * from WorktimeRecords ORDER BY FinishDate DESC";
+        }
+
+        public static class CalendarRules
+        {
+            public static string Create = @"INSERT INTO CalendarRules VALUES (
+                                            @Id, 
+                                            @Title, 
+                                            @DisplayTitle, 
+                                            @Type, 
+                                            @ShortDayDuration, 
+                                            @StartDate, 
+                                            @FinishDate, 
+                                            @IsRecurring, 
+                                            @RecurringFrequency, 
+                                            @RecurringPeriod, 
+                                            @Exceptions)";
+
+            public static string Update = @"UPDATE CalendarRules SET 
+                                            Title=@Title, 
+                                            DisplayTitle=@DisplayTitle, 
+                                            Type=@Type, 
+                                            ShortDayDuration=@ShortDayDuration, 
+                                            StartDate=@StartDate, 
+                                            FinishDate=@FinishDate, 
+                                            IsRecurring=@IsRecurring, 
+                                            RecurringFrequency=@RecurringFrequency, 
+                                            RecurringPeriod=@RecurringPeriod, 
+                                            Exceptions=@Exceptions
+                                            WHERE Id=@Id";
+
+            public static string Delete = "";
+
+            public static string GetList(Sorting sorting, Paging paging) => @$"
+                    SELECT * FROM CalendarRules
+                    {AddSorting(sorting)}
+                    {AddPaging(paging)}";
         }
 
         private static string AddSorting(Sorting sorting)

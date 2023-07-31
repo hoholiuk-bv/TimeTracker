@@ -1,3 +1,4 @@
+import { CalendarRulePeriod, CalendarRuleType } from '../../behavior/calendar/types';
 import { DayOffApprovalStatus } from '../../behavior/common/types';
 
 export const DayOffRequestStatusTitle = {
@@ -16,3 +17,16 @@ export function getApprovalStatusClass(status: DayOffApprovalStatus) {
       return 'color-orange';
   }
 }
+
+export const CalendarRuleTypeTitle = {
+  [CalendarRuleType.Holiday]: 'Holiday',
+  [CalendarRuleType.NonWorkingDay]: 'Non-working day',
+  [CalendarRuleType.ShortDay]: 'Short day',
+};
+
+export const CalendarRuleRecurringPeriodTitle = {
+  [CalendarRulePeriod.Day]: 'Year',
+  [CalendarRulePeriod.Week]: 'Week',
+  [CalendarRulePeriod.Month]: 'Month',
+  [CalendarRulePeriod.Year]: 'Year',
+};

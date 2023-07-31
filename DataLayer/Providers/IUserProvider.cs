@@ -5,7 +5,7 @@ namespace DataLayer.Providers
 {
     public interface IUserProvider
     {
-        int Save(User user);
+        int Create(User user);
         
         bool CheckIfAnyExists();
 
@@ -18,7 +18,5 @@ namespace DataLayer.Providers
         User? Update(User user);
 
         int GetTotalUsersCount(UserFilter? filter);
-
-        int ToggleActivityStatus(Guid id);
     }
 }

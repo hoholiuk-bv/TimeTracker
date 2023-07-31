@@ -1,12 +1,11 @@
 import {createReducer} from '@reduxjs/toolkit';
-import type {User} from './types';
+import type {ApproverInfo} from './types';
 import {
-  SHORT_USER_LIST_RECEIVED,
-  UserListReceivedAction,
+  SHORT_USER_LIST_RECEIVED, UserListReceivedAction,
 } from './actions';
 
 export type userCreationState = {
-  list: User[];
+  list: ApproverInfo[];
 };
 
 const initialState: userCreationState = {

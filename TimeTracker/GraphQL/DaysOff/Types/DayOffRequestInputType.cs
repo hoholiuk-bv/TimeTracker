@@ -11,7 +11,7 @@ namespace TimeTracker.GraphQL.DaysOff.Types
 
             Field<NonNullGraphType<StringGraphType>>("StartDate");
             Field<NonNullGraphType<StringGraphType>>("FinishDate");
-            base.Field<NonNullGraphType<EnumerationGraphType<DataLayer.Constants.DayOffReason>>>("Reason");
+            Field<NonNullGraphType<EnumerationGraphType<DayOffReason>>>("Reason");
         }
     }
 
@@ -21,6 +21,6 @@ namespace TimeTracker.GraphQL.DaysOff.Types
 
         public string FinishDate { get; set; }
 
-        public DataLayer.Constants.DayOffReason Reason { get; set; }
+        public DayOffReason Reason { get; set; }
     }
 }
