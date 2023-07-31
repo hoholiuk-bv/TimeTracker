@@ -1,5 +1,4 @@
 ﻿using DataLayer.Models;
-using System;
 using System.Data;
 using static DataLayer.Constants;
 
@@ -77,13 +76,7 @@ namespace DataLayer.Providers
                 return filterQuery;
             }
 
-            public const string ToggleActivityStatus = @"
-                UPDATE Users
-                SET IsActive = IsActive ^ 1
-                WHERE Id = @Id;
-            ";
-
-            public const string Save = @"
+            public const string Create = @"
                 INSERT INTO Users (Id, Name, Surname, Email, Password, Salt, IsAdmin, EmploymentDate, EmploymentType, WorkingHoursCount)
                 VALUES (@Id, @Name, @Surname, @Email, @Password, @Salt, @IsAdmin, @EmploymentDate, @EmploymentType, @WorkingHoursCount)
             ";
@@ -144,6 +137,11 @@ namespace DataLayer.Providers
                 WHERE UserId='{filter.UserId}'
                 {AddSorting(sorting)} 
                 {AddPaging(paging)}";
+
+            public static string GetRequestsCount(DayOffRequestFilter filter) => $@"
+                    SELECT COUNT (*)
+                    FROM DayOffRequests
+                    WHERE UserId='{filter.UserId}'";
 
             public static string GetApprovers = @"SELECT Users.Id, Users.Name, Users.Surname, Users.Email
                                                   FROM DayOffRequestApprovers 

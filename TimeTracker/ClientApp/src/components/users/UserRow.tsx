@@ -1,16 +1,15 @@
 import React from 'react';
 import { employmentType, employmentTypeForDisplay, User } from '../../behavior/users/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faFileLines, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faFileLines, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../behavior/routing';
 
 type Props = {
   user: User;
-  confirmationModalShow: any;
 }
 
-export const UserRow = ({ user, confirmationModalShow }: Props) => {
+export const UserRow = ({ user }: Props) => {
   const navigate = useNavigate();
   const employmentTypeKey = Object.keys(employmentType).find(key => employmentType[key as keyof typeof employmentType] === user.employmentType);
   const formattedEmploymentType = employmentTypeForDisplay[employmentTypeKey as keyof typeof employmentTypeForDisplay];
@@ -22,6 +21,7 @@ export const UserRow = ({ user, confirmationModalShow }: Props) => {
     <tr>
       <td>
         {user.name + ' ' + user.surname}
+        {!user.isActive && <FontAwesomeIcon icon={faEyeSlash} className="hidden-marker" title="User deactivated" />}
       </td>
       <td>
         {user.email}
@@ -32,15 +32,8 @@ export const UserRow = ({ user, confirmationModalShow }: Props) => {
       <td>
         {formattedEmploymentDate}
       </td>
-      <td className='align-middle'>
-        <div className="d-flex gap-4 justify-content-end">
-          <FontAwesomeIcon icon={faFileLines} className="user-action details-action" title="details" onClick={handleUserDetailButtonClick} />
-          {user.isActive ? (
-            <FontAwesomeIcon icon={faEye} className="user-action hide-action" title="deactivate" onClick={() => confirmationModalShow(user.id)} />
-          ) : (
-            <FontAwesomeIcon icon={faEyeSlash} className="user-action hide-action" title="activate" onClick={() => confirmationModalShow(user.id)} />
-          )}
-        </div>
+      <td className='text-end pe-3'>
+        <FontAwesomeIcon icon={faFileLines} className="user-action details-action" title="Details" onClick={handleUserDetailButtonClick} />
       </td>
     </tr>
   );

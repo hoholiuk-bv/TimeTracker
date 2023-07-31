@@ -6,9 +6,9 @@ mutation($input: DayOffRequestInput!) {
  }`;
 
 export const getDaysOffListQuery = `
-query($sorting: SortingInput!, $paging: PagingInput!) {
+query($sorting: SortingInput!, $paging: PagingInput!, $filter: DayOffRequestFilterInput!) {
 daysOff {
-    list(sorting: $sorting, paging: $paging) {
+    list(sorting: $sorting, paging: $paging, filter: $filter) {
       id
       startDate
       finishDate
@@ -22,5 +22,8 @@ daysOff {
         }
       }
     }
+    requestsCount(
+      filter: $filter
+    )
   }
 }`;

@@ -6,13 +6,15 @@ import { employmentType, employmentTypeForDisplay, FilterType } from '../../beha
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../behavior/routing';
 import { RemoveFilterButton } from './RemoveFilterButton';
+import { changeUserListFiltering } from '../../behavior/users/actions';
+import { useDispatch } from 'react-redux';
 
 type Props = {
-  filter: FilterType;
-  setFilter: any;
+  filtering: FilterType;
 }
 
-export const UserSearchPanel = ({filter, setFilter}: Props) => {
+export const UserSearchPanel = ({filtering}: Props) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const initialValues: FilterType = {
@@ -23,12 +25,14 @@ export const UserSearchPanel = ({filter, setFilter}: Props) => {
   };
 
   const onSubmit = (values: FilterType) => {
-    setFilter({
+    const newFiltering = {
       searchText: values.searchText,
       startEmploymentDate: values.startEmploymentDate !== '' && values.startEmploymentDate !== null ? `${values.startEmploymentDate}T00:00:00` : null,
       endEmploymentDate: values.endEmploymentDate !== '' && values.endEmploymentDate !== null ? `${values.endEmploymentDate}T00:00:00` : null,
       employmentTypes: values.employmentTypes
-    });
+    };
+
+    dispatch(changeUserListFiltering(newFiltering));
   };
 
   const handleCreateButtonClick = () => {
@@ -36,32 +40,24 @@ export const UserSearchPanel = ({filter, setFilter}: Props) => {
   };
 
   const handleSearchTextRemove = (setFieldValue: any) => {
-    setFilter((prevFilter: any ) => ({
-      ...prevFilter,
-      searchText: ''
-    }));
+    const newFiltering = { ...filtering, searchText: '' };
+    dispatch(changeUserListFiltering(newFiltering));
 
     setFieldValue('searchText', '');
   };
 
   const handleEmploymentDateRemove = (setFieldValue: any) => {
-    setFilter((prevFilter: any ) => ({
-      ...prevFilter,
-      startEmploymentDate: null,
-      endEmploymentDate: null
-    }));
+    const newFiltering = { ...filtering, startEmploymentDate: null, endEmploymentDate: null };
+    dispatch(changeUserListFiltering(newFiltering));
 
     setFieldValue('startEmploymentDate', '');
     setFieldValue('endEmploymentDate', '');
   };
 
   const handleEmploymentTypeRemove = (type: string, setFieldValue: any) => {
-    const updatedEmploymentTypes = filter.employmentTypes.filter((item: string) => item !== type);
-
-    setFilter((prevFilter: any ) => ({
-      ...prevFilter,
-      employmentTypes: updatedEmploymentTypes
-    }));
+    const updatedEmploymentTypes = filtering.employmentTypes.filter((item: string) => item !== type);
+    const newFiltering = { ...filtering, employmentTypes: updatedEmploymentTypes };
+    dispatch(changeUserListFiltering(newFiltering));
 
     setFieldValue('employmentTypes', updatedEmploymentTypes);
   };
@@ -69,20 +65,20 @@ export const UserSearchPanel = ({filter, setFilter}: Props) => {
   const generateRemoveFilterButtons = (setFieldValue: any) => {
     const removeFilterButtons = [];
 
-    if (filter.searchText !== '') {
+    if (filtering.searchText !== '') {
       removeFilterButtons.push(
-        <RemoveFilterButton key={'searchText'} content={filter.searchText} onClick={() => handleSearchTextRemove(setFieldValue)}/>
+        <RemoveFilterButton key={'searchText'} content={filtering.searchText} onClick={() => handleSearchTextRemove(setFieldValue)}/>
       );
     }
 
-    if (filter.startEmploymentDate !== '' && filter.startEmploymentDate !== null) {
+    if (filtering.startEmploymentDate !== '' && filtering.startEmploymentDate !== null) {
       let employmentDateContent;
 
-      if(filter.endEmploymentDate !== '' && filter.endEmploymentDate !== null) {
-        employmentDateContent = `${new Date(filter.startEmploymentDate).toLocaleDateString()} - ${new Date(filter.endEmploymentDate).toLocaleDateString()}`;
+      if(filtering.endEmploymentDate !== '' && filtering.endEmploymentDate !== null) {
+        employmentDateContent = `${new Date(filtering.startEmploymentDate).toLocaleDateString()} - ${new Date(filtering.endEmploymentDate).toLocaleDateString()}`;
       }
       else {
-        employmentDateContent = new Date(filter.startEmploymentDate).toLocaleDateString();
+        employmentDateContent = new Date(filtering.startEmploymentDate).toLocaleDateString();
       }
 
       removeFilterButtons.push(
@@ -90,7 +86,7 @@ export const UserSearchPanel = ({filter, setFilter}: Props) => {
       );
     }
 
-    filter.employmentTypes.forEach((type: string) => {
+    filtering.employmentTypes.forEach((type: string) => {
       const employmentTypeKey = Object.keys(employmentType).find(key => employmentType[key as keyof typeof employmentType] === type);
       const content = employmentTypeForDisplay[employmentTypeKey as keyof typeof employmentTypeForDisplay];
 

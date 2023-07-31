@@ -3,7 +3,8 @@ export const routes = {
   users: {
     list: '/users',
     creation: '/users/new',
-    details: '/users/details/:id'
+    details: '/users/details/:id',
+    daysoff: '/users/daysoff/:id'
   },
   worktime: '/worktime',
   daysoff: '/daysoff',

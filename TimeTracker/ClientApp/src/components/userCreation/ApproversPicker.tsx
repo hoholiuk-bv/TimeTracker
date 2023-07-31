@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { RootState } from '../../behavior/store';
 import Select from 'react-select';
 import { receiveUserList, requestUserList } from '../../behavior/userCreation/actions';
-import {ApproverOptions, User} from '../../behavior/userCreation/types';
+import {ApproverOptions, ApproverInfo} from '../../behavior/userCreation/types';
 
 type Props = {
   selectedApprovers: ApproverOptions[];
@@ -14,9 +14,9 @@ type Props = {
 
 export const ApproversPicker = ({selectedApprovers, setSelectedApprovers, excludeUserId}: Props) => {
   const dispatch = useDispatch();
-  const filter: FilterType = { searchText: '', startEmploymentDate: null, endEmploymentDate: null, employmentTypes: [] };
   const userList = useSelector((state: RootState) => state.userCreation.list);
-  const filteredUsers = userList.filter((user: User) => user.isActive && (!excludeUserId || user.id !== excludeUserId));
+  const filter: FilterType = { searchText: '', startEmploymentDate: null, endEmploymentDate: null, employmentTypes: [] };
+  const filteredUsers = userList.filter((user: ApproverInfo) => user.isActive && (!excludeUserId || user.id !== excludeUserId));
   const approversOptions: ApproverOptions[] = filteredUsers.map(user => ({
     value: user.id,
     label: user.name + ' ' + user.surname + ' (' + user.email + ')'

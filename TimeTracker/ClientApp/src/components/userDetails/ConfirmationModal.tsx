@@ -3,11 +3,11 @@ import Modal from 'react-bootstrap/Modal';
 import { Row, Col } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { requestUserUpdate } from '../../behavior/userDetails/actions';
-import { UpdateUserInput, UpdateUserType } from '../../behavior/userDetails/types';
+import { UserUpdateInput, UserUpdateType } from '../../behavior/userDetails/types';
 import { MaxWorkingHours } from '../../behavior/common/types';
 
 type Props = {
-  values: UpdateUserInput | null;
+  values: UserUpdateInput | null;
   handleClose: () => void;
   selectedApprovers: any;
 }
@@ -21,7 +21,7 @@ export const ConfirmationModal = ({ values, handleClose, selectedApprovers }: Pr
       const { hours, minutes, ...otherValues } = values;
       const workingHoursCount = (hours ?? 0) + (minutes ?? 0) / 100;
 
-      const user: UpdateUserType = {
+      const user: UserUpdateType = {
         ...otherValues,
         approversIdList: selectedApprovers.map((options: any) => options.value),
         workingHoursCount: (hours !== null && hours < MaxWorkingHours) ? workingHoursCount : hours,

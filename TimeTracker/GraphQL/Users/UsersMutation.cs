@@ -25,16 +25,6 @@ namespace TimeTracker.GraphQL.Users
                 .Argument<NonNullGraphType<CreateUserInputType>>("input")
                 .Resolve(context => ResolveUserCreation(context));
 
-            Field<GuidGraphType>("ToggleActivityStatus")
-                .Description("Toggle the IsActive status for User")
-                .Argument<NonNullGraphType<GuidGraphType>>("id")
-                .Resolve(context =>
-                {
-                    Guid id = context.GetArgument<Guid>("id");
-                    bool IsActiveStatusUpdated = 0 < userProvider.ToggleActivityStatus(id);
-                    return IsActiveStatusUpdated ? id : null;
-                });
-
             Field<UserType>("UserUpdate")
                 .Description("Update user")
                 .Argument<NonNullGraphType<UpdateUserInputType>>("user")
@@ -89,7 +79,7 @@ namespace TimeTracker.GraphQL.Users
 
             List<Guid> approversIdentificators = input.ApproversIdList;
 
-            bool isUserCreated = 0 < userProvider.Save(user);
+            bool isUserCreated = 0 < userProvider.Create(user);
 
             if (isUserCreated)
             {
