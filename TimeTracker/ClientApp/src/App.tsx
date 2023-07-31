@@ -13,6 +13,7 @@ import { DaysOffPage } from './components/daysOff/DaysOffPage';
 import { ApprovalsPage } from './components/approvals/ApprovalsPage';
 import { UserDetailsPage } from './components/userDetails/UserDetailsPage';
 import { UserDaysOffPage } from './components/userDaysOff/UserDaysOffPage';
+import { CalendarSettingsPage } from './components/calendarSettings';
 
 const App = () => {
   return (
@@ -82,6 +83,14 @@ const App = () => {
                   <UserDaysOffPage />
                 </Page>
               }
+            />
+            <Route
+              index
+              path={routes.calendarSettings}
+              element={
+                <Page requiredPermissions={[PermissionType.ConfigureCalendar]}>
+                  <CalendarSettingsPage />
+                </Page>}
             />
             <Route path="*" element={<NotFound />} />
           </Route>

@@ -19,7 +19,9 @@ using TimeTracker.GraphQL.DaysOff;
 using TimeTracker.GraphQL.Common.Types;
 using TimeTracker.GraphQL.Approvals.Types;
 using TimeTracker.GraphQL.Approvals;
-
+using TimeTracker.GraphQL.Calendar;
+using TimeTracker.GraphQL.Calendar.Types;
+using DataLayer.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +65,7 @@ builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 builder.Services.AddSingleton<IUserProvider, UserProvider>();
 builder.Services.AddSingleton<IDaysOffProvider, DaysOffProvider>();
 builder.Services.AddSingleton<IWorktimeProvider, WorktimeProvider>();
+builder.Services.AddSingleton<ICalendarProvider, CalendarProvider>();
 builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<UserContext>();
@@ -103,6 +106,12 @@ builder.Services.AddTransient<SortingInputType>();
 builder.Services.AddTransient<PagingInputType>();
 builder.Services.AddTransient<DayOffRequestApprovalType>();
 builder.Services.AddTransient<DayOffRequestApproverType>();
+builder.Services.AddTransient<CalendarQuery>();
+builder.Services.AddTransient<CalendarMutation>();
+builder.Services.AddTransient<CalendarRulesQuery>();
+builder.Services.AddTransient<CalendarRulesMutation>();
+builder.Services.AddTransient<CalendarRuleType>();
+builder.Services.AddTransient<CalendarRuleInputType>();
 builder.Services.AddGraphQL(a => a.AddSchema<TimeTrackerSchema>().AddSystemTextJson().AddAuthorizationRule());
 
 builder.Services.AddControllersWithViews();

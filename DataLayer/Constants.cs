@@ -29,5 +29,20 @@
             Ascending,
             Descending
         }
+
+        public enum CalendarRuleSetupType
+        {
+            NonWorkingDay,
+            ShortDay,
+            NationalHoliday,
+        }
+
+        public enum CalendarRuleRecurringPeriod
+        {
+            Day,
+            Week,
+            Month,
+            Year,
+        }
     }
 }

@@ -5,7 +5,7 @@ import { profileReducer } from './profile';
 import { usersReducer } from './users';
 import { userCreationReducer } from './userCreation';
 import { userDetailsReducer } from './userDetails';
-
+import { calendarReducer } from './calendar';
 
 export default combineReducers({
   users: usersReducer,
@@ -13,5 +13,6 @@ export default combineReducers({
   userCreation: userCreationReducer,
   daysOff: daysOffReducer,
   approvals: approvalsReducer,
-  userDetails: userDetailsReducer
+  userDetails: userDetailsReducer,
+  calendar: calendarReducer,
 });
