@@ -1,3 +1,5 @@
+import { ApproverInfo } from '../userCreation/types';
+
 export type User = {
   id: string;
   name: string;
@@ -8,6 +10,7 @@ export type User = {
   employmentDate: string;
   employmentType: string;
   workingHoursCount: number;
+  approvers: ApproverInfo[];
 }
 
 export type FilterType = {

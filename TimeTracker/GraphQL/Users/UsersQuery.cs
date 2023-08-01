@@ -46,15 +46,6 @@ namespace TimeTracker.GraphQL.Users
                     UserFilter? filter = context.GetArgument<UserFilter?>("filter");
                     return userProvider.GetTotalUsersCount(filter);
                 });
-
-            Field<ListGraphType<DayOffRequestApproverType>>("approverList")
-                .Description("Get list of approvers by user ID")
-                .Argument<GuidGraphType>("id", "User ID")
-                .Resolve(context =>
-                {
-                    Guid id = context.GetArgument<Guid>("id");
-                    return daysOffProvider.GetApprovers(id);
-                });
         }
     }
 }

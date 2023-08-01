@@ -155,7 +155,7 @@ th {
 .navigation-link-active,
 .btn-link:hover {
     color: #42A5F5 !important;
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
 .navigation-link-icon {

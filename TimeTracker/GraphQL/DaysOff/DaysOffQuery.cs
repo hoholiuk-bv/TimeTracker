@@ -32,18 +32,19 @@ namespace TimeTracker.GraphQL.DaysOff
 
         private List<DayOffRequest> ResolveList(IResolveFieldContext context)
         {
-            var currentUserId = context.RequestServices!.GetRequiredService<UserContext>().User!.Id;
+            var currentUser = context.RequestServices!.GetRequiredService<UserContext>().User!;
             var sorting = context.GetArgument<Sorting>("sorting");
             var paging = context.GetArgument<Paging>("paging");
             var filter = context.GetArgument<DayOffRequestFilter>("filter");
             if (filter?.UserId == null)
-                filter.UserId = currentUserId;
+                filter.UserId = currentUser.Id;
             var requests = daysOffProvider.GetRequests(filter, sorting, paging);
+            
             if (!requests.Any())
                 return requests;
-
-            var approvers = daysOffProvider.GetApprovers(filter.UserId.Value);
             var approvals = daysOffProvider.GetApprovals(requests.Select(r => r.Id).ToList());
+            var approvers = daysOffProvider.GetApprovers(approvals.Select(r => r.ApproverId).Distinct().ToList());
+           
             foreach (var request in requests)
             {
                 var approvalResults = new List<DayOffRequestApprovalResult>();
@@ -51,7 +52,10 @@ namespace TimeTracker.GraphQL.DaysOff
                 var requestApproverIds = requestApprovals.Select(approval => approval.ApproverId);
                 foreach (var approver in approvers)
                 {
-                    var approval = requestApprovals.Single(a => a.ApproverId == approver.Id);
+                    var approval = requestApprovals.SingleOrDefault(a => a.ApproverId == approver.Id);
+                    if (approval == null)
+                        continue;
+
                     var approvalResult = new DayOffRequestApprovalResult()
                     {
                         Approver = approver,
