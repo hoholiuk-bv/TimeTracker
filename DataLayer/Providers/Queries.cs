@@ -1,4 +1,5 @@
 ﻿using DataLayer.Models;
+using Microsoft.AspNetCore.Http;
 using System.Data;
 using static DataLayer.Constants;
 
@@ -176,6 +177,9 @@ namespace DataLayer.Providers
             public static string CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId) =>
                 $@"INSERT INTO DayOffRequestApprovals 
                    VALUES {string.Join(',', approverIds.Select(approverId => $"('{requestId}','{approverId}', {(int)DayOffApprovalStatus.Pending}, NULL)"))}";
+
+            public static string DeleteDayOffRequest = @"DELETE FROM DayOffRequestApprovals WHERE RequestId = @RequestId
+                                                         DELETE FROM DayOffRequests WHERE Id = @RequestId";
         }
 
         public static class Worktime

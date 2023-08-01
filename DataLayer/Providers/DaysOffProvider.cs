@@ -39,4 +39,7 @@ public class DaysOffProvider : Provider, IDaysOffProvider
 
     public void DeleteApproversForUser(Guid userId)
         => Execute(DayOffRequestApprovers.DeleteApproversByUserId, new { UserId = userId });
+
+    public void DeleteDayOffRequest(Guid requestId)
+        => Execute(DaysOff.DeleteDayOffRequest, new { RequestId = requestId });
 }

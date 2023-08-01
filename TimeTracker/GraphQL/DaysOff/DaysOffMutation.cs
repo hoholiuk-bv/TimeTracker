@@ -20,6 +20,17 @@ public class DaysOffMutation : ObjectGraphType
             .Description("Creates a request for a day off.")
             .Argument<NonNullGraphType<DayOffRequestInputType>>("input")
             .Resolve(context => ResolveRequest(context));
+
+        Field<NonNullGraphType<BooleanGraphType>>("DeleteDayOffRequest")
+                .Description("Deletes a day off request.")
+                .Argument<NonNullGraphType<IdGraphType>>("requestId")
+                .Resolve(context =>
+                {
+                    var requestId = context.GetArgument<Guid>("requestId");
+                    daysOffProvider.DeleteDayOffRequest(requestId);
+
+                    return true;
+                });
     }
     private bool ResolveRequest(IResolveFieldContext context)
     {

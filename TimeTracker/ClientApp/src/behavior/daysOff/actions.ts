@@ -37,12 +37,19 @@ export const changeDaysOffListFilter = (filter: DayOffRequestFilterInput) => ({
   payload: { filter }
 });
 
+export const DAY_OFF_REQUEST_DELETED = 'DAY_OFF_REQUEST_DELETED' as const;
+export const deleteDayOffRequest = (requestId: string) => ({
+  type: DAY_OFF_REQUEST_DELETED,
+  payload: { requestId }
+});
+
 export type DaysOffRequestAction = ReturnType<typeof requestDayOff>;
 export type DaysOffListRequestedAction = ReturnType<typeof requestDaysOffList>;
 export type DaysOffListReceivedAction = ReturnType<typeof receiveDaysOffList>;
 export type DaysOffListSortingChangedAction = ReturnType<typeof changeDaysOffListSorting>;
 export type DaysOffListPagingChangedAction = ReturnType<typeof changeDaysOffListPaging>;
 export type DaysOffListFilterChangedAction = ReturnType<typeof changeDaysOffListFilter>;
+export type DayOffDeleteAction = ReturnType<typeof deleteDayOffRequest>;
 
 export type DayOffActions = ReturnType<
   | typeof requestDaysOffList
@@ -50,4 +57,5 @@ export type DayOffActions = ReturnType<
   | typeof requestDayOff
   | typeof changeDaysOffListSorting
   | typeof changeDaysOffListPaging
-  | typeof changeDaysOffListFilter>
+  | typeof changeDaysOffListFilter
+  | typeof deleteDayOffRequest>

@@ -25,4 +25,6 @@ public interface IDaysOffProvider
     void CreateApproverForUser(Guid userId, Guid approverId);
 
     void DeleteApproversForUser(Guid userId);
+
+    void DeleteDayOffRequest(Guid requestId);
 }

@@ -24,6 +24,9 @@ namespace TimeTracker.GraphQL.DaysOff.Types
 
             Field<ListGraphType<DayOffRequestApprovalType>>("Approvals")
                 .Description("The approvals for day off request.");
+
+            Field<BooleanGraphType>("IsEditable")
+                .Description("The flag indicating whether approval is editable.");
         }
     }
 }
