@@ -2,9 +2,9 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Row, Col } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { requestUserUpdate } from '../../behavior/userDetails/actions';
-import { UserUpdateInput, UserUpdateType } from '../../behavior/userDetails/types';
-import { MaxWorkingHours } from '../../behavior/common/types';
+import { requestUserUpdate } from '../../../behavior/userDetails/actions';
+import { UserUpdateInput, UserUpdateType } from '../../../behavior/userDetails/types';
+import { MaxWorkingHours } from '../../../behavior/common/types';
 
 type Props = {
   values: UserUpdateInput | null;
