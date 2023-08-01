@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../behavior/store';
-import { receiveUser, requestApprovers, requestUser } from '../../behavior/userDetails/actions';
-import { ApproverOptions, UserFormProps } from '../../behavior/userCreation/types';
-import { UserUpdateInput } from '../../behavior/userDetails/types';
+import { receiveUser, requestApprovers, requestUser } from '../../../behavior/userDetails/actions';
+import { ApproverOptions, UserFormProps } from '../../../behavior/userCreation/types';
+import { UserUpdateInput } from '../../../behavior/userDetails/types';
 import { ConfirmationModal } from './ConfirmationModal';
 import { Alert } from 'react-bootstrap';
-import { UserForm } from '../userCreation/UserForm';
-import { routes } from '../../behavior/routing';
+import { UserForm } from '../../userCreation/UserForm';
+import { routes } from '../../../behavior/routing';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../../behavior/store';
 
 export const UserDetailsPage = () => {
   const { id } = useParams();
@@ -73,10 +73,6 @@ export const UserDetailsPage = () => {
 
   return (
     <>
-      <div className="d-flex flex-row align-items-center justify-content-between">
-        <h1 className="mb-3">{user.name} {user.surname}</h1>
-        <button onClick={handleUserDaysOffButtonClick} className="btn btn-primary">Days off</button>
-      </div>
       <UserForm properties={UserFormProperties}/>
       <ConfirmationModal selectedApprovers={selectedApprovers} values={updateUserValues} handleClose={confirmationModalClose} />
     </>

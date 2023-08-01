@@ -14,8 +14,8 @@ export const DaysOffPage = () => {
   const currentUserId = useSelector((state: RootState) => state.profile.userInfo?.id);
 
   useEffect(() => {
-    if(currentUserId)
-      dispatch(requestDaysOffList(sorting, paging, {...filter, userId: currentUserId}));
+    if (currentUserId)
+      dispatch(requestDaysOffList(sorting, paging, { ...filter, userId: currentUserId }));
   }, [dispatch, sorting, paging, filter]);
 
   if (list === null)

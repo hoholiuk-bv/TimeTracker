@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, matchPath, useLocation } from 'react-router-dom';
 
 type Props = {
   to: string;
@@ -15,7 +15,7 @@ export const NavigationLink = ({ to, text, icon, activeRoutes }: Props) => {
 
   return (
     <>
-      <Link className={`navigation-link ${activeRoutes?.some(r => r === pathname) ? 'navigation-link-active' : ''}`} to={to}>
+      <Link className={`navigation-link ${activeRoutes?.some(r => matchPath(r, pathname)) ? 'navigation-link-active' : ''}`} to={to}>
         {icon && <span className='navigation-link-icon'><FontAwesomeIcon icon={icon} /></span>}
         {text}
       </Link>
