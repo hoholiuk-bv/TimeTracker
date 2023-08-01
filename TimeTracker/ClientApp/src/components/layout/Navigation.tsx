@@ -33,7 +33,7 @@ export const Navigation = () => {
           icon={faUser}
           to={routes.users.list}
           text='Users'
-          activeRoutes={[routes.users.creation, routes.users.list]}
+          activeRoutes={[routes.users.creation, routes.users.list, routes.users.details, routes.users.daysoff, routes.users.worktime]}
         />}
       {canConfigureCalendar &&
         <NavigationLink

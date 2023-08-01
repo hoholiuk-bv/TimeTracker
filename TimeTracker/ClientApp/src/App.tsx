@@ -1,6 +1,7 @@
 import React from 'react';
 import { LoginPage } from './components/profile/LoginPage';
 import { Layout } from './components/layout/Layout';
+import { Layout as UserDetailsLayout } from './components/userInfo/Layout';
 import { UserListPage } from './components/users/UserListPage';
 import { routes } from './behavior/routing';
 import { NotFound } from './components/common/NotFound';
@@ -11,8 +12,8 @@ import { PermissionType } from './behavior/profile/types';
 import { WorktimePage } from './components/worktimePage/WorktimePage';
 import { DaysOffPage } from './components/daysOff/DaysOffPage';
 import { ApprovalsPage } from './components/approvals/ApprovalsPage';
-import { UserDetailsPage } from './components/userDetails/UserDetailsPage';
-import { UserDaysOffPage } from './components/userDaysOff/UserDaysOffPage';
+import { UserDetailsPage } from './components/userInfo/details/UserDetailsPage';
+import { UserDaysOffPage } from './components/userInfo/daysOff/UserDaysOffPage';
 import { CalendarSettingsPage } from './components/calendarSettings';
 
 const App = () => {
@@ -40,14 +41,25 @@ const App = () => {
                 </Page>
               }
             />
-            <Route
-              path={routes.users.details}
-              element={
-                <Page requiredPermissions={[PermissionType.ManageUsers]}>
-                  <UserDetailsPage />
-                </Page>
-              }
-            />
+            <Route element={<UserDetailsLayout />}>
+              <Route
+                path={routes.users.details}
+                element={
+                  <Page requiredPermissions={[PermissionType.ManageUsers]}>
+                    <UserDetailsPage />
+                  </Page>
+                }
+              />
+              <Route
+                index
+                path={routes.users.daysoff}
+                element={
+                  <Page requiredPermissions={[PermissionType.ManageUsers]}>
+                    <UserDaysOffPage />
+                  </Page>
+                }
+              />
+            </Route>
             <Route
               index
               path={routes.daysoff}
@@ -72,15 +84,6 @@ const App = () => {
               element={
                 <Page>
                   <WorktimePage />
-                </Page>
-              }
-            />
-            <Route
-              index
-              path={routes.users.daysoff}
-              element={
-                <Page requiredPermissions={[PermissionType.ManageUsers]}>
-                  <UserDaysOffPage />
                 </Page>
               }
             />
