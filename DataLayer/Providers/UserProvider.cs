@@ -9,25 +9,36 @@ namespace DataLayer.Providers
         public UserProvider(IConfiguration configuration) : base(configuration) { }
 
         public IEnumerable<User> GetAllUsers(UserFilter? filter, Sorting? sort, Paging? pagination)
-            => Query<User>(Queries.Users.GetAll(filter, sort, pagination), filter);
+        {
+            var usersData = Query<UserData>(Queries.Users.GetAll(filter, sort, pagination), filter);
+            return usersData.Select(data => new User(data));
+        }
 
-        public int GetTotalUsersCount(UserFilter? filter) 
+        public int GetTotalUsersCount(UserFilter? filter)
             => Query<int>(Queries.Users.GetTotalUsersCount(filter), filter).First();
 
         public bool CheckIfAnyExists()
             => Query<User>(Queries.Users.CheckIfExists).Any();
 
         public int Create(User user)
-            => Execute(Queries.Users.Create, user); 
-        
+            => Execute(Queries.Users.Create, user.ToData());
+
         public User? Update(User user)
-            => Query<User>(Queries.Users.Update, user).First();
+        {
+            var userData = Query<UserData>(Queries.Users.Update, user.ToData()).FirstOrDefault();
+            return userData == null ? null : new User(userData);
+        }
 
         public User? GetByEmail(string email)
-            => Query<User>(Queries.Users.GetByEmail, new { Email = email }).FirstOrDefault();
+        {
+            var userData = Query<UserData>(Queries.Users.GetByEmail, new { Email = email }).FirstOrDefault();
+            return userData == null ? null : new User(userData);
+        }
 
         public User? GetById(string id)
-            => Query<User>(Queries.Users.GetById, new { Id = id }).FirstOrDefault();
-        
+        {
+            var userData = Query<UserData>(Queries.Users.GetById, new { Id = id }).FirstOrDefault();
+            return userData == null ? null : new User(userData);
+        }
     }
 }

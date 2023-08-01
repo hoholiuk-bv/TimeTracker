@@ -33,7 +33,7 @@ export const requestUserUpdate = (user: UserUpdateType) => ({
 });
 
 export const USER_UPDATED = 'USER_UPDATED' as const;
-export const receiveUserUpdate = (userUpdate: UserUpdateType) => ({
+export const receiveUserUpdate = (userUpdate: User) => ({
   type: USER_UPDATED,
   payload: { userUpdate },
 });

@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { receiveUser, requestApprovers, requestUser } from '../../../behavior/userDetails/actions';
+import { receiveUser, requestUser } from '../../../behavior/userDetails/actions';
 import { ApproverOptions, UserFormProps } from '../../../behavior/userCreation/types';
 import { UserUpdateInput } from '../../../behavior/userDetails/types';
 import { ConfirmationModal } from './ConfirmationModal';
 import { Alert } from 'react-bootstrap';
 import { UserForm } from '../../userCreation/UserForm';
-import { routes } from '../../../behavior/routing';
-import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../../behavior/store';
 
 export const UserDetailsPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { user, approvers } = useSelector((state: RootState) => state.userDetails);
+  const { user } = useSelector((state: RootState) => state.userDetails);
   const [selectedApprovers, setSelectedApprovers] = useState<ApproverOptions[]>([]);
   const [updateUserValues, setUpdateUserValues] = useState<UserUpdateInput | null>(null);
   const confirmationModalClose = () => setUpdateUserValues(null);
@@ -26,22 +23,24 @@ export const UserDetailsPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(id !== undefined) {
+    if (id !== undefined) {
       dispatch(requestUser(id));
-      dispatch(requestApprovers(id));
     }
   }, [dispatch, id]);
 
   useEffect(() => {
-    const approverOptions: ApproverOptions[] = approvers.map((approver) => ({
+    if (!user)
+      return;
+
+    const approverOptions: ApproverOptions[] = user?.approvers.map((approver) => ({
       value: approver.id,
       label: approver.name + ' ' + approver.surname + ' (' + approver.email + ')'
     }));
 
     setSelectedApprovers(approverOptions);
-  }, [approvers, setSelectedApprovers]);
+  }, [user, setSelectedApprovers]);
 
-  if(user === null)
+  if (user === null)
     return (<Alert variant='secondary'>User not found.</Alert>);
 
   const initialValues: UserUpdateInput = {
@@ -53,7 +52,7 @@ export const UserDetailsPage = () => {
     employmentDate: new Date(user.employmentDate).toLocaleDateString('en-CA'),
     isAdmin: user.isAdmin,
     isActive: user.isActive,
-    approversIdList : [],
+    approversIdList: [],
     hours: Math.floor(user.workingHoursCount),
     minutes: Math.round((user.workingHoursCount % 1) * 100),
   };
@@ -69,11 +68,9 @@ export const UserDetailsPage = () => {
     setSelectedApprovers: setSelectedApprovers,
   };
 
-  const handleUserDaysOffButtonClick = () => navigate(routes.users.daysoff.replace(':id', user.id));
-
   return (
     <>
-      <UserForm properties={UserFormProperties}/>
+      <UserForm properties={UserFormProperties} />
       <ConfirmationModal selectedApprovers={selectedApprovers} values={updateUserValues} handleClose={confirmationModalClose} />
     </>
   );

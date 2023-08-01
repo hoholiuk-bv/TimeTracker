@@ -35,23 +35,21 @@ public class DaysOffMutation : ObjectGraphType
     private bool ResolveRequest(IResolveFieldContext context)
     {
         var input = context.GetArgument<DayOffRequestInput>("input");
-        var currentUserId = context.RequestServices!.GetRequiredService<UserContext>().User!.Id;
+        var currentUser = context.RequestServices!.GetRequiredService<UserContext>().User!;
 
         var request = new DayOffRequest()
         {
             Id = Guid.NewGuid(),
-            UserId = currentUserId,
+            UserId = currentUser.Id,
             StartDate = DateTime.Parse(input.StartDate),
             FinishDate = DateTime.Parse(input.FinishDate),
             Reason = DayOffReason.Vacation
         };
 
         daysOffProvider.CreateRequest(request);
-        var approverIds = daysOffProvider.GetApprovers(currentUserId).Select(approver => approver.Id);
-        if (!approverIds.Any())
-            return true;
 
-        daysOffProvider.CreateApprovals(approverIds, request.Id);
+        if (currentUser.ApproverIds.Any())
+            daysOffProvider.CreateApprovals(currentUser.ApproverIds, request.Id);
 
         return true;
     }
