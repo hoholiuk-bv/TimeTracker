@@ -16,5 +16,7 @@ namespace DataLayer.Entities
         public DayOffReason Reason { get; set; }
 
         public IList<DayOffRequestApprovalResult> Approvals { get; set; } = new List<DayOffRequestApprovalResult>();
+
+        public bool IsEditable => StartDate.Date > DateTime.Now.Date;
     }
 }

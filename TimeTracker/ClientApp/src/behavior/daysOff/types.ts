@@ -28,6 +28,7 @@ export type DayOffRequest = {
   finishDate: string;
   reason: DayOffRequestType;
   approvals: DayOffApprovalType[];
+  isEditable: boolean;
 }
 
 export type DayOffRequestFilterInput = {
