@@ -3,8 +3,9 @@ import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../behavior/store';
 import { receiveUser, requestApprovers, requestUser } from '../../behavior/userDetails/actions';
-import { ApproverOptions, UserFormProps } from '../../behavior/userCreation/types';
+import { UserFormProps } from '../../behavior/userCreation/types';
 import { UserUpdateInput } from '../../behavior/userDetails/types';
+import { SelectElementOptions } from '../../behavior/common/types';
 import { ConfirmationModal } from './ConfirmationModal';
 import { Alert } from 'react-bootstrap';
 import { UserForm } from '../userCreation/UserForm';
@@ -16,7 +17,7 @@ export const UserDetailsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, approvers } = useSelector((state: RootState) => state.userDetails);
-  const [selectedApprovers, setSelectedApprovers] = useState<ApproverOptions[]>([]);
+  const [selectedApprovers, setSelectedApprovers] = useState<SelectElementOptions[]>([]);
   const [updateUserValues, setUpdateUserValues] = useState<UserUpdateInput | null>(null);
   const confirmationModalClose = () => setUpdateUserValues(null);
   const confirmationModalShow = (values: UserUpdateInput) => setUpdateUserValues(values);
@@ -33,7 +34,7 @@ export const UserDetailsPage = () => {
   }, [dispatch, id]);
 
   useEffect(() => {
-    const approverOptions: ApproverOptions[] = approvers.map((approver) => ({
+    const approverOptions: SelectElementOptions[] = approvers.map((approver) => ({
       value: approver.id,
       label: approver.name + ' ' + approver.surname + ' (' + approver.email + ')'
     }));

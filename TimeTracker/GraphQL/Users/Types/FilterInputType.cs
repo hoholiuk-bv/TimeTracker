@@ -11,6 +11,7 @@ namespace TimeTracker.GraphQL.Users.Types
             Field(t => t.StartEmploymentDate, nullable: true);
             Field(t => t.EndEmploymentDate, nullable: true);
             Field(t => t.EmploymentTypes);
+            Field(t => t.ShowOnlyActiveUsers);
         }
     }
 }

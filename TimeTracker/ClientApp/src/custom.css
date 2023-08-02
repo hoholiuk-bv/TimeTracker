@@ -401,3 +401,9 @@ th {
     .table-action-button:visited {
         color: #42A5F5 !important;
     }
+
+.remove-filter-button {
+    border-radius: 12px;
+    background-color: #F4F5F9;
+    padding: 4px 15px;
+}

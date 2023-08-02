@@ -73,6 +73,11 @@ namespace DataLayer.Providers
                     filterQuery += $" AND ({employmentTypeFilter})";
                 }
 
+                if(filter.ShowOnlyActiveUsers)
+                {
+                    filterQuery += $" AND IsActive = 1";
+                }
+
                 return filterQuery;
             }
 
