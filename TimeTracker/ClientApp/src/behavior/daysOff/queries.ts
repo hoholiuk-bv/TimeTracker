@@ -13,6 +13,7 @@ daysOff {
       startDate
       finishDate
       reason
+      isEditable
       approvals {
         status
         declineReason
@@ -27,3 +28,10 @@ daysOff {
     )
   }
 }`;
+
+export const deleteDayOffRequest = `
+mutation($requestId: ID!) {
+  daysOff {
+    deleteDayOffRequest(requestId: $requestId)
+   }
+ }`;

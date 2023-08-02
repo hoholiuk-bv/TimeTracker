@@ -1,4 +1,5 @@
 ﻿using DataLayer.Models;
+using Microsoft.AspNetCore.Http;
 using System.Data;
 using static DataLayer.Constants;
 
@@ -13,7 +14,7 @@ namespace DataLayer.Providers
                 string filterQuery = AddFiltering(filter);
 
                 string sqlQuery = $@"
-                    SELECT Id, Name, Surname, Email, IsAdmin, IsActive, EmploymentDate, EmploymentType, WorkingHoursCount
+                    SELECT Id, Name, Surname, Email, IsAdmin, IsActive, EmploymentDate, EmploymentType, WorkingHoursCount, ApproverIds
                     FROM Users
                     {filterQuery}
                 ";
@@ -82,8 +83,8 @@ namespace DataLayer.Providers
             }
 
             public const string Create = @"
-                INSERT INTO Users (Id, Name, Surname, Email, Password, Salt, IsAdmin, EmploymentDate, EmploymentType, WorkingHoursCount)
-                VALUES (@Id, @Name, @Surname, @Email, @Password, @Salt, @IsAdmin, @EmploymentDate, @EmploymentType, @WorkingHoursCount)
+                INSERT INTO Users (Id, Name, Surname, Email, Password, Salt, IsAdmin, EmploymentDate, EmploymentType, WorkingHoursCount, ApproverIds)
+                VALUES (@Id, @Name, @Surname, @Email, @Password, @Salt, @IsAdmin, @EmploymentDate, @EmploymentType, @WorkingHoursCount, @ApproverIds)
             ";
 
             public const string Update = @"
@@ -96,13 +97,12 @@ namespace DataLayer.Providers
                     IsActive = @IsActive,
                     EmploymentDate = @EmploymentDate,
                     EmploymentType = @EmploymentType,
-                    WorkingHoursCount = @WorkingHoursCount
+                    WorkingHoursCount = @WorkingHoursCount,
+                    ApproverIds = @ApproverIds
                 WHERE
                     Id = @Id;
 
-                SELECT Id, Name, Surname, Email, IsAdmin, IsActive, EmploymentDate, EmploymentType, WorkingHoursCount
-                FROM Users
-                WHERE Id = @Id
+                SELECT * FROM Users WHERE Id = @Id
             ";
 
             public const string CheckIfExists = "select top (1) [Id] from Users";
@@ -111,26 +111,6 @@ namespace DataLayer.Providers
 
             public const string GetById = "select * from Users where Id = @Id";
 
-        }
-
-        public static class DayOffRequestApprovers
-        {
-            public const string Create = $@"
-                INSERT INTO [DayOffRequestApprovers] (UserId, ApproverId)
-                VALUES (@UserId, @ApproverId)
-            ";
-
-            public const string DeleteApproversByUserId = @"
-                DELETE DayOffRequestApprovers
-                WHERE UserId = @UserId
-            ";
-
-            public const string GetApproversByUserId = $@"
-                SELECT u.*
-                FROM Users u
-                INNER JOIN DayOffRequestApprovers d ON u.Id = d.ApproverId
-                WHERE d.UserId = @UserId;
-            ";
         }
 
         public static class DaysOff
@@ -143,15 +123,16 @@ namespace DataLayer.Providers
                 {AddSorting(sorting)} 
                 {AddPaging(paging)}";
 
+            public static string GetActiveRequests =
+                $@"SELECT * FROM DayOffRequests WHERE StartDate > @StartDate";
+
             public static string GetRequestsCount(DayOffRequestFilter filter) => $@"
                     SELECT COUNT (*)
                     FROM DayOffRequests
                     WHERE UserId='{filter.UserId}'";
 
-            public static string GetApprovers = @"SELECT Users.Id, Users.Name, Users.Surname, Users.Email
-                                                  FROM DayOffRequestApprovers 
-                                                  JOIN Users ON (Users.Id=DayOffRequestApprovers.ApproverId)
-                                                  WHERE DayOffRequestApprovers.UserId=@UserId";
+            public static string GetApproversByIdList = @"SELECT Id, Name, Surname, Email FROM Users
+                                                  WHERE Id IN @ApproverIds";
 
             public static string GetApprovalResults = @"SELECT *
                                                   FROM DayOffRequestApprovals
@@ -166,11 +147,9 @@ namespace DataLayer.Providers
  	                                                ,DayOffRequestApprovals.Status
                                                     ,DayOffRequestApprovals.DeclineReason
                                                     FROM [TimeTracker].[dbo].[DayOffRequests]
-                                                    JOIN DayOffRequestApprovers on DayOffRequestApprovers.UserId = [DayOffRequests].UserId  
-                                                    JOIN Users on Users.Id = DayOffRequestApprovers.UserId 
+                                                    JOIN Users on Users.Id = DayOffRequests.UserId 
                                                     JOIN DayOffRequestApprovals on DayOffRequestApprovals.RequestId = DayOffRequests.Id 
-                                                    AND DayOffRequestApprovals.ApproverId = DayOffRequestApprovers.ApproverId
-													WHERE DayOffRequestApprovers.ApproverId = @ApproverId
+													WHERE DayOffRequestApprovals.ApproverId = @ApproverId
                                                     {AddSorting(sorting)}
                                                     {AddPaging(paging)}";
 
@@ -181,6 +160,11 @@ namespace DataLayer.Providers
             public static string CreateApprovals(IEnumerable<Guid> approverIds, Guid requestId) =>
                 $@"INSERT INTO DayOffRequestApprovals 
                    VALUES {string.Join(',', approverIds.Select(approverId => $"('{requestId}','{approverId}', {(int)DayOffApprovalStatus.Pending}, NULL)"))}";
+
+            public static string DeleteApprovals = @"DELETE FROM DayOffRequestApprovals WHERE RequestId = @RequestId AND ApproverId IN @ApproverIds";
+
+            public static string DeleteDayOffRequest = @"DELETE FROM DayOffRequestApprovals WHERE RequestId = @RequestId
+                                                         DELETE FROM DayOffRequests WHERE Id = @RequestId";
         }
 
         public static class Worktime

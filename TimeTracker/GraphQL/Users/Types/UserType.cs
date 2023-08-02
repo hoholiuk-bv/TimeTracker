@@ -1,11 +1,13 @@
 ﻿using DataLayer.Entities;
+using DataLayer.Providers;
 using GraphQL.Types;
+using TimeTracker.GraphQL.DaysOff.Types;
 
 namespace TimeTracker.GraphQL.Users.Types
 {
     public class UserType : ObjectGraphType<User>
     {
-        public UserType()
+        public UserType(IDaysOffProvider daysOffProvider)
         {
             Field(t => t.Id);
             Field(t => t.Name);
@@ -16,6 +18,8 @@ namespace TimeTracker.GraphQL.Users.Types
             Field(t => t.EmploymentDate);
             Field(t => t.EmploymentType);
             Field(t => t.WorkingHoursCount);
+            Field<ListGraphType<DayOffRequestApproverType>>("Approvers")
+                .Resolve(context => daysOffProvider.GetApprovers(context.Source.ApproverIds));
         }
     }
 }
