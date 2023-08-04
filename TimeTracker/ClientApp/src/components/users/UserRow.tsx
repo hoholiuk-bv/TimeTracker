@@ -33,7 +33,7 @@ export const UserRow = ({ user }: Props) => {
         {formattedEmploymentDate}
       </td>
       <td className='text-end pe-3'>
-        <FontAwesomeIcon icon={faFileLines} className="user-action details-action" title="Details" onClick={handleUserDetailButtonClick} />
+        <FontAwesomeIcon icon={faFileLines} className="details-action" title="Details" onClick={handleUserDetailButtonClick} />
       </td>
     </tr>
   );

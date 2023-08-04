@@ -7,4 +7,6 @@ public interface IWorktimeProvider
     void SaveWorktime(Worktime worktime);
 
     IEnumerable<Worktime> GetWorktimeRecords();
+
+    IEnumerable<Worktime> GetWorktimeRecordsByUserId(Guid userId);
 }

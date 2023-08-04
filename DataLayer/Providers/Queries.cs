@@ -164,9 +164,11 @@ namespace DataLayer.Providers
 
         public static class Worktime
         {
-            public const string SaveWorktime = "insert into WorktimeRecords values(@Id, @UserId, @StartDate, @FinishDate, @IsAutoCreated, @LastEditorId)";
+            public const string SaveWorktime = "INSERT INTO WorktimeRecords VALUES(@Id, @UserId, @StartDate, @FinishDate, @LastEditorId)";
 
-            public const string GetWorktimeRecords = "select * from WorktimeRecords ORDER BY FinishDate DESC";
+            public const string GetWorktimeRecords = "SELECT * FROM WorktimeRecords ORDER BY FinishDate DESC";
+            
+            public const string GetWorktimeRecordsByUserId = "SELECT * FROM WorktimeRecords WHERE UserId = @UserId ORDER BY FinishDate DESC";
         }
 
         public static class CalendarRules
