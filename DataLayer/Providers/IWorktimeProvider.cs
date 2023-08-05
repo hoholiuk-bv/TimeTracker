@@ -9,7 +9,7 @@ public interface IWorktimeProvider
 
     IEnumerable<Worktime> GetWorktimeRecords();
 
-    IEnumerable<Worktime> GetWorktimeRecordsByUserId(Guid userId, Sorting sorting, WorktimeFilter? filter, Paging paging);
+    IEnumerable<Worktime> GetWorktimeRecordsByUserId(Sorting sorting, WorktimeFilter? filter, Paging paging);
    
-    int GetRecordsCount(Guid userId, WorktimeFilter? filter);
+    int GetRecordsCount(WorktimeFilter? filter);
 }

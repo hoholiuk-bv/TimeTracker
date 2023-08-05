@@ -9,6 +9,7 @@ namespace TimeTracker.GraphQL.Worktime.Types
         {
             Name = "WorktimeFilterInput";
 
+            Field(t => t.UserId);
             Field(t => t.Year);
             Field(t => t.Month);
         }

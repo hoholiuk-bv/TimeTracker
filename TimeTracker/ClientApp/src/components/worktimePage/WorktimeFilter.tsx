@@ -14,17 +14,13 @@ export const WorktimeFilter = () => {
   const { filtering } = useSelector((state: RootState) => state.worktime);
     
   const initialValues: FilterType = {
+    userId: filtering.userId,
     year: filtering.year,
     month: filtering.month,
   };
 
   const onSubmit = (values: FilterType) => {
-    const newFiltering = {
-      year: values.year,
-      month: values.month,
-    };
-
-    dispatch(changeWorktimeRecordsFiltering(newFiltering));
+    dispatch(changeWorktimeRecordsFiltering(values));
   };
 
   return (

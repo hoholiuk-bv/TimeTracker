@@ -5,16 +5,14 @@ mutation($input: WorkInput!) {
   } 
 }`;
 
-export const getWorktimeRecordsByUserIdQuery = `
+export const getWorktimeRecordsQuery = `
 query(
-  $userId: Guid!
-  $sorting: SortInputType
+  $sorting: SortInputType!
   $filter: WorktimeFilterInput
-  $paging: PaginationInputType
+  $paging: PaginationInputType!
 ) {
   worktime {
     worktimeRecordsByUserId(
-      userId: $userId
       sorting: $sorting
       filter: $filter
       paging: $paging
@@ -26,7 +24,6 @@ query(
       lastEditor
     }
     recordsCount(
-      userId: $userId
       filter: $filter
     )
   }

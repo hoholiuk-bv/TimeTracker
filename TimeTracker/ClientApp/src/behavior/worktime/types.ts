@@ -15,6 +15,7 @@ export type WorktimeRecord = {
 }
 
 export type FilterType = {
+    userId: string;
     year: number;
     month: number;
 }

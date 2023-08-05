@@ -14,9 +14,9 @@ public class WorktimeProvider : Provider, IWorktimeProvider
     public IEnumerable<Worktime> GetWorktimeRecords()
         => Query<Worktime>(Queries.Worktime.GetWorktimeRecords);
 
-    public IEnumerable<Worktime> GetWorktimeRecordsByUserId(Guid userId, Sorting sorting, WorktimeFilter? filter, Paging paging)
-        => Query<Worktime>(Queries.Worktime.GetWorktimeRecordsByUserId(sorting, filter, paging), new { UserId = userId });
+    public IEnumerable<Worktime> GetWorktimeRecordsByUserId(Sorting sorting, WorktimeFilter? filter, Paging paging)
+        => Query<Worktime>(Queries.Worktime.GetWorktimeRecordsByUserId(sorting, filter, paging));
 
-    public int GetRecordsCount(Guid userId, WorktimeFilter? filter)
-        => Query<int>(Queries.Worktime.GetRecordsCount(filter), new { UserId = userId }).First();
+    public int GetRecordsCount(WorktimeFilter? filter)
+        => Query<int>(Queries.Worktime.GetRecordsCount(filter)).First();
 }

@@ -1,11 +1,11 @@
 ﻿import { mergeMap, map, merge } from 'rxjs';
 import {
-  WORKTIME_CREATION, WORKTIME_RECORDS_BY_USER_ID_REQUESTED,
-  WorktimeActions, worktimeRecordsByUserIdReceived,
+  WORKTIME_CREATION, WORKTIME_RECORDS_REQUESTED,
+  WorktimeActions, worktimeRecordsReceived,
 } from './actions';
 import { Epic, ofType } from 'redux-observable';
 import { sendRequest } from '../graphApi';
-import { getWorktimeRecordsByUserIdQuery, worktimeCreationMutation } from './queries';
+import { getWorktimeRecordsQuery, worktimeCreationMutation } from './queries';
 
 const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
   const worktimeCreation$ = actions$.pipe(
@@ -16,10 +16,10 @@ const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
   );
 
   const requestWorktimeRecordsByUserId$ = actions$.pipe(
-    ofType(WORKTIME_RECORDS_BY_USER_ID_REQUESTED),
+    ofType(WORKTIME_RECORDS_REQUESTED),
     map(action => action.payload),
-    mergeMap(({userId, sorting, filter, paging}) => sendRequest(getWorktimeRecordsByUserIdQuery, {userId: userId, sorting: sorting, filter: filter, paging: paging}).pipe(
-      map(({worktime}) => worktimeRecordsByUserIdReceived(worktime.worktimeRecordsByUserId, worktime.recordsCount))
+    mergeMap(({sorting, filter, paging}) => sendRequest(getWorktimeRecordsQuery, {sorting: sorting, filter: filter, paging: paging}).pipe(
+      map(({worktime}) => worktimeRecordsReceived(worktime.worktimeRecordsByUserId, worktime.recordsCount))
     )),
   );
   

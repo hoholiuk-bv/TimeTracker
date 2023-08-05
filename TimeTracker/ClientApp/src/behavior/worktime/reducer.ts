@@ -3,7 +3,7 @@ import { WorktimeRecord } from './types';
 import { PagingInput, SortingInput, SortingOrder } from '../common/types';
 import { FilterType } from './types';
 import {
-  WORKTIME_RECORDS_BY_USER_ID_RECEIVED, WorktimeRecordsByUserIdReceivedAction,
+  WORKTIME_RECORDS_RECEIVED, WorktimeRecordsReceivedAction,
   WORKTIME_RECORDS_FILTERING_CHANGED, WorktimeRecordsFilteringChangedAction,
   WORKTIME_RECORDS_SORTING_CHANGED, WorktimeRecordsSortingChangedAction,
   WORKTIME_RECORDS_PAGING_CHANGED, WorktimeRecordsPagingChangedAction,
@@ -25,6 +25,7 @@ const initialState: WorktimeState = {
     sortingOrder: SortingOrder.Ascending
   },
   filtering: {
+    userId: '',
     year: new Date().getFullYear(),
     month: new Date().getMonth() + 1,
   },
@@ -35,13 +36,13 @@ const initialState: WorktimeState = {
 };
 
 export default createReducer(initialState, {
-  [WORKTIME_RECORDS_BY_USER_ID_RECEIVED]: onWorktimeRecordsByUserIdReceived,
+  [WORKTIME_RECORDS_RECEIVED]: onWorktimeRecordsReceived,
   [WORKTIME_RECORDS_SORTING_CHANGED]: onWorktimeRecordsSortingChanged,
   [WORKTIME_RECORDS_FILTERING_CHANGED]: onWorktimeRecordsFilteringChanged,
   [WORKTIME_RECORDS_PAGING_CHANGED]: onWorktimeRecordsPagingChanged,
 });
 
-function onWorktimeRecordsByUserIdReceived(state: WorktimeState, action: WorktimeRecordsByUserIdReceivedAction): WorktimeState {
+function onWorktimeRecordsReceived(state: WorktimeState, action: WorktimeRecordsReceivedAction): WorktimeState {
   const { records, recordsCount } = action.payload;
   return {...state, records, recordsCount};
 }

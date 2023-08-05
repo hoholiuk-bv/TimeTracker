@@ -8,15 +8,15 @@ export const worktimeCreation = (worktimeCreationInput: WorktimeInput) => ({
   payload: {worktimeCreationInput}
 });
 
-export const WORKTIME_RECORDS_BY_USER_ID_REQUESTED = 'WORKTIME_RECORDS_BY_USER_ID_REQUESTED' as const;
-export const requestWorktimeRecordsByUserId = (userId: string, sorting: SortingInput, filter: FilterType , paging: PagingInput) => ({
-  type: WORKTIME_RECORDS_BY_USER_ID_REQUESTED,
-  payload: { userId, sorting, filter, paging },
+export const WORKTIME_RECORDS_REQUESTED = 'WORKTIME_RECORDS_REQUESTED' as const;
+export const requestWorktimeRecords = (sorting: SortingInput, filter: FilterType , paging: PagingInput) => ({
+  type: WORKTIME_RECORDS_REQUESTED,
+  payload: { sorting, filter, paging },
 });
 
-export const WORKTIME_RECORDS_BY_USER_ID_RECEIVED = 'WORKTIME_RECORDS_BY_USER_ID_RECEIVED' as const;
-export const worktimeRecordsByUserIdReceived = (records: WorktimeRecord[], recordsCount: number) => ({
-  type: WORKTIME_RECORDS_BY_USER_ID_RECEIVED,
+export const WORKTIME_RECORDS_RECEIVED = 'WORKTIME_RECORDS_RECEIVED' as const;
+export const worktimeRecordsReceived = (records: WorktimeRecord[], recordsCount: number) => ({
+  type: WORKTIME_RECORDS_RECEIVED,
   payload: { records, recordsCount },
 });
 
@@ -39,15 +39,15 @@ export const changeWorktimeRecordsPaging = (paging: PagingInput) => ({
 });
 
 export type WorktimeCreationAction = ReturnType<typeof worktimeCreation>;
-export type WorktimeRecordsByUserIdReceivedAction = ReturnType<typeof worktimeRecordsByUserIdReceived>;
+export type WorktimeRecordsReceivedAction = ReturnType<typeof worktimeRecordsReceived>;
 export type WorktimeRecordsSortingChangedAction = ReturnType<typeof changeWorktimeRecordsSorting>;
 export type WorktimeRecordsFilteringChangedAction = ReturnType<typeof changeWorktimeRecordsFiltering>;
 export type WorktimeRecordsPagingChangedAction = ReturnType<typeof changeWorktimeRecordsPaging>;
 
 export type WorktimeActions = ReturnType<
     | typeof worktimeCreation
-    | typeof requestWorktimeRecordsByUserId
-    | typeof worktimeRecordsByUserIdReceived
+    | typeof requestWorktimeRecords
+    | typeof worktimeRecordsReceived
     | typeof changeWorktimeRecordsSorting
     | typeof changeWorktimeRecordsFiltering
     | typeof changeWorktimeRecordsPaging>

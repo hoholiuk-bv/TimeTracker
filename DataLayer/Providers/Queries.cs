@@ -171,16 +171,14 @@ namespace DataLayer.Providers
             public static string GetWorktimeRecordsByUserId(Sorting sorting, WorktimeFilter? filter, Paging paging) => @$"
                 SELECT *
                 FROM WorktimeRecords
-                WHERE UserId = @UserId
                 {AddFiltering(filter)}
                 {AddSorting(sorting)}
                 {AddPaging(paging)}
             ";
 
             public static string GetRecordsCount(WorktimeFilter? filter) => $@"
-                SELECT COUNT (*)
+                SELECT COUNT(*)
                 FROM WorktimeRecords
-                WHERE UserId = @UserId
                 {AddFiltering(filter)}
             ";
 
@@ -189,12 +187,11 @@ namespace DataLayer.Providers
                 if (filter == null)
                     return "";
 
-                string filterQuery = @$"
+                return @$"
+                    WHERE UserId = '{filter.UserId}'
                     AND YEAR(StartDate) = {filter.Year}
                     AND MONTH(StartDate) = {filter.Month}
                 ";
-
-                return filterQuery;
             }
         }
 
