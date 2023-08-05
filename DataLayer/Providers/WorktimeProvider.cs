@@ -14,6 +14,6 @@ public class WorktimeProvider : Provider, IWorktimeProvider
     public IEnumerable<Worktime> GetWorktimeRecords()
         => Query<Worktime>(Queries.Worktime.GetWorktimeRecords);
 
-    public IEnumerable<Worktime> GetWorktimeRecordsByUserId(Guid userId, WorktimeFilter? filter)
-        => Query<Worktime>(Queries.Worktime.GetWorktimeRecordsByUserId(filter), new { UserId = userId });
+    public IEnumerable<Worktime> GetWorktimeRecordsByUserId(Guid userId, Sorting sorting, WorktimeFilter? filter)
+        => Query<Worktime>(Queries.Worktime.GetWorktimeRecordsByUserId(sorting, filter), new { UserId = userId });
 }

@@ -1,11 +1,16 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../behavior/store';
 import { WorktimeRow } from './WorktimeRow';
 import { Alert } from 'react-bootstrap';
+import { SortIcon } from '../common/elements/SortIcon';
+import { SortingOrder } from '../../behavior/common/types';
+import { changeWorktimeRecordsSorting } from '../../behavior/worktime/actions';
 
 export const WorktimeTable = () => {
-  const { records } = useSelector((state: RootState) => state.worktime);
+  const dispatch = useDispatch();
+  const defaultSortingField = 'FinishDate';
+  const { records, sorting } = useSelector((state: RootState) => state.worktime);
 
   if(records === null)
     return (
@@ -19,16 +24,39 @@ export const WorktimeTable = () => {
   if(records.length === 0)
     return (<Alert variant='secondary'>Worktime records not found.</Alert>);
 
+  const handleSortingColumnClick = (fieldName: string) => {
+    let newSortingField = fieldName;
+    let newSortingOrder = sorting.sortingOrder;
+
+    if (fieldName !== sorting.sortingField) {
+      newSortingField = fieldName;
+      newSortingOrder = SortingOrder.Ascending;
+    } else {
+      switch (sorting.sortingOrder) {
+        case SortingOrder.Ascending:
+          newSortingOrder = SortingOrder.Descending;
+          break;
+        case SortingOrder.Descending:
+          newSortingOrder = SortingOrder.Ascending;
+          newSortingField = defaultSortingField;
+      }
+    }
+
+    dispatch(changeWorktimeRecordsSorting({ sortingOrder: newSortingOrder, sortingField: newSortingField }));
+  };
+
   return (
     <>
       <table className="table table-striped mb-4">
         <thead>
           <tr>
-            <th className='sortableColumn'>
+            <th onClick={() => handleSortingColumnClick('StartDate')} className='sortableColumn'>
               <span>Start</span>
+              <SortIcon sortingOrder={sorting.sortingField === 'StartDate' ? sorting.sortingOrder : null} />
             </th>
-            <th className='sortableColumn'>
+            <th onClick={() => handleSortingColumnClick('FinishDate')} className='sortableColumn'>
               <span>Finish</span>
+              <SortIcon sortingOrder={sorting.sortingField === 'FinishDate' ? sorting.sortingOrder : null} />
             </th>
             <th className='sortableColumn'>
               <span>Work time</span>

@@ -18,7 +18,7 @@ const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
   const requestWorktimeRecordsByUserId$ = actions$.pipe(
     ofType(WORKTIME_RECORDS_BY_USER_ID_REQUESTED),
     map(action => action.payload),
-    mergeMap(({userId, filter}) => sendRequest(getWorktimeRecordsByUserIdQuery, {userId: userId, filter: filter}).pipe(
+    mergeMap(({userId, sorting, filter}) => sendRequest(getWorktimeRecordsByUserIdQuery, {userId: userId, sorting: sorting, filter: filter}).pipe(
       map(({worktime}) => worktimeRecordsByUserIdReceived(worktime.worktimeRecordsByUserId))
     )),
   );

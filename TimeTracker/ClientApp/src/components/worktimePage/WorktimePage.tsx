@@ -9,12 +9,12 @@ import { WorktimeFilter } from './WorktimeFilter';
 export const WorktimePage = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.profile.userInfo);
-  const { filtering } = useSelector((state: RootState) => state.worktime);
+  const { sorting, filtering } = useSelector((state: RootState) => state.worktime);
 
   useEffect(() => {
     if(user !== null)
-      dispatch(requestWorktimeRecordsByUserId(user.id, filtering));
-  }, [dispatch, user, filtering]);
+      dispatch(requestWorktimeRecordsByUserId(user.id, sorting, filtering));
+  }, [dispatch, user, sorting, filtering]);
   
   return (
     <>

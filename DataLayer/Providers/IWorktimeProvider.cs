@@ -9,5 +9,5 @@ public interface IWorktimeProvider
 
     IEnumerable<Worktime> GetWorktimeRecords();
 
-    IEnumerable<Worktime> GetWorktimeRecordsByUserId(Guid userId, WorktimeFilter? filter);
+    IEnumerable<Worktime> GetWorktimeRecordsByUserId(Guid userId, Sorting sorting, WorktimeFilter? filter);
 }
