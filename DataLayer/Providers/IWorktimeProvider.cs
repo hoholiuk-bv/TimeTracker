@@ -1,4 +1,5 @@
 ﻿using DataLayer.Entities;
+using DataLayer.Models;
 
 namespace DataLayer.Providers;
 
@@ -8,5 +9,5 @@ public interface IWorktimeProvider
 
     IEnumerable<Worktime> GetWorktimeRecords();
 
-    IEnumerable<Worktime> GetWorktimeRecordsByUserId(Guid userId);
+    IEnumerable<Worktime> GetWorktimeRecordsByUserId(Guid userId, WorktimeFilter? filter);
 }

@@ -13,3 +13,8 @@ export type WorktimeRecord = {
     isAutoCreated: boolean,
     lastEditor: string,
 }
+
+export type FilterType = {
+    year: number;
+    month: number;
+}

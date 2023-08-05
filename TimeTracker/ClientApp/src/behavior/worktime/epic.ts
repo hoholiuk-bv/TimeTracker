@@ -1,11 +1,11 @@
-﻿import {mergeMap, map, merge} from 'rxjs';
+﻿import { mergeMap, map, merge } from 'rxjs';
 import {
   WORKTIME_CREATION, WORKTIME_RECORDS_BY_USER_ID_REQUESTED,
   WorktimeActions, worktimeRecordsByUserIdReceived,
 } from './actions';
-import {Epic, ofType} from 'redux-observable';
-import {sendRequest} from '../graphApi';
-import {getWorktimeRecordsByUserIdQuery, worktimeCreationMutation} from './queries';
+import { Epic, ofType } from 'redux-observable';
+import { sendRequest } from '../graphApi';
+import { getWorktimeRecordsByUserIdQuery, worktimeCreationMutation } from './queries';
 
 const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
   const worktimeCreation$ = actions$.pipe(
@@ -18,7 +18,7 @@ const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
   const requestWorktimeRecordsByUserId$ = actions$.pipe(
     ofType(WORKTIME_RECORDS_BY_USER_ID_REQUESTED),
     map(action => action.payload),
-    mergeMap(({userId}) => sendRequest(getWorktimeRecordsByUserIdQuery, {userId: userId}).pipe(
+    mergeMap(({userId, filter}) => sendRequest(getWorktimeRecordsByUserIdQuery, {userId: userId, filter: filter}).pipe(
       map(({worktime}) => worktimeRecordsByUserIdReceived(worktime.worktimeRecordsByUserId))
     )),
   );

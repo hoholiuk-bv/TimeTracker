@@ -1,4 +1,5 @@
-﻿using DataLayer.Providers;
+﻿using DataLayer.Models;
+using DataLayer.Providers;
 using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Worktime.Types;
@@ -19,10 +20,13 @@ public class WorktimeQuery : ObjectGraphType
         Field<ListGraphType<WorktimeType>>("worktimeRecordsByUserId")
             .Description("Get list of worktimeRecords by user id")
             .Argument<GuidGraphType>("userId")
+            .Argument<WorktimeFilterInputType>("filter")
             .Resolve(context =>
             {
                 Guid userId = context.GetArgument<Guid>("userId");
-                return worktimeProvider.GetWorktimeRecordsByUserId(userId).ToList(); ;
+                WorktimeFilter? filter = context.GetArgument<WorktimeFilter?>("filter");
+
+                return worktimeProvider.GetWorktimeRecordsByUserId(userId, filter).ToList(); ;
             });
     }
 }

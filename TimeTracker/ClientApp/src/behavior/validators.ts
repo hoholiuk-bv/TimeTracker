@@ -39,6 +39,26 @@ export function minLength(value: any, { length }: MaxLengthValidatorAttributes) 
   return error;
 }
 
+export function worktimeYear(value: any) {
+  let error;
+
+  if (value < 1900) {
+    error = 'Year should be at least 1900';
+  }
+
+  return error;
+}
+
+export function worktimeMonth(value: any) {
+  let error;
+
+  if (value < 1 || value > 12) {
+    error = 'Month should be between 1 and 12';
+  }
+
+  return error;
+}
+
 export function validate(validators: Validator[]) : FieldValidator {
   return (value: any) => {
     let error;

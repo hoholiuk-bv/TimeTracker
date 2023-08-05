@@ -6,9 +6,15 @@ mutation($input: WorkInput!) {
 }`;
 
 export const getWorktimeRecordsByUserIdQuery = `
-query($userId: Guid!) {
+query(
+  $userId: Guid!
+  $filter: WorktimeFilterInput
+) {
   worktime {
-    worktimeRecordsByUserId(userId: $userId) {
+    worktimeRecordsByUserId(
+      userId: $userId
+      filter: $filter
+    ) {
       id
       userId
       startDate

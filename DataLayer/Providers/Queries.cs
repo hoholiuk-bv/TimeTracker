@@ -168,7 +168,26 @@ namespace DataLayer.Providers
 
             public const string GetWorktimeRecords = "SELECT * FROM WorktimeRecords ORDER BY FinishDate DESC";
             
-            public const string GetWorktimeRecordsByUserId = "SELECT * FROM WorktimeRecords WHERE UserId = @UserId ORDER BY FinishDate DESC";
+            public static string GetWorktimeRecordsByUserId(WorktimeFilter? filter) => @$"
+                SELECT *
+                FROM WorktimeRecords
+                WHERE UserId = @UserId
+                {AddFiltering(filter)}
+                ORDER BY FinishDate DESC
+            ";
+
+            private static string AddFiltering(WorktimeFilter? filter)
+            {
+                if (filter == null)
+                    return "";
+
+                string filterQuery = @$"
+                    AND YEAR(StartDate) = {filter.Year}
+                    AND MONTH(StartDate) = {filter.Month}
+                ";
+
+                return filterQuery;
+            }
         }
 
         public static class CalendarRules
