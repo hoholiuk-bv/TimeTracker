@@ -5,16 +5,18 @@ import { ListPage } from './ListPage';
 import { WorktimeTable } from './WorktimeTable';
 import { requestWorktimeRecordsByUserId } from '../../behavior/worktime/actions';
 import { WorktimeFilter } from './WorktimeFilter';
+import { changeWorktimeRecordsPaging } from '../../behavior/worktime/actions';
+import { Pagination } from '../common/elements/Pagination';
 
 export const WorktimePage = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.profile.userInfo);
-  const { sorting, filtering } = useSelector((state: RootState) => state.worktime);
+  const { sorting, filtering, paging, recordsCount } = useSelector((state: RootState) => state.worktime);
 
   useEffect(() => {
     if(user !== null)
-      dispatch(requestWorktimeRecordsByUserId(user.id, sorting, filtering));
-  }, [dispatch, user, sorting, filtering]);
+      dispatch(requestWorktimeRecordsByUserId(user.id, sorting, filtering, paging));
+  }, [dispatch, user, sorting, filtering, paging]);
   
   return (
     <>
@@ -22,6 +24,9 @@ export const WorktimePage = () => {
       <ListPage users={user} />
       <WorktimeFilter/>
       <WorktimeTable/>
+      <div className="d-flex justify-content-end mb-4">
+        <Pagination paging={paging} pagingUpdateAction={changeWorktimeRecordsPaging} itemCount={recordsCount} />
+      </div>
     </>
   );
 };

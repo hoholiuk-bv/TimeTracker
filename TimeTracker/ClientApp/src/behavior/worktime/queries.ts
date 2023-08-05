@@ -10,12 +10,14 @@ query(
   $userId: Guid!
   $sorting: SortInputType
   $filter: WorktimeFilterInput
+  $paging: PaginationInputType
 ) {
   worktime {
     worktimeRecordsByUserId(
       userId: $userId
       sorting: $sorting
       filter: $filter
+      paging: $paging
     ) {
       id
       userId
@@ -23,5 +25,9 @@ query(
       finishDate
       lastEditor
     }
+    recordsCount(
+      userId: $userId
+      filter: $filter
+    )
   }
 }`;

@@ -23,13 +23,26 @@ public class WorktimeQuery : ObjectGraphType
             .Argument<GuidGraphType>("userId")
             .Argument<SortInputType>("sorting")
             .Argument<WorktimeFilterInputType>("filter")
+            .Argument<PaginationInputType>("paging")
             .Resolve(context =>
             {
                 Guid userId = context.GetArgument<Guid>("userId");
                 Sorting sorting = context.GetArgument<Sorting>("sorting");
                 WorktimeFilter? filter = context.GetArgument<WorktimeFilter?>("filter");
+                Paging paging = context.GetArgument<Paging>("paging");
 
-                return worktimeProvider.GetWorktimeRecordsByUserId(userId, sorting, filter).ToList(); ;
+                return worktimeProvider.GetWorktimeRecordsByUserId(userId, sorting, filter, paging).ToList(); ;
+            });
+
+        Field<IntGraphType>("RecordsCount")
+            .Description("Get records count")
+            .Argument<GuidGraphType>("userId")
+            .Argument<WorktimeFilterInputType>("filter")
+            .Resolve(context =>
+            {
+                Guid userId = context.GetArgument<Guid>("userId");
+                WorktimeFilter? filter = context.GetArgument<WorktimeFilter?>("filter");
+                return worktimeProvider.GetRecordsCount(userId, filter);
             });
     }
 }

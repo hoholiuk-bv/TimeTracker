@@ -168,12 +168,20 @@ namespace DataLayer.Providers
 
             public const string GetWorktimeRecords = "SELECT * FROM WorktimeRecords ORDER BY FinishDate DESC";
             
-            public static string GetWorktimeRecordsByUserId(Sorting sorting, WorktimeFilter? filter) => @$"
+            public static string GetWorktimeRecordsByUserId(Sorting sorting, WorktimeFilter? filter, Paging paging) => @$"
                 SELECT *
                 FROM WorktimeRecords
                 WHERE UserId = @UserId
                 {AddFiltering(filter)}
                 {AddSorting(sorting)}
+                {AddPaging(paging)}
+            ";
+
+            public static string GetRecordsCount(WorktimeFilter? filter) => $@"
+                SELECT COUNT (*)
+                FROM WorktimeRecords
+                WHERE UserId = @UserId
+                {AddFiltering(filter)}
             ";
 
             private static string AddFiltering(WorktimeFilter? filter)
