@@ -7,6 +7,7 @@ import { requestWorktimeRecords } from '../../behavior/worktime/actions';
 import { WorktimeFilter } from './WorktimeFilter';
 import { changeWorktimeRecordsPaging } from '../../behavior/worktime/actions';
 import { Pagination } from '../common/elements/Pagination';
+import { WorktimeStats } from './WorktimeStats';
 
 export const WorktimePage = () => {
   const dispatch = useDispatch();
@@ -24,9 +25,12 @@ export const WorktimePage = () => {
       <ListPage users={user} />
       <WorktimeFilter/>
       <WorktimeTable/>
-      <div className="d-flex justify-content-end mb-4">
-        <Pagination paging={paging} pagingUpdateAction={changeWorktimeRecordsPaging} itemCount={recordsCount} />
-      </div>
+      {recordsCount > 0 && (
+        <div className="d-flex justify-content-between mb-4">
+          <WorktimeStats/>
+          <Pagination paging={paging} pagingUpdateAction={changeWorktimeRecordsPaging} itemCount={recordsCount} />
+        </div>
+      )}
     </>
   );
 };

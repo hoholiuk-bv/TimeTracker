@@ -19,7 +19,7 @@ const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
     ofType(WORKTIME_RECORDS_REQUESTED),
     map(action => action.payload),
     mergeMap(({sorting, filter, paging}) => sendRequest(getWorktimeRecordsQuery, {sorting: sorting, filter: filter, paging: paging}).pipe(
-      map(({worktime}) => worktimeRecordsReceived(worktime.worktimeRecordsByUserId, worktime.recordsCount))
+      map(({worktime}) => worktimeRecordsReceived(worktime.worktimeRecordsByUserId, worktime.recordsCount, worktime.worktimeStats))
     )),
   );
   

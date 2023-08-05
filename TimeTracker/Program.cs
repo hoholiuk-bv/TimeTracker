@@ -82,6 +82,7 @@ builder.Services.AddTransient<WorktimeMutation>();
 builder.Services.AddTransient<UserType>();
 builder.Services.AddTransient<WorktimeType>();
 builder.Services.AddTransient<WorktimeQuery>();
+builder.Services.AddTransient<WorktimeStatsType>();
 builder.Services.AddTransient<WorktimeInputType>();
 builder.Services.AddTransient<WorktimeMutation>();
 builder.Services.AddTransient<FilterInputType>();

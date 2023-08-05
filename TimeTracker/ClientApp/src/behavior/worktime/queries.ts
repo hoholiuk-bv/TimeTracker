@@ -23,8 +23,10 @@ query(
       finishDate
       lastEditor
     }
-    recordsCount(
-      filter: $filter
-    )
+    recordsCount(filter: $filter)
+    worktimeStats(filter: $filter) {
+      totalWorkTimeMonthly
+      plannedWorkTimeMonthly
+    }
   }
 }`;

@@ -19,3 +19,8 @@ export type FilterType = {
     year: number;
     month: number;
 }
+
+export type WorktimeStats = {
+    totalWorkTimeMonthly: number;
+    plannedWorkTimeMonthly: number;
+}

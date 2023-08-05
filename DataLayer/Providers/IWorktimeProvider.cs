@@ -7,9 +7,7 @@ public interface IWorktimeProvider
 {
     void SaveWorktime(Worktime worktime);
 
-    IEnumerable<Worktime> GetWorktimeRecords();
-
-    IEnumerable<Worktime> GetWorktimeRecordsByUserId(Sorting sorting, WorktimeFilter? filter, Paging paging);
+    IEnumerable<Worktime> GetWorktimeRecords(Sorting? sorting, WorktimeFilter? filter, Paging? paging);
    
     int GetRecordsCount(WorktimeFilter? filter);
 }

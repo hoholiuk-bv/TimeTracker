@@ -166,15 +166,19 @@ namespace DataLayer.Providers
         {
             public const string SaveWorktime = "INSERT INTO WorktimeRecords VALUES(@Id, @UserId, @StartDate, @FinishDate, @LastEditorId)";
 
-            public const string GetWorktimeRecords = "SELECT * FROM WorktimeRecords ORDER BY FinishDate DESC";
-            
-            public static string GetWorktimeRecordsByUserId(Sorting sorting, WorktimeFilter? filter, Paging paging) => @$"
-                SELECT *
-                FROM WorktimeRecords
-                {AddFiltering(filter)}
-                {AddSorting(sorting)}
-                {AddPaging(paging)}
-            ";
+            public static string GetWorktimeRecords(Sorting? sorting, WorktimeFilter? filter, Paging? paging)
+            {
+                string query = @$"
+                    SELECT *
+                    FROM WorktimeRecords
+                    {AddFiltering(filter)}
+                ";
+
+                query += sorting != null ? $" {AddSorting(sorting)}" : "";
+                query += paging != null ? $" {AddPaging(paging)}" : "";
+
+                return query;
+            }
 
             public static string GetRecordsCount(WorktimeFilter? filter) => $@"
                 SELECT COUNT(*)

@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { WorktimeRecord } from './types';
+import { WorktimeRecord, WorktimeStats } from './types';
 import { PagingInput, SortingInput, SortingOrder } from '../common/types';
 import { FilterType } from './types';
 import {
@@ -12,6 +12,7 @@ import {
 export type WorktimeState = {
   records: WorktimeRecord[] | null;
   recordsCount: number,
+  worktimeStats: WorktimeStats | null,
   sorting: SortingInput;
   filtering: FilterType;
   paging: PagingInput;
@@ -20,6 +21,7 @@ export type WorktimeState = {
 const initialState: WorktimeState = {
   records: null,
   recordsCount: 0,
+  worktimeStats: null,
   sorting: {
     sortingField: 'FinishDate',
     sortingOrder: SortingOrder.Ascending
@@ -43,16 +45,16 @@ export default createReducer(initialState, {
 });
 
 function onWorktimeRecordsReceived(state: WorktimeState, action: WorktimeRecordsReceivedAction): WorktimeState {
-  const { records, recordsCount } = action.payload;
-  return {...state, records, recordsCount};
+  const { records, recordsCount, worktimeStats } = action.payload;
+  return {...state, records, recordsCount, worktimeStats};
 }
 
 function onWorktimeRecordsFilteringChanged(state: WorktimeState, action: WorktimeRecordsFilteringChangedAction) {
   const { filtering } = action.payload;
   const daysInMonth = new Date(filtering.year, filtering.month, 0).getDate();
-  const paging = { ...state.paging, pageSize: daysInMonth };
+  const paging = { pageNumber: 1, pageSize: daysInMonth };
 
-  return { ...state, records: null, recordsCount: 0, filtering, paging };
+  return { ...state, records: null, recordsCount: 0, worktimeStats: null, filtering, paging };
 }
 
 function onWorktimeRecordsSortingChanged(state: WorktimeState, action: WorktimeRecordsSortingChangedAction) {
