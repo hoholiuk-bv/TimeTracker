@@ -8,8 +8,8 @@ public class WorktimeProvider : Provider, IWorktimeProvider
 {
     public WorktimeProvider(IConfiguration configuration) : base(configuration) { }
 
-    public void SaveWorktime(Worktime worktime)
-        => Execute(Queries.Worktime.SaveWorktime, worktime);
+    public Worktime SaveWorktime(Worktime worktime)
+        => Query<Worktime>(Queries.Worktime.SaveWorktime, worktime).First();
     
     public Worktime UpdateWorktimeRecord(Worktime worktimeRecord)
         => Query<Worktime>(Queries.Worktime.UpdateWorktimeRecord, worktimeRecord).First();

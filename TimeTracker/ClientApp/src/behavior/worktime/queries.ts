@@ -1,7 +1,13 @@
 export const worktimeCreationMutation = `
 mutation($input: WorkInput!) {
   worktime { 
-    workCreation(input: $input)
+    workCreation(input: $input) {
+      id
+      userId
+      startDate
+      finishDate
+      lastEditor
+    }
   } 
 }`;
 

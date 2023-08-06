@@ -8,6 +8,12 @@ export const worktimeCreation = (worktimeCreationInput: WorktimeInput) => ({
   payload: {worktimeCreationInput}
 });
 
+export const WORKTIME_CREATED = 'WORKTIME_CREATED' as const;
+export const worktimeCreated = (worktimeRecord: WorktimeRecord) => ({
+  type: WORKTIME_CREATED,
+  payload: {worktimeRecord}
+});
+
 export const WORKTIME_RECORDS_REQUESTED = 'WORKTIME_RECORDS_REQUESTED' as const;
 export const requestWorktimeRecords = (sorting: SortingInput, filter: FilterType , paging: PagingInput) => ({
   type: WORKTIME_RECORDS_REQUESTED,
@@ -51,6 +57,7 @@ export const changeWorktimeRecordsPaging = (paging: PagingInput) => ({
 });
 
 export type WorktimeCreationAction = ReturnType<typeof worktimeCreation>;
+export type WorktimeCreatedAction = ReturnType<typeof worktimeCreated>;
 export type WorktimeRecordUpdatedAction = ReturnType<typeof worktimeRecordUpdated>;
 export type WorktimeRecordsReceivedAction = ReturnType<typeof worktimeRecordsReceived>;
 export type WorktimeRecordsSortingChangedAction = ReturnType<typeof changeWorktimeRecordsSorting>;
@@ -59,6 +66,7 @@ export type WorktimeRecordsPagingChangedAction = ReturnType<typeof changeWorktim
 
 export type WorktimeActions = ReturnType<
     | typeof worktimeCreation
+    | typeof worktimeCreated
     | typeof requestWorktimeUpdate
     | typeof worktimeRecordUpdated
     | typeof requestWorktimeRecords

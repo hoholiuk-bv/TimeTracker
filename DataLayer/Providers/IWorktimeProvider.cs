@@ -5,7 +5,7 @@ namespace DataLayer.Providers;
 
 public interface IWorktimeProvider
 {
-    void SaveWorktime(Worktime worktime);
+    Worktime SaveWorktime(Worktime worktime);
 
     Worktime UpdateWorktimeRecord(Worktime worktimeRecord);
 

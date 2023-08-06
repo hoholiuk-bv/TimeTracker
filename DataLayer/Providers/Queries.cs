@@ -164,7 +164,11 @@ namespace DataLayer.Providers
 
         public static class Worktime
         {
-            public const string SaveWorktime = "INSERT INTO WorktimeRecords VALUES(@Id, @UserId, @StartDate, @FinishDate, @LastEditorId)";
+            public const string SaveWorktime = @"
+                INSERT INTO WorktimeRecords (Id, UserId, StartDate, FinishDate, LastEditorId)
+                OUTPUT INSERTED.*
+                VALUES (@Id, @UserId, @StartDate, @FinishDate, @LastEditorId)
+            ";
 
             public const string UpdateWorktimeRecord = @"
                 UPDATE WorktimeRecords SET

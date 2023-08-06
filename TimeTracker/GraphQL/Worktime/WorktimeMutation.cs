@@ -15,10 +15,10 @@ public class WorktimeMutation : ObjectGraphType
     {
         this.worktimeProvider = worktimeProvider;
 
-        Field<NonNullGraphType<BooleanGraphType>>("WorkCreation")
+        Field<WorktimeType>("WorkCreation")
             .Description("work")
             .Argument<NonNullGraphType<WorktimeInputType>>("input")
-            .Resolve(ResolveWorktimeCreation);
+            .Resolve(context => ResolveWorktimeCreation(context));
 
         Field<WorktimeType>("WorktimeUpdate")
             .Description("Updating of worktime record")
@@ -26,9 +26,10 @@ public class WorktimeMutation : ObjectGraphType
             .Resolve(context => ResolveWorktimeUpdating(context));
     }
 
-    private object? ResolveWorktimeCreation(IResolveFieldContext context)
+    private DataLayer.Entities.Worktime ResolveWorktimeCreation(IResolveFieldContext context)
     {
         var input = context.GetArgument<WorktimeInput>("input");
+
         var worktime = new DataLayer.Entities.Worktime()
         {
             Id = Guid.NewGuid(),
@@ -38,9 +39,7 @@ public class WorktimeMutation : ObjectGraphType
             LastEditorId = input.LastEditorId.IsNullOrEmpty() ? null : Guid.Parse(input.LastEditorId),
         };
 
-        worktimeProvider.SaveWorktime(worktime);
-
-        return true;
+        return worktimeProvider.SaveWorktime(worktime);
     }
 
     private DataLayer.Entities.Worktime ResolveWorktimeUpdating(IResolveFieldContext context)

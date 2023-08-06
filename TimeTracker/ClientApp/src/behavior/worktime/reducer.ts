@@ -3,6 +3,7 @@ import { WorktimeRecord, WorktimeStats } from './types';
 import { PagingInput, SortingInput, SortingOrder } from '../common/types';
 import { FilterType } from './types';
 import {
+  WORKTIME_CREATED, WorktimeCreatedAction,
   WORKTIME_RECORDS_RECEIVED, WorktimeRecordsReceivedAction,
   WORKTIME_RECORDS_FILTERING_CHANGED, WorktimeRecordsFilteringChangedAction,
   WORKTIME_RECORDS_SORTING_CHANGED, WorktimeRecordsSortingChangedAction,
@@ -39,12 +40,20 @@ const initialState: WorktimeState = {
 };
 
 export default createReducer(initialState, {
+  [WORKTIME_CREATED]: onWorktimeRecordCreated,
   [WORKTIME_RECORDS_RECEIVED]: onWorktimeRecordsReceived,
   [WORKTIME_RECORDS_SORTING_CHANGED]: onWorktimeRecordsSortingChanged,
   [WORKTIME_RECORDS_FILTERING_CHANGED]: onWorktimeRecordsFilteringChanged,
   [WORKTIME_RECORDS_PAGING_CHANGED]: onWorktimeRecordsPagingChanged,
   [WORKTIME_RECORD_UPDATED]: onWorktimeRecordUpdated,
 });
+
+function onWorktimeRecordCreated(state: WorktimeState, action: WorktimeCreatedAction): WorktimeState {
+  const { worktimeRecord } = action.payload;
+  const updatedRecords = state.records ? [...state.records, worktimeRecord] : [worktimeRecord];
+
+  return {...state, records: updatedRecords};
+}
 
 function onWorktimeRecordsReceived(state: WorktimeState, action: WorktimeRecordsReceivedAction): WorktimeState {
   const { records, recordsCount, worktimeStats } = action.payload;
