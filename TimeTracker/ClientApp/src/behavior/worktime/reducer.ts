@@ -52,7 +52,13 @@ function onWorktimeRecordCreated(state: WorktimeState, action: WorktimeCreatedAc
   const { worktimeRecord } = action.payload;
   const updatedRecords = state.records ? [...state.records, worktimeRecord] : [worktimeRecord];
 
-  return {...state, records: updatedRecords};
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
+  if (state.filtering.year === currentYear && state.filtering.month === currentMonth) {
+    return {...state, records: updatedRecords};
+  }
+
+  return {...state};
 }
 
 function onWorktimeRecordsReceived(state: WorktimeState, action: WorktimeRecordsReceivedAction): WorktimeState {
