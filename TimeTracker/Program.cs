@@ -21,7 +21,6 @@ using TimeTracker.GraphQL.Approvals.Types;
 using TimeTracker.GraphQL.Approvals;
 using TimeTracker.GraphQL.Calendar;
 using TimeTracker.GraphQL.Calendar.Types;
-using DataLayer.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,9 +82,11 @@ builder.Services.AddTransient<WorktimeMutation>();
 builder.Services.AddTransient<UserType>();
 builder.Services.AddTransient<WorktimeType>();
 builder.Services.AddTransient<WorktimeQuery>();
+builder.Services.AddTransient<WorktimeStatsType>();
 builder.Services.AddTransient<WorktimeInputType>();
 builder.Services.AddTransient<WorktimeMutation>();
 builder.Services.AddTransient<FilterInputType>();
+builder.Services.AddTransient<WorktimeFilterInputType>();
 builder.Services.AddTransient<SortInputType>();
 builder.Services.AddTransient<PaginationInputType>();
 builder.Services.AddTransient<LoginInputType>();

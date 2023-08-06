@@ -3,13 +3,12 @@ using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Users.Types;
 using DataLayer.Models;
-using TimeTracker.GraphQL.DaysOff.Types;
 
 namespace TimeTracker.GraphQL.Users
 {
     public class UsersQuery : ObjectGraphType
     {
-        public UsersQuery(IUserProvider userProvider, IDaysOffProvider daysOffProvider)
+        public UsersQuery(IUserProvider userProvider)
         {
             Field<ListGraphType<UserType>>("list")
                 .Description("Get list of users")

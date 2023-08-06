@@ -244,16 +244,13 @@ ul.pagination .rc-pagination-item-active a {
     margin: 0;
 }
 
-.user-action {
-    transform: scale(1.3);
-}
-
-.user-action:hover {
-    cursor: pointer;
-}
-
 .details-action {
+    transform: scale(1.3);
     color: #42A5F5;
+}
+
+.details-action:hover {
+    cursor: pointer;
 }
 
 .hidden-marker {

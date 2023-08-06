@@ -169,9 +169,53 @@ namespace DataLayer.Providers
 
         public static class Worktime
         {
-            public const string SaveWorktime = "insert into WorktimeRecords values(@Id, @UserId, @StartDate, @FinishDate, @IsAutoCreated, @LastEditorId)";
+            public const string SaveWorktime = @"
+                INSERT INTO WorktimeRecords (Id, UserId, StartDate, FinishDate, LastEditorId)
+                OUTPUT INSERTED.*
+                VALUES (@Id, @UserId, @StartDate, @FinishDate, @LastEditorId)
+            ";
 
-            public const string GetWorktimeRecords = "select * from WorktimeRecords ORDER BY FinishDate DESC";
+            public const string UpdateWorktimeRecord = @"
+                UPDATE WorktimeRecords SET
+                StartDate = @StartDate,
+                FinishDate = @FinishDate,
+                LastEditorId = @LastEditorId
+                WHERE Id = @Id
+
+                SELECT * FROM WorktimeRecords WHERE Id = @Id
+            ";
+
+            public static string GetWorktimeRecords(Sorting? sorting, WorktimeFilter? filter, Paging? paging)
+            {
+                string query = @$"
+                    SELECT *
+                    FROM WorktimeRecords
+                    {AddFiltering(filter)}
+                ";
+
+                query += sorting != null ? $" {AddSorting(sorting)}" : "";
+                query += paging != null ? $" {AddPaging(paging)}" : "";
+
+                return query;
+            }
+
+            public static string GetRecordsCount(WorktimeFilter? filter) => $@"
+                SELECT COUNT(*)
+                FROM WorktimeRecords
+                {AddFiltering(filter)}
+            ";
+
+            private static string AddFiltering(WorktimeFilter? filter)
+            {
+                if (filter == null)
+                    return "";
+
+                return @$"
+                    WHERE UserId = '{filter.UserId}'
+                    AND YEAR(StartDate) = {filter.Year}
+                    AND MONTH(StartDate) = {filter.Month}
+                ";
+            }
         }
 
         public static class CalendarRules
