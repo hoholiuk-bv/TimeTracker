@@ -13,6 +13,11 @@ export type PagingInput = {
   pageSize: number;
 }
 
+export type SelectElementOptions = {
+  value: string;
+  label: string;
+}
+
 export enum DayOffApprovalStatus {
   Pending = 'PENDING',
   Approved = 'APPROVED',

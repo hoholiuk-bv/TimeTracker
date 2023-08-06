@@ -1,4 +1,5 @@
 ﻿import { UserUpdateInput } from '../userDetails/types';
+import { SelectElementOptions } from '../common/types';
 
 type CommonUserCreationFields = {
     name: string | null;
@@ -28,14 +29,9 @@ export type ApproverInfo = {
     isActive: boolean;
 }
 
-export type ApproverOptions = {
-    value: string;
-    label: string;
-}
-
 export type UserFormProps = {
     initialValues: UserCreationInput | UserUpdateInput;
     onSubmit: (values: any) => void;
-    selectedApprovers: ApproverOptions[];
-    setSelectedApprovers: (options: ApproverOptions[]) => void;
+    selectedApprovers: SelectElementOptions[];
+    setSelectedApprovers: (options: SelectElementOptions[]) => void;
 }

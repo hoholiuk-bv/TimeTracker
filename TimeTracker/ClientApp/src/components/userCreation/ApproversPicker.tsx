@@ -1,23 +1,24 @@
 import React from 'react';
-import {FilterType} from '../../behavior/users/types';
-import {useDispatch, useSelector} from 'react-redux';
-import { RootState } from '../../behavior/store';
 import Select from 'react-select';
+import { FilterType } from '../../behavior/users/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../behavior/store';
 import { receiveUserList, requestUserList } from '../../behavior/userCreation/actions';
-import {ApproverOptions, ApproverInfo} from '../../behavior/userCreation/types';
+import { ApproverInfo } from '../../behavior/userCreation/types';
+import { SelectElementOptions } from '../../behavior/common/types';
 
 type Props = {
-  selectedApprovers: ApproverOptions[];
-  setSelectedApprovers: (options: ApproverOptions[]) => void;
+  selectedApprovers: SelectElementOptions[];
+  setSelectedApprovers: (options: SelectElementOptions[]) => void;
   excludeUserId: string | null
 }
 
 export const ApproversPicker = ({selectedApprovers, setSelectedApprovers, excludeUserId}: Props) => {
   const dispatch = useDispatch();
   const userList = useSelector((state: RootState) => state.userCreation.list);
-  const filter: FilterType = { searchText: '', startEmploymentDate: null, endEmploymentDate: null, employmentTypes: [] };
-  const filteredUsers = userList.filter((user: ApproverInfo) => user.isActive && (!excludeUserId || user.id !== excludeUserId));
-  const approversOptions: ApproverOptions[] = filteredUsers.map(user => ({
+  const filter: FilterType = { searchText: '', startEmploymentDate: null, endEmploymentDate: null, employmentTypes: [], showOnlyActiveUsers: true };
+  const filteredUsers = userList.filter((user: ApproverInfo) => !excludeUserId || user.id !== excludeUserId);
+  const approversOptions: SelectElementOptions[] = filteredUsers.map(user => ({
     value: user.id,
     label: user.name + ' ' + user.surname + ' (' + user.email + ')'
   }));

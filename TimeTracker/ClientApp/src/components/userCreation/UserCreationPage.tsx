@@ -4,14 +4,14 @@ import { useDispatch } from 'react-redux';
 import { userCreation } from '../../behavior/userCreation/actions';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../behavior/routing';
-import { MaxWorkingHours } from '../../behavior/common/types';
-import { ApproverOptions, UserFormProps } from '../../behavior/userCreation/types';
+import { MaxWorkingHours, SelectElementOptions } from '../../behavior/common/types';
+import { UserFormProps } from '../../behavior/userCreation/types';
 import { UserForm } from './UserForm';
 
 export const UserCreationPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [selectedApprovers, setSelectedApprovers] = useState<ApproverOptions[]>([]);
+  const [selectedApprovers, setSelectedApprovers] = useState<SelectElementOptions[]>([]);
 
   const initialValues: UserCreationInput = {
     name: null,

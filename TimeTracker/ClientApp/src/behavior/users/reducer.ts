@@ -32,7 +32,8 @@ const initialState: UsersState = {
     searchText: '',
     startEmploymentDate: null,
     endEmploymentDate: null,
-    employmentTypes: []
+    employmentTypes: [],
+    showOnlyActiveUsers: true
   }
 };
 

@@ -18,6 +18,7 @@ export type FilterType = {
   startEmploymentDate: string | null;
   endEmploymentDate: string | null;
   employmentTypes: string[];
+  showOnlyActiveUsers: boolean;
 }
 
 export enum employmentType {
