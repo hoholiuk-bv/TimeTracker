@@ -11,16 +11,16 @@ const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
   const worktimeCreation$ = actions$.pipe(
     ofType(WORKTIME_CREATION),
     map(action => action.payload),
-    mergeMap(({worktimeCreationInput}) => sendRequest(worktimeCreationMutation, {input: worktimeCreationInput}).pipe(
-      map(({worktime}) => worktimeCreated(worktime.workCreation))
+    mergeMap(({input}) => sendRequest(worktimeCreationMutation, {input: input}).pipe(
+      map(({worktime}) => worktimeCreated(worktime.create))
     ))
   );
 
   const editWorktimeRecord$ = actions$.pipe(
     ofType(WORKTIME_UPDATE_REQUESTED),
     map(action => action.payload),
-    mergeMap(({updatedWorktimeRecord}) => sendRequest(editWorktimeRecordMutation, {input: updatedWorktimeRecord}).pipe(
-      map(({worktime}) => worktimeRecordUpdated(worktime.worktimeUpdate))
+    mergeMap(({input}) => sendRequest(editWorktimeRecordMutation, {input: input}).pipe(
+      map(({worktime}) => worktimeRecordUpdated(worktime.update))
     )),
   );
 
@@ -28,7 +28,7 @@ const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
     ofType(WORKTIME_RECORDS_REQUESTED),
     map(action => action.payload),
     mergeMap(({sorting, filter, paging}) => sendRequest(getWorktimeRecordsQuery, {sorting: sorting, filter: filter, paging: paging}).pipe(
-      map(({worktime}) => worktimeRecordsReceived(worktime.worktimeRecordsByUserId, worktime.recordsCount, worktime.worktimeStats))
+      map(({worktime}) => worktimeRecordsReceived(worktime.records, worktime.recordsCount, worktime.worktimeStats))
     )),
   );
   

@@ -58,10 +58,10 @@ export const WorktimeTable = () => {
               <span>Finish</span>
               <SortIcon sortingOrder={sorting.sortingField === 'FinishDate' ? sorting.sortingOrder : null} />
             </th>
-            <th className='sortableColumn'>
+            <th>
               <span>Work time</span>
             </th>
-            <th className='sortableColumn' colSpan={2}>
+            <th colSpan={2}>
               <span>Last edited by</span>
             </th>
           </tr>

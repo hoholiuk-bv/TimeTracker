@@ -1,7 +1,7 @@
 export const worktimeCreationMutation = `
 mutation($input: WorkInput!) {
   worktime { 
-    workCreation(input: $input) {
+    create(input: $input) {
       id
       userId
       startDate
@@ -14,7 +14,7 @@ mutation($input: WorkInput!) {
 export const editWorktimeRecordMutation = `
 mutation($input: WorkInput!) {
   worktime {
-    worktimeUpdate(input: $input) {
+    update(input: $input) {
       id
       userId
       startDate
@@ -31,7 +31,7 @@ query(
   $paging: PaginationInputType!
 ) {
   worktime {
-    worktimeRecordsByUserId(
+    records(
       sorting: $sorting
       filter: $filter
       paging: $paging

@@ -3,9 +3,9 @@ import { FilterType, WorktimeRecord } from './types';
 import { PagingInput, SortingInput } from '../common/types';
 
 export const WORKTIME_CREATION = 'WORKTIME_CREATION' as const;
-export const worktimeCreation = (worktimeCreationInput: WorktimeInput) => ({
+export const worktimeCreation = (input: WorktimeInput) => ({
   type: WORKTIME_CREATION,
-  payload: {worktimeCreationInput}
+  payload: {input}
 });
 
 export const WORKTIME_CREATED = 'WORKTIME_CREATED' as const;
@@ -27,9 +27,9 @@ export const worktimeRecordsReceived = (records: WorktimeRecord[], recordsCount:
 });
 
 export const WORKTIME_UPDATE_REQUESTED = 'WORKTIME_UPDATE_REQUESTED' as const;
-export const requestWorktimeUpdate = (updatedWorktimeRecord: WorktimeInput) => ({
+export const requestWorktimeUpdate = (input: WorktimeInput) => ({
   type: WORKTIME_UPDATE_REQUESTED,
-  payload: { updatedWorktimeRecord },
+  payload: { input },
 });
 
 export const WORKTIME_RECORD_UPDATED = 'WORKTIME_RECORD_UPDATED' as const;

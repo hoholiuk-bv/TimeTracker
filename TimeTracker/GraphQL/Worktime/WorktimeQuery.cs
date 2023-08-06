@@ -11,8 +11,8 @@ public class WorktimeQuery : ObjectGraphType
 {
     public WorktimeQuery(IWorktimeProvider worktimeProvider, IUserProvider userProvider)
     {
-        Field<ListGraphType<WorktimeType>>("worktimeRecordsByUserId")
-            .Description("Get list of worktimeRecords")
+        Field<ListGraphType<WorktimeType>>("Records")
+            .Description("Get list of worktime records")
             .Argument<SortInputType>("sorting")
             .Argument<WorktimeFilterInputType>("filter")
             .Argument<PaginationInputType>("paging")

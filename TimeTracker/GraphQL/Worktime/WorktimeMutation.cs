@@ -1,5 +1,4 @@
-﻿using BusinessLayer.Authentication;
-using DataLayer.Providers;
+﻿using DataLayer.Providers;
 using GraphQL;
 using GraphQL.Types;
 using Microsoft.IdentityModel.Tokens;
@@ -11,17 +10,17 @@ public class WorktimeMutation : ObjectGraphType
 {
     private readonly IWorktimeProvider worktimeProvider;
 
-    public WorktimeMutation(IWorktimeProvider worktimeProvider, IAuthenticationService authenticationService)
+    public WorktimeMutation(IWorktimeProvider worktimeProvider)
     {
         this.worktimeProvider = worktimeProvider;
 
-        Field<WorktimeType>("WorkCreation")
-            .Description("work")
+        Field<WorktimeType>("Create")
+            .Description("Creates a new worktime record")
             .Argument<NonNullGraphType<WorktimeInputType>>("input")
             .Resolve(context => ResolveWorktimeCreation(context));
 
-        Field<WorktimeType>("WorktimeUpdate")
-            .Description("Updating of worktime record")
+        Field<WorktimeType>("Update")
+            .Description("Updates a worktime record")
             .Argument<NonNullGraphType<WorktimeInputType>>("input")
             .Resolve(context => ResolveWorktimeUpdating(context));
     }
