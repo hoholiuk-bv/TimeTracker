@@ -166,6 +166,16 @@ namespace DataLayer.Providers
         {
             public const string SaveWorktime = "INSERT INTO WorktimeRecords VALUES(@Id, @UserId, @StartDate, @FinishDate, @LastEditorId)";
 
+            public const string UpdateWorktimeRecord = @"
+                UPDATE WorktimeRecords SET
+                StartDate = @StartDate,
+                FinishDate = @FinishDate,
+                LastEditorId = @LastEditorId
+                WHERE Id = @Id
+
+                SELECT * FROM WorktimeRecords WHERE Id = @Id
+            ";
+
             public static string GetWorktimeRecords(Sorting? sorting, WorktimeFilter? filter, Paging? paging)
             {
                 string query = @$"

@@ -7,6 +7,7 @@ import {
   WORKTIME_RECORDS_FILTERING_CHANGED, WorktimeRecordsFilteringChangedAction,
   WORKTIME_RECORDS_SORTING_CHANGED, WorktimeRecordsSortingChangedAction,
   WORKTIME_RECORDS_PAGING_CHANGED, WorktimeRecordsPagingChangedAction,
+  WORKTIME_RECORD_UPDATED, WorktimeRecordUpdatedAction,
 } from './actions';
 
 export type WorktimeState = {
@@ -42,6 +43,7 @@ export default createReducer(initialState, {
   [WORKTIME_RECORDS_SORTING_CHANGED]: onWorktimeRecordsSortingChanged,
   [WORKTIME_RECORDS_FILTERING_CHANGED]: onWorktimeRecordsFilteringChanged,
   [WORKTIME_RECORDS_PAGING_CHANGED]: onWorktimeRecordsPagingChanged,
+  [WORKTIME_RECORD_UPDATED]: onWorktimeRecordUpdated,
 });
 
 function onWorktimeRecordsReceived(state: WorktimeState, action: WorktimeRecordsReceivedAction): WorktimeState {
@@ -65,4 +67,23 @@ function onWorktimeRecordsSortingChanged(state: WorktimeState, action: WorktimeR
 function onWorktimeRecordsPagingChanged(state: WorktimeState, action: WorktimeRecordsPagingChangedAction) {
   const { paging } = action.payload;
   return { ...state, paging };
+}
+
+function onWorktimeRecordUpdated(state: WorktimeState, action: WorktimeRecordUpdatedAction) {
+  const { updatedWorktimeRecord } = action.payload;
+
+  if(state.records === null)
+    return { ...state, records: [updatedWorktimeRecord] };
+
+  const existingIndex = state.records.findIndex(record => record.id === updatedWorktimeRecord.id);
+
+  const updatedRecords = existingIndex !== -1
+    ? [
+      ...state.records.slice(0, existingIndex),
+      updatedWorktimeRecord,
+      ...state.records.slice(existingIndex + 1),
+    ]
+    : [...state.records, updatedWorktimeRecord];
+
+  return { ...state, records: updatedRecords };
 }

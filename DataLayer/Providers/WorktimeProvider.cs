@@ -10,6 +10,9 @@ public class WorktimeProvider : Provider, IWorktimeProvider
 
     public void SaveWorktime(Worktime worktime)
         => Execute(Queries.Worktime.SaveWorktime, worktime);
+    
+    public Worktime UpdateWorktimeRecord(Worktime worktimeRecord)
+        => Query<Worktime>(Queries.Worktime.UpdateWorktimeRecord, worktimeRecord).First();
 
     public IEnumerable<Worktime> GetWorktimeRecords(Sorting? sorting, WorktimeFilter? filter, Paging? paging)
         => Query<Worktime>(Queries.Worktime.GetWorktimeRecords(sorting, filter, paging));

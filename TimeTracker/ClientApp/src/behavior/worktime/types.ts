@@ -1,4 +1,5 @@
 export type WorktimeInput = {
+    id?: string;
     userId: string | null;
     startDate: string | null;
     finishDate: string | null;
@@ -10,7 +11,6 @@ export type WorktimeRecord = {
     userId: string,
     startDate: string,
     finishDate: string,
-    isAutoCreated: boolean,
     lastEditor: string,
 }
 

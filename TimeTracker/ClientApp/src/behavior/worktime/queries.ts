@@ -5,6 +5,19 @@ mutation($input: WorkInput!) {
   } 
 }`;
 
+export const editWorktimeRecordMutation = `
+mutation($input: WorkInput!) {
+  worktime {
+    worktimeUpdate(input: $input) {
+      id
+      userId
+      startDate
+      finishDate
+      lastEditor
+    }
+  }
+}`;
+
 export const getWorktimeRecordsQuery = `
 query(
   $sorting: SortInputType!

@@ -52,7 +52,7 @@ public class WorktimeQuery : ObjectGraphType
 
                 var worktimeStats = new WorktimeStats()
                 {
-                    TotalWorkTimeMonthly = totalWorkTime.Hours + (decimal)totalWorkTime.Minutes / 100,
+                    TotalWorkTimeMonthly = totalWorkTime.Days * 24 + totalWorkTime.Hours + (decimal)totalWorkTime.Minutes / 100,
                     PlannedWorkTimeMonthly = user.WorkingHoursCount * 20 // [20] Temporary value
                 };
 
