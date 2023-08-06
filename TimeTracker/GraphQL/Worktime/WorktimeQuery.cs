@@ -1,4 +1,5 @@
 ﻿using DataLayer.Providers;
+using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Worktime.Types;
 
@@ -8,11 +9,35 @@ public class WorktimeQuery : ObjectGraphType
 {
     public WorktimeQuery(IWorktimeProvider worktimeProvider)
     {
-        Field<ListGraphType<WorktimeType>>("worktimeRecords")
+        Field<WorktimeType>("worktimeRecord")
             .Description("Get list of worktimeRecords")
+            .Argument<StringGraphType>("id", "User Id")
             .Resolve(context =>
             {
-                return worktimeProvider.GetWorktimeRecords().ToList();
+                string? userId = context.GetArgument<string?>("id");
+
+                if (userId == null || !Guid.TryParse(userId, out _))
+                {
+                    return null;
+                }
+                
+                return worktimeProvider.GetWorktimeRecord(userId);
+            });
+        
+        Field<WorktimeType>("worktimeRecords")
+            .Description("Get list of worktimeRecords")
+            .Argument<StringGraphType>("id", "User Id")
+            .Resolve(context =>
+            {
+                string? userId = context.GetArgument<string?>("id");
+
+                if (userId == null || !Guid.TryParse(userId, out _))
+                {
+                    return null;
+                }
+
+                return worktimeProvider.GetWorktimeRecords(userId);
             });
     }
-}
+    }
+

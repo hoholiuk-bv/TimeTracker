@@ -6,5 +6,10 @@ public interface IWorktimeProvider
 {
     void SaveWorktime(Worktime worktime);
 
-    IEnumerable<Worktime> GetWorktimeRecords();
+    void UpdateFinishWorktime(DateTime finishDate, string userId);
+
+    Worktime? GetWorktimeRecords(string userId);
+    
+   Worktime? GetWorktimeRecord(string userId);
+
 }

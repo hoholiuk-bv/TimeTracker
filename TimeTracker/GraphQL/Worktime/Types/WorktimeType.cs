@@ -9,7 +9,7 @@ public class WorktimeType : ObjectGraphType<DataLayer.Entities.Worktime>
         Field(t => t.Id, type: typeof(GuidGraphType));
         Field(t => t.UserId);
         Field(t => t.StartDate);
-        Field(t => t.FinishDate);
+        Field(t => t.FinishDate, nullable: true);
         Field(t => t.IsAutoCreated);
         Field(t => t.LastEditorId);
 
