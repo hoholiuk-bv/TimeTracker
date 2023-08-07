@@ -14,7 +14,7 @@ export const editCalendarRule = (input: CalendarRuleInput) => ({
 });
 
 export const CALENDAR_RULES_REQUESTED = 'CALENDAR_RULES_REQUESTED' as const;
-export const requestCalendarRules = (sorting: SortingInput, paging: PagingInput) => ({
+export const requestCalendarRules = (sorting?: SortingInput, paging?: PagingInput) => ({
   type: CALENDAR_RULES_REQUESTED,
   payload: { sorting, paging }
 });
@@ -31,14 +31,22 @@ export const changeCalendarRulesSorting = (sorting: SortingInput) => ({
   payload: { sorting }
 });
 
+export const CALENDAR_RULES_APPLIED = 'CALENDAR_RULES_APPLIED' as const;
+export const applyCalendarRules = (year: number, month: number) => ({
+  type: CALENDAR_RULES_APPLIED,
+  payload: { year, month }
+});
+
 
 export type CalendarRuleCreatedAction = ReturnType<typeof createCalendarRule>;
 export type CalendarRulesRequestedAction = ReturnType<typeof requestCalendarRules>;
 export type CalendarRulesReceivedAction = ReturnType<typeof receiveCalendarRules>;
 export type CalendarRulesSortingChangedAction = ReturnType<typeof changeCalendarRulesSorting>;
+export type CalendarRulesAppliedAction = ReturnType<typeof applyCalendarRules>;
 
 export type CalendarActions = ReturnType<
   | typeof createCalendarRule
   | typeof receiveCalendarRules
   | typeof requestCalendarRules
+  | typeof applyCalendarRules
   | typeof changeCalendarRulesSorting>
