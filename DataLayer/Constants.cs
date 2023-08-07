@@ -34,7 +34,7 @@
         {
             NonWorkingDay,
             ShortDay,
-            NationalHoliday,
+            Holiday,
         }
 
         public enum CalendarRuleRecurringPeriod

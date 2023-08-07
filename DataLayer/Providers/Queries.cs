@@ -74,7 +74,7 @@ namespace DataLayer.Providers
                     filterQuery += $" AND ({employmentTypeFilter})";
                 }
 
-                if(filter.ShowOnlyActiveUsers)
+                if (filter.ShowOnlyActiveUsers)
                 {
                     filterQuery += $" AND IsActive = 1";
                 }
@@ -248,10 +248,10 @@ namespace DataLayer.Providers
 
             public static string Delete = "";
 
-            public static string GetList(Sorting sorting, Paging paging) => @$"
+            public static string GetList(Sorting? sorting, Paging? paging) => @$"
                     SELECT * FROM CalendarRules
-                    {AddSorting(sorting)}
-                    {AddPaging(paging)}";
+                    {(sorting != null ? AddSorting(sorting) : string.Empty)}
+                    {(paging != null ? AddPaging(paging) : string.Empty)}";
         }
 
         private static string AddSorting(Sorting sorting)

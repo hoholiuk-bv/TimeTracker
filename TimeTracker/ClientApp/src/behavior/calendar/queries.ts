@@ -17,10 +17,10 @@ mutation($input: CalendarRuleInput!) {
 }`;
 
 export const getCalendarRuleListQuery = `
-query($sorting: SortingInput!, $paging: PagingInput!) {
+query($sorting: SortingInput) {
 calendar {
   rules{
-    list(sorting: $sorting, paging: $paging) {
+    list(sorting: $sorting) {
       id
       title
       displayTitle
