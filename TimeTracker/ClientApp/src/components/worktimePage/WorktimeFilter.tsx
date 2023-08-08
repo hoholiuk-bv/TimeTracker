@@ -24,36 +24,34 @@ export const WorktimeFilter = () => {
   };
 
   return (
-    <>
-      <div className="mt-4">
-        <Formik onSubmit={onSubmit} initialValues={initialValues}>
-          {({values}) => (
-            <Form>
-              <Row>
-                <Col>
-                  <FormGroup>
-                    <FormLabel htmlFor='year'>Year</FormLabel>
-                    <Field name="year" type="number" className="form-control" validate={worktimeYear} mix={1900} />
-                    <ValidationMessage fieldName='year' />
-                  </FormGroup>
-                </Col>
-                <Col>
-                  <FormGroup>
-                    <FormLabel htmlFor='month'>Month ({(new Date(values.year, values.month - 1)).toLocaleString('default', { month: 'long' })})</FormLabel>
-                    <Field name="month" type="number" className="form-control" validate={worktimeMonth} min={1} max={12} />
-                    <ValidationMessage fieldName='month' />
-                  </FormGroup>
-                </Col>
-                <Col className="d-flex align-items-end">
-                  <FormGroup>
-                    <button className="btn btn-primary" type="submit">Apply</button>
-                  </FormGroup>
-                </Col>
-              </Row>
-            </Form>
-          )}
-        </Formik>
-      </div>
-    </>
+    <div>
+      <Formik onSubmit={onSubmit} initialValues={initialValues}>
+        {({values}) => (
+          <Form>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='year'>Year</FormLabel>
+                  <Field name="year" type="number" className="form-control" validate={worktimeYear} mix={1900} />
+                  <ValidationMessage fieldName='year' />
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='month'>Month ({(new Date(values.year, values.month - 1)).toLocaleString('default', { month: 'long' })})</FormLabel>
+                  <Field name="month" type="number" className="form-control" validate={worktimeMonth} min={1} max={12} />
+                  <ValidationMessage fieldName='month' />
+                </FormGroup>
+              </Col>
+              <Col className="d-flex align-items-end">
+                <FormGroup>
+                  <button className="btn btn-primary" type="submit">Apply</button>
+                </FormGroup>
+              </Col>
+            </Row>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 };

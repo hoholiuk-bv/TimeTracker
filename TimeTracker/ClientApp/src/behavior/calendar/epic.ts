@@ -32,7 +32,7 @@ const epic: Epic<CalendarActions | any> = (actions$, state$) => {
   const requestCalendarRules$ = actions$.pipe(
     ofType(CALENDAR_RULES_REQUESTED),
     map(action => action.payload),
-    mergeMap(({ sorting, paging }) => sendRequest(getCalendarRuleListQuery, { sorting, paging }).pipe(
+    mergeMap(({ sorting }) => sendRequest(getCalendarRuleListQuery, { sorting }).pipe(
       map(({ calendar: { rules: { list } } }) => receiveCalendarRules(list))
     )),
   );
