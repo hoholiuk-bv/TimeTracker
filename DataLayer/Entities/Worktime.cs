@@ -10,9 +10,5 @@ public class Worktime
     
     public DateTime? FinishDate { get; set; }
     
-    public bool IsAutoCreated { get; set; }
-    
-    public Guid LastEditorId { get; set; }
-    
-
+    public Guid? LastEditorId { get; set; }
 }

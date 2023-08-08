@@ -1,13 +1,13 @@
 ﻿import React from 'react';
 import { Timer } from './Timer';
 import { UserInfo } from '../../behavior/profile/types';
-import {Worktime} from '../../behavior/worktime/types';
+import {WorktimeRecord} from '../../behavior/worktime/types';
 import {WorktimeRecords} from './record';
 
 
 type Props = {
     users: UserInfo | null,
-    worktime: Worktime | null;
+    worktime: WorktimeRecord | null;
 };
 
 export const ListPage = ({ users, worktime }: Props) => {
@@ -26,7 +26,7 @@ export const ListPage = ({ users, worktime }: Props) => {
                                 <tbody className="timer-container">
                                     <Timer user={users} worktime={worktime}/>
                                 </tbody>
-                                {worktime && <WorktimeRecords key={worktime.id} worktime={worktime} />}
+                                {/*{worktime && <WorktimeRecords key={worktime.id} worktime={worktime} />}*/}
                             </table>
                         </div>
                     </div>

@@ -1,26 +1,21 @@
-﻿import React, {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {Worktime, WorktimeInput} from '../../behavior/worktime/types';
-import {Field, Form, Formik} from 'formik';
-import {
-    receiveWorktime,
-    requestWorktimeList, updateWorktime,
-    worktimeCreation
-} from '../../behavior/worktime/actions';
-import {UserInfo} from '../../behavior/profile/types';
+﻿import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { WorktimeRecord, WorktimeInput } from '../../behavior/worktime/types';
+import { Form, Formik } from 'formik';
+import { updateWorktimeFinishDate, worktimeCreation } from '../../behavior/worktime/actions';
+import { UserInfo } from '../../behavior/profile/types';
 import '../../custom.css';
-
 
 type Props = {
     user: UserInfo,
-    worktime: Worktime | null;
+    worktime: WorktimeRecord | null;
 };
 
 const initialValues: WorktimeInput = {
     userId: localStorage.getItem('userId') || null,
     startDate: null,
+    finishDate: null,
     lastEditorId: localStorage.getItem('editorId') || null,
-    isAutoCreated: false,
 };
 
 export const Timer = ({user, worktime}: Props) => {
@@ -152,7 +147,7 @@ export const Timer = ({user, worktime}: Props) => {
             clearInterval(timer!);
             setIsRunning(false);
             setButtonText('Start');
-            dispatch(updateWorktime(user.id));
+            dispatch(updateWorktimeFinishDate(user.id));
             setStartDate(null);
             setIsStopped(true);
             setSeconds(0);
@@ -186,13 +181,6 @@ export const Timer = ({user, worktime}: Props) => {
         localStorage.setItem(timerKey, JSON.stringify({isRunning, startTime: Date.now()}));
     }, [isRunning]);
 
-
-    const userId = user.id;
-    useEffect(() => {
-        if (userId !== undefined) {
-            dispatch(requestWorktimeList(userId));
-        }
-    }, [dispatch, userId]);
 
    /* const button = () => {
         console.log(worktime);

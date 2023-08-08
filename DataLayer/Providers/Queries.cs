@@ -74,6 +74,11 @@ namespace DataLayer.Providers
                     filterQuery += $" AND ({employmentTypeFilter})";
                 }
 
+                if(filter.ShowOnlyActiveUsers)
+                {
+                    filterQuery += $" AND IsActive = 1";
+                }
+
                 return filterQuery;
             }
 
@@ -164,14 +169,70 @@ namespace DataLayer.Providers
 
         public static class Worktime
         {
-            public const string SaveWorktime = "insert into WorktimeRecords values(@Id, @UserId, @StartDate, @FinishDate, @IsAutoCreated, @LastEditorId)";
+            public const string CreateWorktimeRecord = @"
+                INSERT INTO WorktimeRecords 
+                VALUES (@Id, @UserId, @StartDate, @FinishDate, @LastEditorId)
+            ";
 
-            public const string GetWorktimeRecords = "select * from WorktimeRecords WHERE userId = @UserId AND finishDate IS NULL";
-            
-            public const string UpdateWorktime = @"UPDATE WorktimeRecords SET FinishDate = @FinishDate WHERE userId = @UserId AND finishDate IS NULL";
+            public const string GetWorktimeRecordById = @"
+                SELECT * FROM WorktimeRecords WHERE Id = @Id
+            ";
 
-            public const string GetWorktimeRecord = "select * from WorktimeRecords WHERE userId = @UserId AND finishDate IS NULL";
+            public const string GetUnfinishedWorktimeRecordByUserId = @"
+                SELECT * FROM WorktimeRecords 
+                WHERE userId = @UserId AND finishDate IS NULL
+            ";
 
+            public static string GetWorktimeRecords(Sorting? sorting, WorktimeFilter? filter, Paging? paging)
+            {
+                string query = @$"
+                    SELECT *
+                    FROM WorktimeRecords
+                    {AddFiltering(filter)}
+                ";
+
+                query += sorting != null ? $" {AddSorting(sorting)}" : "";
+                query += paging != null ? $" {AddPaging(paging)}" : "";
+
+                return query;
+            }
+
+            public const string UpdateFinishDate = @"
+                DECLARE @UpdatedRecordId UNIQUEIDENTIFIER
+                SET @UpdatedRecordId = (SELECT Id FROM WorktimeRecords WHERE userId = @UserId AND finishDate IS NULL)
+
+                UPDATE WorktimeRecords
+                SET FinishDate = @FinishDate
+                WHERE userId = @UserId AND finishDate IS NULL
+
+                SELECT * FROM WorktimeRecords WHERE Id = @UpdatedRecordId
+            ";
+
+            public const string UpdateWorktimeRecord = @"
+                UPDATE WorktimeRecords SET
+                StartDate = @StartDate,
+                FinishDate = @FinishDate,
+                LastEditorId = @LastEditorId
+                WHERE Id = @Id
+            ";
+
+            public static string GetRecordsCount(WorktimeFilter? filter) => $@"
+                SELECT COUNT(*)
+                FROM WorktimeRecords
+                {AddFiltering(filter)}
+            ";
+
+            private static string AddFiltering(WorktimeFilter? filter)
+            {
+                if (filter == null)
+                    return "";
+
+                return @$"
+                    WHERE UserId = '{filter.UserId}'
+                    AND YEAR(StartDate) = {filter.Year}
+                    AND MONTH(StartDate) = {filter.Month}
+                ";
+            }
         }
 
         public static class CalendarRules

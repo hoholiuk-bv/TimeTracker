@@ -1,48 +1,64 @@
-﻿import {mergeMap, map, merge, tap} from 'rxjs';
+import { Epic, ofType } from 'redux-observable';
+import { mergeMap, map, merge } from 'rxjs';
+import { sendRequest } from '../graphApi';
 import {
-    WORKTIME_CREATION,
-    CreationActions, 
-    WORKTIME_LIST_REQUESTED,
-    receiveWorktime, WORKTIME_UPDATE,
+  WorktimeActions,
+  WORKTIME_CREATION, worktimeCreated,
+  WORKTIME_UPDATE_REQUESTED, worktimeRecordUpdated,
+  WORKTIME_RECORDS_REQUESTED, worktimeRecordsReceived,
+  WORKTIME_FINISH_DATE_UPDATE, worktimeFinishDateUpdated,
+  UNFINISHED_WORKTIME_RECORD_REQUESTED, receiveUnfinishedWorktimeRecord,
 } from './actions';
-import {Epic, ofType} from 'redux-observable';
-import {sendRequest} from '../graphApi';
 import {
-    /*GetCurrentSessionQuery*/
-    getWorktimeQuery,
-    updateWorktimeMutation,
-    worktimeCreationMutation
+  updateWorktimeRecordMutation,
+  getUnfinishedWorktimeRecordQuery,
+  getWorktimeRecordsQuery,
+  updateWorktimeFinishDateMutation,
+  worktimeCreationMutation,
 } from './queries';
 
+const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
+  const worktimeCreation$ = actions$.pipe(
+    ofType(WORKTIME_CREATION),
+    map(action => action.payload),
+    mergeMap(({input}) => sendRequest(worktimeCreationMutation, {input: input}).pipe(
+      map(({worktime}) => worktimeCreated(worktime.create))
+    ))
+  );
 
-const epic: Epic<CreationActions | any> = (actions$, state$) => {
+  const updateWorktimeRecord$ = actions$.pipe(
+    ofType(WORKTIME_UPDATE_REQUESTED),
+    map(action => action.payload),
+    mergeMap(({input}) => sendRequest(updateWorktimeRecordMutation, {input: input}).pipe(
+      map(({worktime}) => worktimeRecordUpdated(worktime.update))
+    ))
+  );
 
+  const requestWorktimeRecords$ = actions$.pipe(
+    ofType(WORKTIME_RECORDS_REQUESTED),
+    map(action => action.payload),
+    mergeMap(({sorting, filter, paging}) => sendRequest(getWorktimeRecordsQuery, {sorting: sorting, filter: filter, paging: paging}).pipe(
+      map(({worktime}) => worktimeRecordsReceived(worktime.records, worktime.recordCount, worktime.worktimeStats))
+    ))
+  );
 
-    const worktimeCreation = actions$.pipe(
-        ofType(WORKTIME_CREATION),
-        map(action => action.payload),
-        mergeMap(({worktimeCreationInput}) => sendRequest(worktimeCreationMutation, {input: worktimeCreationInput}).pipe(
-        ))
-    );
-    
-    const requestWorktime$ = actions$.pipe(
-        ofType(WORKTIME_LIST_REQUESTED),
-        mergeMap((action) =>
-            sendRequest(getWorktimeQuery, { id: action.payload.id }).pipe(
-                map((data) => receiveWorktime(data.worktime.worktimeRecord))
-            )
-        )
-    );
+  const updateWorktimeFinishDate$ = actions$.pipe(
+    ofType(WORKTIME_FINISH_DATE_UPDATE),
+    map(action => action.payload),
+    mergeMap(({ userId }) => sendRequest(updateWorktimeFinishDateMutation, { userId }).pipe(
+      map(({worktime}) => worktimeFinishDateUpdated(worktime.updateFinishDate))
+    ))
+  );
 
-    const updateWorktime$ = actions$.pipe(
-        ofType(WORKTIME_UPDATE),
-        map(action => action.payload),
-        mergeMap(({ id }) => sendRequest(updateWorktimeMutation, { id }).pipe(
-            
-        ))
-    );
-    
-    return merge(worktimeCreation, requestWorktime$, updateWorktime$);
+  const requestUnfinishedWorktimeRecord$ = actions$.pipe(
+    ofType(UNFINISHED_WORKTIME_RECORD_REQUESTED),
+    map(action => action.payload),
+    mergeMap(({ userId }) => sendRequest(getUnfinishedWorktimeRecordQuery, { userId }).pipe(
+      map(({worktime}) => receiveUnfinishedWorktimeRecord(worktime.unfinishedWorktimeRecord))
+    ))
+  );
+
+  return merge(worktimeCreation$, updateWorktimeRecord$, requestWorktimeRecords$, updateWorktimeFinishDate$, requestUnfinishedWorktimeRecord$);
 };
 
 export default epic;

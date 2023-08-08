@@ -1,6 +1,5 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { Button } from 'react-bootstrap';
 
 type Props = {
   content: string;
@@ -9,11 +8,11 @@ type Props = {
 
 export const RemoveFilterButton = ({content, onClick}: Props) => {
   return (
-    <button className="btn btn-light" type="button" onClick={onClick} title="remove">
-      <span>
+    <div className='remove-filter-button'>
+      <span className="me-1">
         {content}
       </span>
-      <FontAwesomeIcon icon={faXmark} className="ms-1" />
-    </button>
+      <Button variant='link' className='tag-close-btn' onClick={onClick}>x</Button>
+    </div>
   );
 };

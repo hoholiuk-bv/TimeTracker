@@ -244,16 +244,13 @@ ul.pagination .rc-pagination-item-active a {
     margin: 0;
 }
 
-.user-action {
-    transform: scale(1.3);
-}
-
-.user-action:hover {
-    cursor: pointer;
-}
-
 .details-action {
+    transform: scale(1.3);
     color: #42A5F5;
+}
+
+.details-action:hover {
+    cursor: pointer;
 }
 
 .hidden-marker {
@@ -389,18 +386,18 @@ td.action-buttons {
 
 .tag-close-btn {
     padding: 0 0 4px 4px;
-
     color: #424242;
 }
 
 .table-action-button {
     padding: 0;
 }
-    .table-action-button:hover,
-    .table-action-button:active,
-    .table-action-button:visited {
-        color: #42A5F5 !important;
-    }
+
+.table-action-button:hover,
+.table-action-button:active,
+.table-action-button:visited {
+    color: #42A5F5 !important;
+}
 
 .table-action-button:hover,
 .table-action-button:active,
@@ -427,7 +424,12 @@ td.action-buttons {
     color: inherit;
 }
 
-
 .nav-link:hover {
     cursor: pointer !important;
+}
+
+.remove-filter-button {
+    border-radius: 12px;
+    background-color: #F4F5F9;
+    padding: 4px 15px;
 }

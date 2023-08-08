@@ -1,15 +1,21 @@
 ﻿using DataLayer.Entities;
+using DataLayer.Models;
 
 namespace DataLayer.Providers;
 
 public interface IWorktimeProvider
 {
-    void SaveWorktime(Worktime worktime);
+    int CreateWorktimeRecord(Worktime worktime);
 
-    void UpdateFinishWorktime(DateTime finishDate, string userId);
+    Worktime? GetWorktimeRecordById(Guid id);
 
-    Worktime? GetWorktimeRecords(string userId);
-    
-   Worktime? GetWorktimeRecord(string userId);
+    Worktime? GetUnfinishedWorktimeRecordByUserId(string userId);
 
+    IEnumerable<Worktime> GetWorktimeRecords(Sorting? sorting, WorktimeFilter? filter, Paging? paging);
+
+    Worktime UpdateFinishDate(DateTime finishDate, string userId);
+
+    int UpdateWorktimeRecord(Worktime worktimeRecord);
+   
+    int GetRecordCount(WorktimeFilter? filter);
 }

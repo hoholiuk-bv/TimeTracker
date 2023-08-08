@@ -12,12 +12,15 @@ namespace DataLayer.Models
 
         public IEnumerable<EmploymentType> EmploymentTypes { get; set; }
 
-        public UserFilter(string searchText = "", DateTime? startEmploymentDate = null, DateTime? endEmploymentDate = null, IEnumerable<EmploymentType>? employmentTypes = null) 
+        public bool ShowOnlyActiveUsers { get; set; }
+
+        public UserFilter(string searchText = "", DateTime? startEmploymentDate = null, DateTime? endEmploymentDate = null, IEnumerable<EmploymentType>? employmentTypes = null, bool showOnlyActiveUsers = true) 
         {
             SearchText = searchText;
             StartEmploymentDate = startEmploymentDate;
             EndEmploymentDate = endEmploymentDate;
             EmploymentTypes = employmentTypes ?? new List<EmploymentType>();
+            ShowOnlyActiveUsers = showOnlyActiveUsers;
         }
     }
 }

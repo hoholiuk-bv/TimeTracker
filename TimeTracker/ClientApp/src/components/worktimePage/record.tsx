@@ -1,8 +1,8 @@
 ﻿import React from 'react';
-import {Worktime} from '../../behavior/worktime/types';
+import {WorktimeRecord} from '../../behavior/worktime/types';
 
 type Props = {
-    worktime: Worktime;
+    worktime: WorktimeRecord;
 }
 
 export const WorktimeRecords = ({ worktime }: Props) => {
