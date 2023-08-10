@@ -35,3 +35,12 @@ calendar {
   }
 }
 }`;
+
+export const deleteCalendarRuleMutation = `
+mutation($ruleId: ID!) {
+  calendar {
+      rules {
+        delete(ruleId: $ruleId)
+    }
+  }
+}`;

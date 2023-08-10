@@ -244,7 +244,7 @@ namespace DataLayer.Providers
                                             Exceptions=@Exceptions
                                             WHERE Id=@Id";
 
-            public static string Delete = "";
+            public static string Delete = @"DELETE FROM CalendarRules WHERE Id = @RuleId";
 
             public static string GetList(Sorting? sorting, Paging? paging) => @$"
                     SELECT * FROM CalendarRules
