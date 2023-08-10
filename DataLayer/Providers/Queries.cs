@@ -223,7 +223,6 @@ namespace DataLayer.Providers
             public static string Create = @"INSERT INTO CalendarRules VALUES (
                                             @Id, 
                                             @Title, 
-                                            @DisplayTitle, 
                                             @Type, 
                                             @ShortDayDuration, 
                                             @StartDate, 
@@ -234,8 +233,7 @@ namespace DataLayer.Providers
                                             @Exceptions)";
 
             public static string Update = @"UPDATE CalendarRules SET 
-                                            Title=@Title, 
-                                            DisplayTitle=@DisplayTitle, 
+                                            Title=@Title,
                                             Type=@Type, 
                                             ShortDayDuration=@ShortDayDuration, 
                                             StartDate=@StartDate, 

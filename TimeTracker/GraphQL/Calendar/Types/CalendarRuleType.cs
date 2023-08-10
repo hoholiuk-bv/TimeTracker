@@ -14,9 +14,6 @@ namespace TimeTracker.GraphQL.Calendar.Types
             Field<NonNullGraphType<StringGraphType>>("Title")
                 .Description("Rule description");
 
-            Field<NonNullGraphType<BooleanGraphType>>("DisplayTitle")
-                .Description("Flag indicating whether title is displayed in calendar.");
-
             Field<NonNullGraphType<EnumerationGraphType<Constants.CalendarRuleSetupType>>>("Type")
                 .Description("Rule type.");
 

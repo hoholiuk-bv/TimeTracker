@@ -23,7 +23,6 @@ calendar {
     list(sorting: $sorting) {
       id
       title
-      displayTitle
       type
       startDate
       finishDate

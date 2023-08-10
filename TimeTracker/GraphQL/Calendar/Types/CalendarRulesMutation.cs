@@ -43,7 +43,6 @@ namespace TimeTracker.GraphQL.Calendar.Types
         {
             Id = input.Id ?? Guid.NewGuid(),
             Title = input.Title,
-            DisplayTitle = input.DisplayTitle,
             Type = input.Type,
             ShortDayDuration = input.ShortDayDuration,
             StartDate = DateTime.Parse(input.StartDate),
