@@ -55,6 +55,13 @@ export const UserForm = ({properties}: Props) => {
                     <ValidationMessage fieldName='employmentDate' />
                   </FormGroup>
                 </Row>
+                <Row>
+                  <FormGroup>
+                    <FormLabel htmlFor='daysOffCount'>Days off count</FormLabel>
+                    <Field name="daysOffCount" type="number" className="form-control" min={0} validate={required} />
+                    <ValidationMessage fieldName='daysOffCount' />
+                  </FormGroup>
+                </Row>
               </Col>
               <Col>
                 <Row>

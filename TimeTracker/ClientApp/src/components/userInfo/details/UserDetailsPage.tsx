@@ -56,6 +56,7 @@ export const UserDetailsPage = () => {
     approversIdList: [],
     hours: Math.floor(user.workingHoursCount),
     minutes: Math.round((user.workingHoursCount % 1) * 100),
+    daysOffCount: user.daysOffCount
   };
 
   const onSubmit = (values: UserUpdateInput) => {

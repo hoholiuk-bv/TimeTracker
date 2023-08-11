@@ -18,6 +18,7 @@ public class CreateUserInputType : InputObjectGraphType<CreateUserInput>
         Field(t => t.EmploymentType);
         Field(t => t.ApproversIdList);
         Field(t => t.WorkingHoursCount);
+        Field(t => t.DaysOffCount);
     }
 }
 
@@ -40,4 +41,6 @@ public class CreateUserInput
     public List<Guid> ApproversIdList { get; set; } = null!;
 
     public decimal WorkingHoursCount { get; set; }
+
+    public int DaysOffCount { get; set; }
 }

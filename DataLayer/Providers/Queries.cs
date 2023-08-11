@@ -83,8 +83,8 @@ namespace DataLayer.Providers
             }
 
             public const string Create = @"
-                INSERT INTO Users (Id, Name, Surname, Email, Password, Salt, IsAdmin, EmploymentDate, EmploymentType, WorkingHoursCount, ApproverIds)
-                VALUES (@Id, @Name, @Surname, @Email, @Password, @Salt, @IsAdmin, @EmploymentDate, @EmploymentType, @WorkingHoursCount, @ApproverIds)
+                INSERT INTO Users (Id, Name, Surname, Email, Password, Salt, IsAdmin, EmploymentDate, EmploymentType, WorkingHoursCount, ApproverIds, DaysOffCount)
+                VALUES (@Id, @Name, @Surname, @Email, @Password, @Salt, @IsAdmin, @EmploymentDate, @EmploymentType, @WorkingHoursCount, @ApproverIds, @DaysOffCount)
             ";
 
             public const string Update = @"
@@ -98,7 +98,8 @@ namespace DataLayer.Providers
                     EmploymentDate = @EmploymentDate,
                     EmploymentType = @EmploymentType,
                     WorkingHoursCount = @WorkingHoursCount,
-                    ApproverIds = @ApproverIds
+                    ApproverIds = @ApproverIds,
+                    DaysOffCount = @DaysOffCount
                 WHERE
                     Id = @Id;
 

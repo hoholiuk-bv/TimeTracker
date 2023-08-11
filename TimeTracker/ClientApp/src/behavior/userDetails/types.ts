@@ -8,6 +8,7 @@
     isAdmin: boolean;
     isActive: boolean;
     approversIdList: string[];
+    daysOffCount: number
 };
 
 export type UserUpdateInput = CommonUserUpdateFields & {
