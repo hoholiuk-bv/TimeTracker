@@ -5,11 +5,12 @@ import {
   CALENDAR_RULE_CREATED,
   CALENDAR_RULES_REQUESTED,
   receiveCalendarRules,
-  CALENDAR_RULE_EDITED
+  CALENDAR_RULE_EDITED,
+  CALENDAR_RULE_DELETED
 } from './actions';
 import { Epic, ofType } from 'redux-observable';
 import { sendRequest } from '../graphApi';
-import { createCalendarRuleMutation, editCalendarRuleMutation, getCalendarRuleListQuery } from './queries';
+import { createCalendarRuleMutation, editCalendarRuleMutation, getCalendarRuleListQuery, deleteCalendarRuleMutation } from './queries';
 
 const epic: Epic<CalendarActions | any> = (actions$, state$) => {
 
@@ -37,7 +38,15 @@ const epic: Epic<CalendarActions | any> = (actions$, state$) => {
     )),
   );
 
-  return merge(createCalendarRule$, requestCalendarRules$, editCalendarRule$);
+  const deleteCalendarRule$ = actions$.pipe(
+    ofType(CALENDAR_RULE_DELETED),
+    map(action => action.payload),
+    mergeMap(({ ruleId }) => sendRequest(deleteCalendarRuleMutation, { ruleId }).pipe(
+      map(() => requestCalendarRules(state$.value.calendar.sorting, state$.value.calendar.paging))
+    ))
+  );
+
+  return merge(createCalendarRule$, requestCalendarRules$, editCalendarRule$, deleteCalendarRule$);
 };
 
 export default epic;

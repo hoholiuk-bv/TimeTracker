@@ -17,7 +17,6 @@ export const RuleModal = ({ show, handleClose, calendarRule }: Props) => {
 
   const creationInitialValues: CalendarRuleInput = {
     title: '',
-    displayTitle: false,
     isRecurring: false,
     type: CalendarRuleType.NonWorkingDay,
     startDate: null,
