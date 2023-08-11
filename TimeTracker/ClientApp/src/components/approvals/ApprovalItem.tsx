@@ -34,10 +34,10 @@ export const ApprovalItem = ({ item }: Props) => {
           {employeeName} {employeeSurname}
         </td>
         <td>
-          {startDate}
+          {new Date(startDate).toLocaleDateString()}
         </td>
         <td>
-          {finishDate}
+          {new Date(finishDate).toLocaleDateString()}
         </td>
         <td className={getApprovalStatusClass(status)}>
           {status === DayOffApprovalStatus.Pending && !isEditable ? 'Outdated' : DayOffRequestStatusTitle[status]}
