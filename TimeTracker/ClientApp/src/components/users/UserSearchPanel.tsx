@@ -8,7 +8,7 @@ import { routes } from '../../behavior/routing';
 import { changeUserListFiltering } from '../../behavior/users/actions';
 import { useDispatch } from 'react-redux';
 import { SelectElementOptions } from '../../behavior/common/types';
-import { Col, FormLabel, Row } from 'react-bootstrap';
+import { FormLabel } from 'react-bootstrap';
 import { FormGroup } from '../common/elements/FormGroup';
 import { ActiveUserFilters } from './ActiveUserFilters';
 import Collapse from 'react-bootstrap/Collapse';
@@ -40,9 +40,9 @@ export const UserSearchPanel = ({filtering}: Props) => {
   const onSubmit = (values: FilterType) => {
     const newFiltering = {
       searchText: values.searchText,
-      startEmploymentDate: values.startEmploymentDate !== '' && values.startEmploymentDate !== null ? `${values.startEmploymentDate}T00:00:00` : null,
-      endEmploymentDate: values.endEmploymentDate !== '' && values.endEmploymentDate !== null ? `${values.endEmploymentDate}T00:00:00` : null,
-      employmentTypes: selectedEmploymentTypes.map(options => options.value),
+      startEmploymentDate: values.startEmploymentDate ? new Date(values.startEmploymentDate).toISOString() : null,
+      endEmploymentDate: values.endEmploymentDate ? new Date(values.endEmploymentDate).toISOString() : null,
+      employmentTypes: selectedEmploymentTypes.map(({ value }) => value),
       showOnlyActiveUsers: values.showOnlyActiveUsers,
     };
 
@@ -50,7 +50,7 @@ export const UserSearchPanel = ({filtering}: Props) => {
   };
 
   return (
-    <div className="d-flex justify-content-between mb-4">
+    <div className="d-flex justify-content-between">
       <div className="col-8">
         <Formik onSubmit={onSubmit} initialValues={initialValues}>
           {({setFieldValue, values}) => (
@@ -66,14 +66,31 @@ export const UserSearchPanel = ({filtering}: Props) => {
               </div>
               <Collapse in={open}>
                 <div>
-                  <Row>
-                    <Col>
+                  <div className="row">
+                    <div className="col-4">
                       <FormGroup>
                         <FormLabel htmlFor="startEmploymentDate">Start date</FormLabel>
                         <Field name="startEmploymentDate" type="date" className="form-control" value={values.startEmploymentDate}/>
                       </FormGroup>
-                    </Col>
-                    <Col>
+                    </div>
+                    <div className="col-4">
+                      <FormGroup>
+                        <FormLabel htmlFor="endEmploymentDate">Finish date</FormLabel>
+                        <Field name="endEmploymentDate" type="date" className="form-control" value={values.endEmploymentDate}/>
+                      </FormGroup>
+                    </div>
+                    <div className="col-4 d-flex align-items-end">
+                      <FormGroup>
+                        <FormLabel htmlFor='showOnlyActiveUsers' className="user-select-none"></FormLabel>
+                        <div className="d-flex gap-2">
+                          <Field as={BootstrapForm.Check} id="showOnlyActiveUsers" name="showOnlyActiveUsers" checked={values.showOnlyActiveUsers} />
+                          <FormLabel htmlFor='showOnlyActiveUsers' className="user-select-none">Show only active users</FormLabel>
+                        </div>
+                      </FormGroup>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-8">
                       <FormGroup>
                         <FormLabel htmlFor="employmentTypes">Employment types</FormLabel>
                         <Select
@@ -86,32 +103,18 @@ export const UserSearchPanel = ({filtering}: Props) => {
                           placeholder="Select a type..."
                         />
                       </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
+                    </div>
+                    <div className="col-4 d-flex align-items-end">
                       <FormGroup>
-                        <FormLabel htmlFor="endEmploymentDate">Finish date</FormLabel>
-                        <Field name="endEmploymentDate" type="date" className="form-control" value={values.endEmploymentDate}/>
+                        <button type="submit" className="btn btn-primary mt-2">Apply</button>
                       </FormGroup>
-                    </Col>
-                    <Col>
-                      <FormGroup>
-                        <FormLabel htmlFor='showOnlyActiveUsers' className="user-select-none">Show only active users</FormLabel>
-                        <Field as={BootstrapForm.Check} id="showOnlyActiveUsers" name="showOnlyActiveUsers" checked={values.showOnlyActiveUsers} />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <button type="submit" className="btn btn-primary mt-2">Apply</button>
-                    </Col>
-                  </Row>
+                    </div>
+                  </div>
                 </div>
               </Collapse>
-              <div className="d-flex gap-2 flex-wrap">
+              <div className="d-flex gap-2 flex-wrap mb-2">
                 <ActiveUserFilters
-                  filtering={filtering} 
+                  filtering={filtering}
                   setFieldValue={setFieldValue}
                   selectedEmploymentTypes={selectedEmploymentTypes}
                   setSelectedEmploymentTypes={setSelectedEmploymentTypes}
