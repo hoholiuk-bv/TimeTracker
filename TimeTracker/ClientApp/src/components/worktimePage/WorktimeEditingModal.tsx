@@ -9,6 +9,7 @@ import { ValidationMessage } from '../common/validation/ValidationMessage';
 import { WorktimeInput, WorktimeRecord } from '../../behavior/worktime/types';
 import { requestWorktimeUpdate } from '../../behavior/worktime/actions';
 import { RootState } from '../../behavior/store';
+import { format } from 'date-fns';
 
 type Props = {
   show: boolean;
@@ -26,8 +27,8 @@ export const WorktimeEditingModal = ({ show, handleClose, worktimeRecord }: Prop
   const initialValues: WorktimeInput = {
     id: worktimeRecord.id,
     userId: worktimeRecord.userId,
-    startDate: worktimeRecord.startDate,
-    finishDate: worktimeRecord.finishDate,
+    startDate: format(new Date(worktimeRecord.startDate), 'yyyy-MM-dd\'T\'HH:mm'),
+    finishDate: format(new Date(worktimeRecord.finishDate), 'yyyy-MM-dd\'T\'HH:mm'),
     lastEditorId: user.id,
   };
 
