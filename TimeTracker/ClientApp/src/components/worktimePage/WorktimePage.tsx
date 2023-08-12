@@ -30,7 +30,8 @@ export const WorktimePage = () => {
 
   return (
     <>
-      <ListPage users={user} worktime={worktime} />
+        <h1 className="mb-3">Worktime</h1>
+        <ListPage users={user} worktime={worktime} />
       <Button className='btn btn-primary my-3' onClick={() => setShowCalendarModal(true)}>
         View calendar
       </Button>

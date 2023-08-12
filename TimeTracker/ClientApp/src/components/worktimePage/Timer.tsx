@@ -1,9 +1,14 @@
-﻿import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { WorktimeRecord, WorktimeInput } from '../../behavior/worktime/types';
-import { Form, Formik } from 'formik';
-import { updateWorktimeFinishDate, worktimeCreation } from '../../behavior/worktime/actions';
-import { UserInfo } from '../../behavior/profile/types';
+﻿import React, {useEffect, useLayoutEffect, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {WorktimeRecord, WorktimeInput} from '../../behavior/worktime/types';
+import {Form, Formik} from 'formik';
+import {
+    receiveUnfinishedWorktimeRecord,
+    requestUnfinishedWorktimeRecord,
+    updateWorktimeFinishDate,
+    worktimeCreation
+} from '../../behavior/worktime/actions';
+import {UserInfo} from '../../behavior/profile/types';
 import '../../custom.css';
 
 type Props = {
@@ -19,6 +24,7 @@ const initialValues: WorktimeInput = {
 };
 
 export const Timer = ({user, worktime}: Props) => {
+    const dispatch = useDispatch();
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [hours, setHours] = useState(0);
@@ -27,30 +33,59 @@ export const Timer = ({user, worktime}: Props) => {
     const [showSessionStartMessage, setShowSessionStartMessage] = useState(false);
     const [isStopped, setIsStopped] = useState(false);
     const [startDateAsTimestamp, setStartDateAsTimestamp] = useState(false);
+    //const [startDate, setStartDate] = useState<string | null>(null);
     const [startDate, setStartDate] = useState<string | null>(null);
+    const [endMessage, setEndMessage] = useState(false);
 
-    useEffect(() => {
-        setStartDate(worktime?.startDate || null);
-    }, [worktime]);
 
-    useEffect(() => {
-        console.log(worktime);
-        const now = Date.now();
-        if (worktime) {
-            const startDateAsTimestamp = new Date(startDate!).getTime();
-            if (startDateAsTimestamp < now) {
-                console.log(startDateAsTimestamp);
-                continueTimer();
+    /*useEffect(() => {
+        if (worktime !== null) {
+            const startAction = dispatch(receiveUnfinishedWorktimeRecord(worktime));
+            console.log(startAction);
+            if (startAction.payload.unfinishedWorktimeRecord) {
+                const start = startAction.payload.unfinishedWorktimeRecord;
+                setStartDate(start.startDate);
+                setIsRunning(true);
+            } else {
+                setStartDate(null);
             }
         }
     }, [worktime]);
 
+    useEffect(() => {
+        if (startDate !== null) {
+            const now = Date.now();
+            const startDateAsTimestamp = new Date(startDate).getTime();
+            continueTimer();
+        }
+    }, [startDate]);*/
+
+
+    /*useEffect(() => {
+        if (worktime?.startDate != null) {
+            setIsRunning(true);
+        }
+    }, [worktime?.startDate, startDate]);
     
+    useEffect(() => {
+        setStartDate(worktime?.startDate || null);
+    }, [worktime]);
+
+        useEffect(() => {
+            //console.log(worktime);
+            const now = Date.now();
+            if (worktime?.startDate) {
+                const startDateAsTimestamp = new Date(worktime?.startDate).getTime();
+                //console.log(worktime?.startDate);
+                continueTimer();
+
+            }
+        }, [worktime?.startDate]);*/
+
     const timerKey = 'timerData';
     const storedTimerData = localStorage.getItem(timerKey);
 
     let timer: NodeJS.Timeout | null = null;
-    const dispatch = useDispatch();
 
     const formatTime = (milliseconds: number) => {
         const seconds = Math.floor(milliseconds / 1000) % 60;
@@ -65,32 +100,37 @@ export const Timer = ({user, worktime}: Props) => {
     };
 
 
-    const continueTimer = () => {
-        const startDateFromLocalStorage = startDate;
-    
-        if (startDateFromLocalStorage) {
-            const start = new Date(startDateFromLocalStorage).getTime();
-            const now = Date.now();
-            const timeDifference = now - start;
-            const formattedTime = formatTime(timeDifference);
-            console.log(startDate);
-            const [hours, minutes, seconds] = formattedTime.split(':').map(Number);
-
-            setHours(hours);
-            setMinutes(minutes);
-            setSeconds(seconds);
-
-            setIsRunning(true);
-
-            setShowSessionStartMessage(true);
-
-            return timeDifference;
-
-        } else {
-            return 0;
+    /* const continueTimer = () => {
+         const startDateFromLocalStorage = worktime?.startDate;
+     
+         if (startDateFromLocalStorage) {
+             const start = new Date(startDateFromLocalStorage).getTime();
+             const now = Date.now();
+             const timeDifference = now - start;
+             const formattedTime = formatTime(timeDifference);
+             //console.log(startDate);
+             const [hours, minutes, seconds] = formattedTime.split(':').map(Number);
+ 
+             setHours(hours);
+             setMinutes(minutes);
+             setSeconds(seconds);
+ 
+             setIsRunning(true);
+ 
+             setShowSessionStartMessage(true);
+ 
+             return timeDifference;
+ 
+         } else {
+             return 0;
+         }
+     };
+ */
+    /*useLayoutEffect(() => {
+        if (worktime?.startDate) {
+            continueTimer();
         }
-    };
-    
+    }, [worktime?.startDate]);*/
     const handleBeforeUnload = () => {
         if (isRunning && timer) {
             clearInterval(timer);
@@ -98,12 +138,10 @@ export const Timer = ({user, worktime}: Props) => {
             localStorage.setItem(timerKey, JSON.stringify({isRunning, startTime: Date.now(), remainingTime}));
         }
     };
-
     useEffect(() => {
         localStorage.setItem('seconds', seconds.toString());
         localStorage.setItem('minutes', minutes.toString());
     }, [seconds, minutes]);
-
     useEffect(() => {
         if (isRunning && !timer) {
             timer = setInterval(() => {
@@ -141,10 +179,9 @@ export const Timer = ({user, worktime}: Props) => {
         };
     }, [isRunning, seconds, minutes]);
 
-   
     const toggleTimer = (values: WorktimeInput) => {
         if (isRunning) {
-            clearInterval(timer!);
+            // clearInterval(timer!);
             setIsRunning(false);
             setButtonText('Start');
             dispatch(updateWorktimeFinishDate(user.id));
@@ -155,6 +192,7 @@ export const Timer = ({user, worktime}: Props) => {
             setHours(0);
             setShowSessionStartMessage(false);
             setIsStopped(true);
+            setEndMessage(false);
 
         } else {
             setIsRunning(true);
@@ -162,19 +200,30 @@ export const Timer = ({user, worktime}: Props) => {
             initialValues.userId = user.id;
             initialValues.lastEditorId = user.id;
             const buttonText = 'Stop' ?? '';
-            setButtonText(buttonText);
+            setButtonText('Stop');
             dispatch(worktimeCreation(values));
 
             setShowSessionStartMessage(true);
             setIsStopped(false);
+            setEndMessage(true);
 
         }
     };
-    
-     useEffect(() => {
-         const buttonText = isRunning ? 'Stop' : 'Start';
-         setButtonText(buttonText);
-     }, [isRunning]);
+
+
+    useEffect(() => {
+        console.log(worktime?.startDate);
+        const buttonText = worktime?.startDate ? 'Stop' : 'Start';
+        setButtonText(buttonText);
+        const run = worktime?.startDate ? true : false;
+        setIsRunning(run);
+    }, [worktime?.startDate]);
+
+    useEffect(() => {
+        if (isRunning != false) {
+            setEndMessage(true);
+        }
+    });
 
 
     useEffect(() => {
@@ -182,20 +231,20 @@ export const Timer = ({user, worktime}: Props) => {
     }, [isRunning]);
 
 
-   /* const button = () => {
-        console.log(worktime);
-    };*/
+    /* const button = () => {
+          console.log(worktime);
+      };
+     */
 
     return (
         <div className="container">
             <Formik onSubmit={toggleTimer} initialValues={initialValues}>
                 <Form>
-                    <h1>Worktime</h1>
                     <div className="row justify-content-center mt-5">
-                        <div className="col-md-6 text-center border rounded p-4">
-                            <h1 className="mb-4">
+                        <div className="col-md-4 text-center border rounded p-4">
+                            {/*<h1 className="mb-4">
                                 {hours < 10 ? '0' + hours : hours}:{minutes < 10 ? '0' + minutes : minutes}:{seconds < 10 ? '0' + seconds : seconds}
-                            </h1>
+                            </h1>*/}
                             <button className="btn btn-primary" type="submit">
                                 {buttonText}
                             </button>
@@ -204,19 +253,18 @@ export const Timer = ({user, worktime}: Props) => {
                 </Form>
             </Formik>
             
-            {showSessionStartMessage && ((initialValues.startDate) || (worktime?.startDate)) && (
-                <div className='session-start-message'>
-                    <div className={'alert alert-success text-white rounded d-flex justify-content-between align-items-center'}>
+            {endMessage &&
+                <div className='session-start-message'>{(worktime?.startDate) &&
+                    <div
+                        className={'alert alert-success text-white rounded d-flex justify-content-between align-items-center'}>
                         <p className="m-0">
-                            Session started
-                            at {initialValues.startDate
-                            ? new Date(initialValues.startDate).toLocaleTimeString()
-                            : worktime?.startDate ? new Date(worktime.startDate).toLocaleTimeString() : ''}
+                            session start
+                            at {worktime?.startDate ? new Date(worktime.startDate).toLocaleTimeString() : ''}
                         </p>
-                    </div>
+                    </div>}
                 </div>
-            )}
+            }
         </div>
-);
+    );
 };
 

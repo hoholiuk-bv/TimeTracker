@@ -299,8 +299,8 @@ td.action-buttons {
 /*worktime*/
 
 .session-start-message {
-    position: fixed;
-    top: 50%;
+    position: absolute;
+    top: 46%;
     left: 50%;
     transform: translate(-50%, -50%);
     margin-left: 6rem;

@@ -2,7 +2,6 @@
 import { Timer } from './Timer';
 import { UserInfo } from '../../behavior/profile/types';
 import {WorktimeRecord} from '../../behavior/worktime/types';
-import {WorktimeRecords} from './record';
 
 
 type Props = {
@@ -26,7 +25,6 @@ export const ListPage = ({ users, worktime }: Props) => {
                                 <tbody className="timer-container">
                                     <Timer user={users} worktime={worktime}/>
                                 </tbody>
-                                {/*{worktime && <WorktimeRecords key={worktime.id} worktime={worktime} />}*/}
                             </table>
                         </div>
                     </div>
