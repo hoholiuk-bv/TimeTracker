@@ -26,6 +26,15 @@ namespace TimeTracker.GraphQL.Approvals
 
                     return approvals;
                 });
+
+            Field<IntGraphType>("ApprovalsCount")
+                .Description("Get approvals count")
+                .Resolve(context =>
+                {
+                    var userContext = context.RequestServices!.GetRequiredService<UserContext>();
+                    var approverId = userContext.User!.Id;
+                    return daysOffProvider.GetApprovalsCount(approverId);
+                });
         }
     }
 }
