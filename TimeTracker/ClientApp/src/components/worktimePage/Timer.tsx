@@ -33,104 +33,14 @@ export const Timer = ({user, worktime}: Props) => {
     const [showSessionStartMessage, setShowSessionStartMessage] = useState(false);
     const [isStopped, setIsStopped] = useState(false);
     const [startDateAsTimestamp, setStartDateAsTimestamp] = useState(false);
-    //const [startDate, setStartDate] = useState<string | null>(null);
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endMessage, setEndMessage] = useState(false);
-
-
-    /*useEffect(() => {
-        if (worktime !== null) {
-            const startAction = dispatch(receiveUnfinishedWorktimeRecord(worktime));
-            console.log(startAction);
-            if (startAction.payload.unfinishedWorktimeRecord) {
-                const start = startAction.payload.unfinishedWorktimeRecord;
-                setStartDate(start.startDate);
-                setIsRunning(true);
-            } else {
-                setStartDate(null);
-            }
-        }
-    }, [worktime]);
-
-    useEffect(() => {
-        if (startDate !== null) {
-            const now = Date.now();
-            const startDateAsTimestamp = new Date(startDate).getTime();
-            continueTimer();
-        }
-    }, [startDate]);*/
-
-
-    /*useEffect(() => {
-        if (worktime?.startDate != null) {
-            setIsRunning(true);
-        }
-    }, [worktime?.startDate, startDate]);
     
-    useEffect(() => {
-        setStartDate(worktime?.startDate || null);
-    }, [worktime]);
-
-        useEffect(() => {
-            //console.log(worktime);
-            const now = Date.now();
-            if (worktime?.startDate) {
-                const startDateAsTimestamp = new Date(worktime?.startDate).getTime();
-                //console.log(worktime?.startDate);
-                continueTimer();
-
-            }
-        }, [worktime?.startDate]);*/
-
     const timerKey = 'timerData';
     const storedTimerData = localStorage.getItem(timerKey);
 
     let timer: NodeJS.Timeout | null = null;
-
-    const formatTime = (milliseconds: number) => {
-        const seconds = Math.floor(milliseconds / 1000) % 60;
-        const minutes = Math.floor(milliseconds / 1000 / 60) % 60;
-        const hours = Math.floor(milliseconds / 1000 / 60 / 60);
-
-        const formattedSeconds = seconds.toString().padStart(2, '0');
-        const formattedMinutes = minutes.toString().padStart(2, '0');
-        const formattedHours = hours.toString().padStart(2, '0');
-
-        return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-    };
-
-
-    /* const continueTimer = () => {
-         const startDateFromLocalStorage = worktime?.startDate;
-     
-         if (startDateFromLocalStorage) {
-             const start = new Date(startDateFromLocalStorage).getTime();
-             const now = Date.now();
-             const timeDifference = now - start;
-             const formattedTime = formatTime(timeDifference);
-             //console.log(startDate);
-             const [hours, minutes, seconds] = formattedTime.split(':').map(Number);
- 
-             setHours(hours);
-             setMinutes(minutes);
-             setSeconds(seconds);
- 
-             setIsRunning(true);
- 
-             setShowSessionStartMessage(true);
- 
-             return timeDifference;
- 
-         } else {
-             return 0;
-         }
-     };
- */
-    /*useLayoutEffect(() => {
-        if (worktime?.startDate) {
-            continueTimer();
-        }
-    }, [worktime?.startDate]);*/
+    
     const handleBeforeUnload = () => {
         if (isRunning && timer) {
             clearInterval(timer);
@@ -231,10 +141,7 @@ export const Timer = ({user, worktime}: Props) => {
     }, [isRunning]);
 
 
-    /* const button = () => {
-          console.log(worktime);
-      };
-     */
+    
 
     return (
         <div className="container">

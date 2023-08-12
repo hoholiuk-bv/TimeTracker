@@ -70,8 +70,7 @@ export const WorkCalendar = ({ className, ...props }: Props) => {
       <Calendar
         {...props}
         className={className}
-        onActiveStartDateChange={({ activeStartDate }: { activeStartDate: Date | null }) => handleActiveStartDateChange(activeStartDate)}
-          //onActiveStartDateChange={({ activeStartDate }) => handleActiveStartDateChange(activeStartDate)}
+        onActiveStartDateChange={({ activeStartDate }) => handleActiveStartDateChange(activeStartDate)}
         tileClassName={getTileClassName}
         tileContent={getTileContent}
       />
