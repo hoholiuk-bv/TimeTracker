@@ -3,6 +3,7 @@ using DataLayer.Entities;
 using DataLayer.Providers;
 using GraphQL;
 using GraphQL.Types;
+using GraphQL.Validation;
 using TimeTracker.GraphQL.DaysOff.Types;
 using static DataLayer.Constants;
 
@@ -11,10 +12,12 @@ namespace TimeTracker.GraphQL.DaysOff;
 public class DaysOffMutation : ObjectGraphType
 {
     private readonly IDaysOffProvider daysOffProvider;
+    private readonly IUserProvider userProvider;
 
-    public DaysOffMutation(IDaysOffProvider daysOffProvider)
+    public DaysOffMutation(IDaysOffProvider daysOffProvider, IUserProvider userProvider)
     {
         this.daysOffProvider = daysOffProvider;
+        this.userProvider = userProvider;
 
         Field<NonNullGraphType<BooleanGraphType>>("RequestDayOff")
             .Description("Creates a request for a day off.")
@@ -27,6 +30,11 @@ public class DaysOffMutation : ObjectGraphType
                 .Resolve(context =>
                 {
                     var requestId = context.GetArgument<Guid>("requestId");
+                    var currentUser = context.RequestServices!.GetRequiredService<UserContext>().User!;
+                    var request = daysOffProvider.GetRequest(requestId);
+                    var daysOffCount = userProvider.GetDaysOffCount(currentUser.Id) + (request.FinishDate - request.StartDate).Days;
+
+                    userProvider.UpdateDaysOffCount(currentUser.Id, daysOffCount);
                     daysOffProvider.DeleteDayOffRequest(requestId);
 
                     return true;
@@ -46,7 +54,10 @@ public class DaysOffMutation : ObjectGraphType
             Reason = DayOffReason.Vacation
         };
 
+        var daysOffCount = userProvider.GetDaysOffCount(currentUser.Id) - (request.FinishDate - request.StartDate).Days;
+
         daysOffProvider.CreateRequest(request);
+        userProvider.UpdateDaysOffCount(currentUser.Id, daysOffCount);
 
         if (currentUser.ApproverIds.Any())
             daysOffProvider.CreateApprovals(currentUser.ApproverIds, request.Id);

@@ -18,5 +18,9 @@ namespace DataLayer.Providers
         User? Update(User user);
 
         int GetTotalUsersCount(UserFilter? filter);
+
+        int GetDaysOffCount(Guid userId);
+
+        void UpdateDaysOffCount(Guid userId, int daysOffCount);
     }
 }

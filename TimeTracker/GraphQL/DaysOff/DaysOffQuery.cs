@@ -12,10 +12,12 @@ namespace TimeTracker.GraphQL.DaysOff
     public class DaysOffQuery : ObjectGraphType
     {
         private readonly IDaysOffProvider daysOffProvider;
+        private readonly IUserProvider userProvider;
 
-        public DaysOffQuery(IDaysOffProvider daysOffProvider)
+        public DaysOffQuery(IDaysOffProvider daysOffProvider, IUserProvider userProvider)
         {
             this.daysOffProvider = daysOffProvider;
+            this.userProvider = userProvider;
 
             Field<ListGraphType<DayOffRequestType>>("List")
                 .Description("Gets the list of day off requests.")
@@ -25,9 +27,18 @@ namespace TimeTracker.GraphQL.DaysOff
                 .Resolve(context => ResolveList(context));
 
             Field<IntGraphType>("RequestsCount")
-                .Description("Get requests count")
+                .Description("Gets requests count.")
                 .Argument<DayOffRequestFilterInputType>("Filter")
                 .Resolve(context => ResolveRequestsCount(context));
+
+            Field<IntGraphType>("DaysOffCount")
+                .Description("Gets days off count for certain user.")
+                .Argument<IdGraphType>("userId")
+                .Resolve(context =>
+                {
+                    var userId = context.GetArgument<Guid>("userId");
+                    return userProvider.GetDaysOffCount(userId);
+                });
         }
 
         private List<DayOffRequest> ResolveList(IResolveFieldContext context)

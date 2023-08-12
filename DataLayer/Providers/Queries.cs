@@ -1,4 +1,5 @@
-﻿using DataLayer.Models;
+﻿using DataLayer.Entities;
+using DataLayer.Models;
 using Microsoft.AspNetCore.Http;
 using System.Data;
 using static DataLayer.Constants;
@@ -112,6 +113,10 @@ namespace DataLayer.Providers
 
             public const string GetById = "select * from Users where Id = @Id";
 
+            public const string GetDaysOffCount = "SELECT DaysOffCount FROM Users WHERE Id = @Id";
+
+            public const string UpdateDaysOffCount = @"UPDATE Users 
+                                                       SET DaysOffCount = @DaysOffCount WHERE Id = @Id;";
         }
 
         public static class DaysOff
@@ -165,7 +170,10 @@ namespace DataLayer.Providers
             public static string DeleteApprovals = @"DELETE FROM DayOffRequestApprovals WHERE RequestId = @RequestId AND ApproverId IN @ApproverIds";
 
             public static string DeleteDayOffRequest = @"DELETE FROM DayOffRequestApprovals WHERE RequestId = @RequestId
-                                                         DELETE FROM DayOffRequests WHERE Id = @RequestId";
+                                                         DELETE FROM DayOffRequests WHERE Id = @RequestId"
+            ;
+
+            public static string GetById = "SELECT * FROM DayOffRequests WHERE Id = @Id";
         }
 
         public static class Worktime

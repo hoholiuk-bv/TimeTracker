@@ -27,4 +27,6 @@ public interface IDaysOffProvider
     void ChangeApprovalStatus(Guid requestId, Guid approverId, DayOffApprovalStatus status, string declineReason);
 
     void DeleteDayOffRequest(Guid requestId);
+
+    DayOffRequest GetRequest(Guid requestId);
 }
