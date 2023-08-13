@@ -15,6 +15,7 @@ import { ApprovalsPage } from './components/approvals/ApprovalsPage';
 import { UserDetailsPage } from './components/userInfo/details/UserDetailsPage';
 import { UserDaysOffPage } from './components/userInfo/daysOff/UserDaysOffPage';
 import { CalendarSettingsPage } from './components/calendarSettings';
+import { UserWorktimePage } from './components/userInfo/worktime/UserWorktimePage';
 
 const App = () => {
   return (
@@ -47,6 +48,14 @@ const App = () => {
                 element={
                   <Page requiredPermissions={[PermissionType.ManageUsers]}>
                     <UserDetailsPage />
+                  </Page>
+                }
+              />
+              <Route
+                path={routes.users.worktime}
+                element={
+                  <Page requiredPermissions={[PermissionType.ManageUsers]}>
+                    <UserWorktimePage />
                   </Page>
                 }
               />
