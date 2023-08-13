@@ -9,9 +9,9 @@ export const requestApprovalsList = (sorting: SortingInput, paging: PagingInput)
 });
 
 export const APPROVALS_LIST_RECEIVED = 'APPROVALS_LIST_RECEIVED' as const;
-export const receiveApprovalsList = (list: DayOffApproval[]) => ({
+export const receiveApprovalsList = (list: DayOffApproval[], approvalsCount: number) => ({
   type: APPROVALS_LIST_RECEIVED,
-  payload: { list }
+  payload: { list, approvalsCount }
 });
 
 export const CHANGE_APPROVAL_STATUS = 'CHANGE_APPROVAL_STATUS' as const;
@@ -26,13 +26,21 @@ export const changeApprovalsListSorting = (sorting: SortingInput) => ({
   payload: { sorting }
 });
 
+export const APPROVALS_LIST_PAGING_CHANGED = 'APPROVALS_LIST_PAGING_CHANGED' as const;
+export const changeApprovalsListPaging = (paging: PagingInput) => ({
+  type: APPROVALS_LIST_PAGING_CHANGED,
+  payload: { paging }
+});
+
 export type ApprovalsRequestAction = ReturnType<typeof requestApprovalsList>;
 export type ApprovalsReceivedAction = ReturnType<typeof receiveApprovalsList>;
 export type ApprovalToggleStatusAction = ReturnType<typeof changeApprovalStatus>;
 export type ApprovalsListSortingChangedAction = ReturnType<typeof changeApprovalsListSorting>
+export type ApprovalsListPagingChangedAction = ReturnType<typeof changeApprovalsListPaging>
 
 export type ApprovalsActions = ReturnType<
   | typeof requestApprovalsList
   | typeof receiveApprovalsList
   | typeof changeApprovalsListSorting
+  | typeof changeApprovalsListPaging
   | typeof changeApprovalStatus>
