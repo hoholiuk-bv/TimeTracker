@@ -19,9 +19,11 @@ const epic: Epic<DayOffActions | any> = (actions$, state$) => {
   const requestDayOff$ = actions$.pipe(
     ofType(DAY_OFF_REQUESTED),
     map(action => action.payload),
-    mergeMap(({ input, userId }) => sendRequest(requestMutation, { input }).pipe(
-      map(() => requestDaysOffList(state$.value.daysOff.sorting, state$.value.daysOff.paging, state$.value.daysOff.filter)),
-      // map(() => requestDaysOffCount(userId)),
+    switchMap(({ input }) => sendRequest(requestMutation, { input }).pipe(
+      mergeMap(() => [
+        requestDaysOffList(state$.value.daysOff.sorting, state$.value.daysOff.paging, state$.value.daysOff.filter),
+        requestDaysOffCount(state$.value.profile.userInfo.id)
+      ]),
     ))
   );
 
@@ -45,7 +47,7 @@ const epic: Epic<DayOffActions | any> = (actions$, state$) => {
     ofType(DAYS_OFF_COUNT_REQUESTED),
     map(action => action.payload),
     mergeMap(({ userId }) => sendRequest(getDaysOffCountQuery, { userId }).pipe(
-      map(({ daysOff: {daysOffCount} }) => receiveDaysOffCount(daysOffCount))
+      map(({ daysOff: { daysOffCount } }) => receiveDaysOffCount(daysOffCount))
     )),
   );
 
