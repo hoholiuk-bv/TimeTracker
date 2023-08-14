@@ -35,12 +35,12 @@ export const Timer = ({user, worktime}: Props) => {
     const [startDateAsTimestamp, setStartDateAsTimestamp] = useState(false);
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endMessage, setEndMessage] = useState(false);
-    
+
     const timerKey = 'timerData';
     const storedTimerData = localStorage.getItem(timerKey);
 
     let timer: NodeJS.Timeout | null = null;
-    
+
     const handleBeforeUnload = () => {
         if (isRunning && timer) {
             clearInterval(timer);
@@ -141,7 +141,7 @@ export const Timer = ({user, worktime}: Props) => {
     }, [isRunning]);
 
 
-    
+
 
     return (
         <div className="container">
@@ -155,23 +155,22 @@ export const Timer = ({user, worktime}: Props) => {
                             <button className="btn btn-primary" type="submit">
                                 {buttonText}
                             </button>
+                            {endMessage && (
+                                <div className='session-start-message'>
+                                    {(worktime?.startDate) && (
+                                        <div className={'alert alert-success text-white rounded mb-0 mt-4'}>
+                                            <p className="m-0 d-flex justify-content-center">
+                                                session start
+                                                at {worktime?.startDate ? new Date(worktime.startDate).toLocaleTimeString() : ''}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </Form>
             </Formik>
-            
-            {endMessage &&
-                <div className='session-start-message'>{(worktime?.startDate) &&
-                    <div
-                        className={'alert alert-success text-white rounded d-flex justify-content-between align-items-center'}>
-                        <p className="m-0">
-                            session start
-                            at {worktime?.startDate ? new Date(worktime.startDate).toLocaleTimeString() : ''}
-                        </p>
-                    </div>}
-                </div>
-            }
         </div>
     );
 };
-
