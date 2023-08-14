@@ -49,16 +49,6 @@ export function worktimeYear(value: any) {
   return error;
 }
 
-export function worktimeMonth(value: any) {
-  let error;
-
-  if (value < 1 || value > 12) {
-    error = 'Month should be between 1 and 12';
-  }
-
-  return error;
-}
-
 export function validate(validators: Validator[]) : FieldValidator {
   return (value: any) => {
     let error;

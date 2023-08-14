@@ -11,13 +11,21 @@ export const WorktimeStats = () => {
   const convertDecimalTime = (decimalTime: number): string => {
     const wholePart: number = Math.round(decimalTime);
     const fractionalPart: number = Math.round((decimalTime % 1) * 100);
-    return `${wholePart} hour(s) ${fractionalPart} minute(s)`;
+    const hours: string = wholePart > 0 ? `${wholePart} hour(s)` : '';
+    const minutes: string = fractionalPart > 0 ? `${fractionalPart} minute(s)` : '';
+    return wholePart > 0 || fractionalPart > 0 ? `${hours} ${minutes}` : 'no hours yet';
   };
   
   return (
-    <div className="d-flex flex-column gap-1">
-      <span><strong>Actual worked hours this month:</strong> {convertDecimalTime(worktimeStats.totalWorkTimeMonthly)}</span>
-      <span><strong>Target monthly work hours:</strong> {convertDecimalTime(worktimeStats.plannedWorkTimeMonthly)}</span>
+    <div className="d-flex gap-3">
+      <span>
+        <strong>Hours worked: </strong>
+        {convertDecimalTime(worktimeStats.totalWorkTimeMonthly)}
+      </span>
+      <span>
+        <strong> Monthly target: </strong>
+        {convertDecimalTime(worktimeStats.plannedWorkTimeMonthly)}
+      </span>
     </div>
   );
 };
