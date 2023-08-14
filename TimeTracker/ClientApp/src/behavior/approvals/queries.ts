@@ -11,6 +11,7 @@ query($sorting: SortingInput!, $paging: PagingInput!) {
       isEditable
       declineReason
     }
+    approvalsCount
   }
 }`;
 

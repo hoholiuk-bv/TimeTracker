@@ -16,7 +16,7 @@ const epic: Epic<ApprovalsActions | any> = (actions$, state$) => {
     ofType(APPROVALS_LIST_REQUESTED),
     map(action => action.payload),
     mergeMap(({ sorting, paging }) => sendRequest(getApprovalsListQuery, { sorting, paging }).pipe(
-      map(({ approvals: { list } }) => receiveApprovalsList(list))
+      map(({ approvals: { list, approvalsCount } }) => receiveApprovalsList(list, approvalsCount))
     )),
   );
 

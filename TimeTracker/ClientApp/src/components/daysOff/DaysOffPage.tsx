@@ -30,9 +30,11 @@ export const DaysOffPage = () => {
       <NewRequestModal show={show} handleClose={() => setShow(false)} />
       <span className="ms-3"><strong>Days off count: {daysOffCount}</strong></span>
       <DayOffList requests={list} sorting={sorting} />
-      <div className="d-flex justify-content-end">
-        <Pagination paging={paging} pagingUpdateAction={changeDaysOffListPaging} itemCount={requestsCount} />
-      </div>
+      {requestsCount > 0 && (
+        <div className="d-flex justify-content-end">
+          <Pagination paging={paging} pagingUpdateAction={changeDaysOffListPaging} itemCount={requestsCount} />
+        </div>
+      )}
     </>
   );
 };

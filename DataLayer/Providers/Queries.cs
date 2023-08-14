@@ -1,6 +1,5 @@
 ﻿using DataLayer.Entities;
 using DataLayer.Models;
-using Microsoft.AspNetCore.Http;
 using System.Data;
 using static DataLayer.Constants;
 
@@ -158,6 +157,11 @@ namespace DataLayer.Providers
 													WHERE DayOffRequestApprovals.ApproverId = @ApproverId
                                                     {AddSorting(sorting)}
                                                     {AddPaging(paging)}";
+
+            public const string GetApprovalsCount = @"
+                    SELECT COUNT (*)
+                    FROM DayOffRequestApprovals
+                    WHERE ApproverId = @ApproverId";
 
             public static string ChangeApprovalStatus = @"UPDATE DayOffRequestApprovals
                                                         SET Status = @Status, DeclineReason = @DeclineReason

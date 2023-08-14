@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { WorktimeRecord, WorktimeStats } from './types';
 import { PagingInput, SortingInput, SortingOrder } from '../common/types';
-import { FilterType } from './types';
+import { WorktimeFilterType } from './types';
 import {
   WORKTIME_CREATED, WorktimeCreatedAction,
   WORKTIME_RECORDS_RECEIVED, WorktimeRecordsReceivedAction,
@@ -16,7 +16,7 @@ export type WorktimeState = {
   recordsCount: number,
   worktimeStats: WorktimeStats | null,
   sorting: SortingInput;
-  filtering: FilterType;
+  filtering: WorktimeFilterType;
   paging: PagingInput;
 };
 

@@ -15,8 +15,8 @@ export const WorktimeRow = ({ worktimeRecord }: Props) => {
 
   const timeDifferenceInMilliseconds = finishDate.getTime() - startDate.getTime();
   const timeDifferenceInMinutes = Math.floor(timeDifferenceInMilliseconds / (1000 * 60));
-  const hours = Math.floor(timeDifferenceInMinutes / 60);
-  const remainingMinutes = timeDifferenceInMinutes % 60;
+  const workedHours = Math.floor(timeDifferenceInMinutes / 60);
+  const workedMinutes = timeDifferenceInMinutes % 60;
 
   return (
     <>
@@ -28,7 +28,9 @@ export const WorktimeRow = ({ worktimeRecord }: Props) => {
           {finishDate.toLocaleDateString() + ', ' + finishDate.toLocaleTimeString()}
         </td>
         <td>
-          {hours} h. {remainingMinutes} m.
+          {workedHours > 0 && `${workedHours}h `}
+          {workedMinutes > 0 && `${workedMinutes}m `}
+          {workedHours === 0 && workedMinutes === 0 && 'no hours yet'}
         </td>
         <td>
           {worktimeRecord.lastEditor}

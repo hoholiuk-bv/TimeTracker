@@ -1,5 +1,5 @@
 import type { WorktimeInput, WorktimeStats } from './types';
-import { FilterType, WorktimeRecord } from './types';
+import { WorktimeFilterType, WorktimeRecord } from './types';
 import { PagingInput, SortingInput } from '../common/types';
 
 export const WORKTIME_CREATION = 'WORKTIME_CREATION' as const;
@@ -15,7 +15,7 @@ export const worktimeCreated = (worktimeRecord: WorktimeRecord) => ({
 });
 
 export const WORKTIME_RECORDS_REQUESTED = 'WORKTIME_RECORDS_REQUESTED' as const;
-export const requestWorktimeRecords = (sorting: SortingInput, filter: FilterType , paging: PagingInput) => ({
+export const requestWorktimeRecords = (sorting: SortingInput, filter: WorktimeFilterType , paging: PagingInput) => ({
   type: WORKTIME_RECORDS_REQUESTED,
   payload: { sorting, filter, paging },
 });
@@ -45,7 +45,7 @@ export const changeWorktimeRecordsSorting = (sorting: SortingInput) => ({
 });
 
 export const WORKTIME_RECORDS_FILTERING_CHANGED = 'WORKTIME_RECORDS_FILTERING_CHANGED' as const;
-export const changeWorktimeRecordsFiltering = (filtering: FilterType) => ({
+export const changeWorktimeRecordsFiltering = (filtering: WorktimeFilterType) => ({
   type: WORKTIME_RECORDS_FILTERING_CHANGED,
   payload: { filtering }
 });
