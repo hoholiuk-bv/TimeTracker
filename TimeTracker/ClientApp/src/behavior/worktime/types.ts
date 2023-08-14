@@ -10,8 +10,14 @@ export type WorktimeRecord = {
     id: string,
     userId: string,
     startDate: string,
-    finishDate: string,
-    lastEditor: string,
+    finishDate: string | null,
+    lastEditorId: string,
+    lastEditorName: string,
+}
+
+export type WorktimeStats = {
+    totalWorkTimeMonthly: number;
+    plannedWorkTimeMonthly: number;
 }
 
 export type WorktimeFilterTypeInput = {
@@ -24,9 +30,4 @@ export type WorktimeFilterType = {
     userId: string;
     year: number;
     month: number;
-}
-
-export type WorktimeStats = {
-    totalWorkTimeMonthly: number;
-    plannedWorkTimeMonthly: number;
 }

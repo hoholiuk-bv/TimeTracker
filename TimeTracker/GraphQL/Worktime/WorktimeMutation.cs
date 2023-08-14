@@ -23,6 +23,30 @@ public class WorktimeMutation : ObjectGraphType
             .Description("Updates a worktime record")
             .Argument<NonNullGraphType<WorktimeInputType>>("input")
             .Resolve(context => ResolveWorktimeUpdating(context));
+
+        Field<WorktimeType>("UpdateFinishDate")
+                .Description("Updates the finish date of a worktime record by User Id")
+                .Argument<StringGraphType>("userId", "User Id")
+                .Resolve(context =>
+                {
+                    var input = context.GetArgument<UpdateWorktime>("worktime");
+
+                    var worktime = new DataLayer.Entities.Worktime()
+                    {
+                        FinishDate = DateTime.Now,
+                    };
+
+                    string? userId = context.GetArgument<string?>("userId");
+
+                    if (userId == null || !Guid.TryParse(userId, out _))
+                    {
+                        return null;
+                    }
+
+                    var finishDate = worktime.FinishDate ?? DateTime.Now;
+
+                    return worktimeProvider.UpdateFinishDate(finishDate, userId);
+                });
     }
 
     private DataLayer.Entities.Worktime ResolveWorktimeCreation(IResolveFieldContext context)
@@ -34,11 +58,18 @@ public class WorktimeMutation : ObjectGraphType
             Id = Guid.NewGuid(),
             UserId = Guid.Parse(input.UserId),
             StartDate = DateTime.Parse(input.StartDate),
-            FinishDate =  DateTime.Parse(input.FinishDate),
-            LastEditorId = input.LastEditorId.IsNullOrEmpty() ? null : Guid.Parse(input.LastEditorId),
+            FinishDate = !string.IsNullOrEmpty(input.FinishDate) ? DateTime.Parse(input.FinishDate) : (DateTime?)null,
+            LastEditorId = Guid.Parse(input.LastEditorId),
         };
 
-        return worktimeProvider.SaveWorktime(worktime);
+        bool isWorktimeRecordCreated = worktimeProvider.CreateWorktimeRecord(worktime) > 0;
+
+        if (isWorktimeRecordCreated)
+        {
+            return worktimeProvider.GetWorktimeRecordById(worktime.Id);
+        }
+
+        return null;
     }
 
     private DataLayer.Entities.Worktime ResolveWorktimeUpdating(IResolveFieldContext context)
@@ -54,6 +85,13 @@ public class WorktimeMutation : ObjectGraphType
             LastEditorId = input.LastEditorId.IsNullOrEmpty() ? null : Guid.Parse(input.LastEditorId),
         };
 
-        return worktimeProvider.UpdateWorktimeRecord(worktime);
+        bool isWorktimeRecordUpdated = worktimeProvider.UpdateWorktimeRecord(worktime) > 0;
+
+        if (isWorktimeRecordUpdated)
+        {
+            return worktimeProvider.GetWorktimeRecordById(worktime.Id);
+        }
+
+        return null;
     }
 }

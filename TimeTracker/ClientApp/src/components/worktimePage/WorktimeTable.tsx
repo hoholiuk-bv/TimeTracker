@@ -21,7 +21,7 @@ export const WorktimeTable = () => {
       </div>
     );
 
-  if(records.length === 0)
+  if(records.length === 0 || (records.length === 1 && records[0].finishDate === null))
     return (<Alert variant='secondary'>Worktime records not found.</Alert>);
 
   const handleSortingColumnClick = (fieldName: string) => {

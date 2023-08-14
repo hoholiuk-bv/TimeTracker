@@ -6,7 +6,7 @@ import { FormGroup } from '../common/elements/FormGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { required } from '../../behavior/validators';
 import { ValidationMessage } from '../common/validation/ValidationMessage';
-import { WorktimeInput, WorktimeRecord } from '../../behavior/worktime/types';
+import {WorktimeInput, WorktimeRecord} from '../../behavior/worktime/types';
 import { requestWorktimeUpdate } from '../../behavior/worktime/actions';
 import { RootState } from '../../behavior/store';
 import { format } from 'date-fns';
@@ -21,7 +21,7 @@ export const WorktimeEditingModal = ({ show, handleClose, worktimeRecord }: Prop
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.profile.userInfo);
 
-  if(user === null)
+  if(user === null || worktimeRecord.finishDate === null)
     return null;
 
   const initialValues: WorktimeInput = {

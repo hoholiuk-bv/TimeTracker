@@ -11,8 +11,7 @@ public class WorktimeInputType : InputObjectGraphType<WorktimeInput>
         Field<GuidGraphType>("Id");
         Field<NonNullGraphType<StringGraphType>>("UserId");
         Field<NonNullGraphType<StringGraphType>>("StartDate");
-        Field<NonNullGraphType<StringGraphType>>("FinishDate");
-        Field<BooleanGraphType>("IsAutoCreated");
+        Field<StringGraphType>("FinishDate");
         Field<NonNullGraphType<StringGraphType>>("LastEditorId");
     }
 }
@@ -25,9 +24,7 @@ public class WorktimeInput
 
     public string StartDate { get; set; } = null!;
 
-    public string FinishDate { get; set; } = null!;
-
-    public bool IsAutoCreated { get; set; }
+    public string? FinishDate { get; set; } = null!;
 
     public string LastEditorId { get; set; }
 }

@@ -9,20 +9,24 @@ import {
   WORKTIME_RECORDS_SORTING_CHANGED, WorktimeRecordsSortingChangedAction,
   WORKTIME_RECORDS_PAGING_CHANGED, WorktimeRecordsPagingChangedAction,
   WORKTIME_RECORD_UPDATED, WorktimeRecordUpdatedAction,
+  UNFINISHED_WORKTIME_RECORD_RECEIVED, UnfinishedWorktimeRecordReceivedAction,
+  WORKTIME_FINISH_DATE_UPDATED, WorktimeFinishDateUpdatedAction,
 } from './actions';
 
 export type WorktimeState = {
+  worktime: WorktimeRecord | null;
   records: WorktimeRecord[] | null;
-  recordsCount: number,
-  worktimeStats: WorktimeStats | null,
+  recordCount: number;
+  worktimeStats: WorktimeStats | null;
   sorting: SortingInput;
   filtering: WorktimeFilterType;
   paging: PagingInput;
 };
 
 const initialState: WorktimeState = {
+  worktime: null,
   records: null,
-  recordsCount: 0,
+  recordCount: 0,
   worktimeStats: null,
   sorting: {
     sortingField: 'FinishDate',
@@ -31,12 +35,12 @@ const initialState: WorktimeState = {
   filtering: {
     userId: '',
     year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
+    month: new Date().getMonth() + 1
   },
   paging: {
     pageSize: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate(),
     pageNumber: 1
-  },
+  }
 };
 
 export default createReducer(initialState, {
@@ -46,24 +50,42 @@ export default createReducer(initialState, {
   [WORKTIME_RECORDS_FILTERING_CHANGED]: onWorktimeRecordsFilteringChanged,
   [WORKTIME_RECORDS_PAGING_CHANGED]: onWorktimeRecordsPagingChanged,
   [WORKTIME_RECORD_UPDATED]: onWorktimeRecordUpdated,
+  [UNFINISHED_WORKTIME_RECORD_RECEIVED]: onUnfinishedWorktimeRecordReceived,
+  [WORKTIME_FINISH_DATE_UPDATED]: onWorktimeFinishDateUpdated,
 });
+
+function onUnfinishedWorktimeRecordReceived(state: WorktimeState, action: UnfinishedWorktimeRecordReceivedAction): WorktimeState {
+  const worktime = action.payload.unfinishedWorktimeRecord;
+  return { ...state, worktime };
+}
 
 function onWorktimeRecordCreated(state: WorktimeState, action: WorktimeCreatedAction): WorktimeState {
   const { worktimeRecord } = action.payload;
-  const updatedRecords = state.records ? [...state.records, worktimeRecord] : [worktimeRecord];
+  return {...state, worktime: worktimeRecord};
+}
 
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth() + 1;
-  if (state.filtering.year === currentYear && state.filtering.month === currentMonth) {
-    return {...state, records: updatedRecords};
+function onWorktimeFinishDateUpdated(state: WorktimeState, action: WorktimeFinishDateUpdatedAction): WorktimeState {
+  const { worktimeRecord } = action.payload;
+
+  if(state.records === null)
+    return { ...state, records: [worktimeRecord] };
+
+  const existingRecordIndex = state.records.findIndex(record => record.id === worktimeRecord.id);
+
+  let updatedRecords;
+  if (existingRecordIndex !== -1) {
+    updatedRecords = [...state.records];
+    updatedRecords[existingRecordIndex] = worktimeRecord;
+  } else {
+    updatedRecords = [...state.records, worktimeRecord];
   }
 
-  return {...state};
+  return { ...state, records: updatedRecords };
 }
 
 function onWorktimeRecordsReceived(state: WorktimeState, action: WorktimeRecordsReceivedAction): WorktimeState {
-  const { records, recordsCount, worktimeStats } = action.payload;
-  return {...state, records, recordsCount, worktimeStats};
+  const { records, recordCount, worktimeStats } = action.payload;
+  return { ...state, records, recordCount, worktimeStats };
 }
 
 function onWorktimeRecordsFilteringChanged(state: WorktimeState, action: WorktimeRecordsFilteringChangedAction) {
@@ -71,7 +93,7 @@ function onWorktimeRecordsFilteringChanged(state: WorktimeState, action: Worktim
   const daysInMonth = new Date(filtering.year, filtering.month, 0).getDate();
   const paging = { pageNumber: 1, pageSize: daysInMonth };
 
-  return { ...state, records: null, recordsCount: 0, worktimeStats: null, filtering, paging };
+  return { ...state, records: null, recordCount: 0, worktimeStats: null, filtering, paging };
 }
 
 function onWorktimeRecordsSortingChanged(state: WorktimeState, action: WorktimeRecordsSortingChangedAction) {

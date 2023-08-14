@@ -140,5 +140,5 @@ app.MapControllerRoute(
 
 
 app.MapFallbackToFile("index.html");
-
+app.UseGraphQLAltair();
 app.Run();

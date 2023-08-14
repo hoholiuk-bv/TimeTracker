@@ -6,12 +6,38 @@ mutation($input: WorkInput!) {
       userId
       startDate
       finishDate
-      lastEditor
+      lastEditorId
     }
   } 
 }`;
 
-export const editWorktimeRecordMutation = `
+export const getUnfinishedWorktimeRecordQuery = `
+query($userId: String!) {
+  worktime {
+    unfinishedWorktimeRecord(userId: $userId) {
+      id
+      userId
+      startDate
+      finishDate
+      lastEditorId
+    }
+  }
+}`;
+
+export const updateWorktimeFinishDateMutation = `
+mutation($userId: String!) {
+  worktime {
+    updateFinishDate(userId: $userId) {
+      id
+      userId
+      startDate
+      finishDate
+      lastEditorName
+    }
+  }
+}`;
+
+export const updateWorktimeRecordMutation = `
 mutation($input: WorkInput!) {
   worktime {
     update(input: $input) {
@@ -19,16 +45,16 @@ mutation($input: WorkInput!) {
       userId
       startDate
       finishDate
-      lastEditor
+      lastEditorName
     }
   }
 }`;
 
 export const getWorktimeRecordsQuery = `
 query(
-  $sorting: SortInputType!
+  $sorting: SortInputType
   $filter: WorktimeFilterInput
-  $paging: PaginationInputType!
+  $paging: PaginationInputType
 ) {
   worktime {
     records(
@@ -40,9 +66,9 @@ query(
       userId
       startDate
       finishDate
-      lastEditor
+      lastEditorName
     }
-    recordsCount(filter: $filter)
+    recordCount(filter: $filter)
     worktimeStats(filter: $filter) {
       totalWorkTimeMonthly
       plannedWorkTimeMonthly

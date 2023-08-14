@@ -1,5 +1,5 @@
+﻿using DataLayer.Providers;
 ﻿using DataLayer.Models;
-using DataLayer.Providers;
 using GraphQL;
 using GraphQL.Types;
 using TimeTracker.GraphQL.Users.Types;
@@ -18,22 +18,37 @@ public class WorktimeQuery : ObjectGraphType
             .Argument<PaginationInputType>("paging")
             .Resolve(context =>
             {
-                Sorting sorting = context.GetArgument<Sorting>("sorting");
+                Sorting? sorting = context.GetArgument<Sorting?>("sorting");
                 WorktimeFilter? filter = context.GetArgument<WorktimeFilter?>("filter");
-                Paging paging = context.GetArgument<Paging>("paging");
+                Paging? paging = context.GetArgument<Paging?>("paging");
 
                 return worktimeProvider.GetWorktimeRecords(sorting, filter, paging).ToList();
             });
 
-        Field<IntGraphType>("RecordsCount")
-            .Description("Get records count")
+        Field<WorktimeType>("UnfinishedWorktimeRecord")
+            .Description("Get unfinished worktime records by User Id")
+            .Argument<StringGraphType>("userId", "User Id")
+            .Resolve(context =>
+            {
+                string? userId = context.GetArgument<string?>("userId");
+
+                if (userId == null || !Guid.TryParse(userId, out _))
+                {
+                    return null;
+                }
+
+                return worktimeProvider.GetUnfinishedWorktimeRecordByUserId(userId);
+            });
+
+        Field<IntGraphType>("RecordCount")
+            .Description("Get record count")
             .Argument<WorktimeFilterInputType>("filter")
             .Resolve(context =>
             {
                 WorktimeFilter? filter = context.GetArgument<WorktimeFilter?>("filter");
-                return worktimeProvider.GetRecordsCount(filter);
+                return worktimeProvider.GetRecordCount(filter);
             });
-        
+
         Field<WorktimeStatsType>("WorktimeStats")
             .Description("Get worktime statistics")
             .Argument<WorktimeFilterInputType>("filter")
@@ -47,7 +62,7 @@ public class WorktimeQuery : ObjectGraphType
 
                 foreach (var worktime in worktimeRecords)
                 {
-                    totalWorkTime += worktime.FinishDate - worktime.StartDate;
+                    totalWorkTime += (worktime.FinishDate - worktime.StartDate) ?? TimeSpan.Zero;
                 }
 
                 var worktimeStats = new WorktimeStats()

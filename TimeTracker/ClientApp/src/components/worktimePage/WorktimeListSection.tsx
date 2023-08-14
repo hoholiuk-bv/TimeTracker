@@ -14,7 +14,7 @@ type Props = {
 
 export const WorktimeListSection = ({ userId } : Props) => {
   const dispatch = useDispatch();
-  const { sorting, filtering, paging, recordsCount } = useSelector((state: RootState) => state.worktime);
+  const { sorting, filtering, paging, recordCount } = useSelector((state: RootState) => state.worktime);
 
   useEffect(() => {
     dispatch(requestWorktimeRecords(sorting, { ...filtering, userId: userId }, paging));
@@ -24,10 +24,10 @@ export const WorktimeListSection = ({ userId } : Props) => {
     <>
       <WorktimeFilter />
       <WorktimeTable />
-      {recordsCount > 0 && (
+      {recordCount > 0 && (
         <div className="d-flex justify-content-between mb-4">
           <WorktimeStats />
-          <Pagination paging={paging} pagingUpdateAction={changeWorktimeRecordsPaging} itemCount={recordsCount} />
+          <Pagination paging={paging} pagingUpdateAction={changeWorktimeRecordsPaging} itemCount={recordCount} />
         </div>
       )}
     </>

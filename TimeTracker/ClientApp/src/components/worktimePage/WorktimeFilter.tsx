@@ -2,7 +2,6 @@ import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row, FormLabel } from 'react-bootstrap';
-import { FormGroup } from '../common/elements/FormGroup';
 import { ValidationMessage } from '../common/validation/ValidationMessage';
 import { RootState } from '../../behavior/store';
 import { WorktimeFilterType, WorktimeFilterTypeInput } from '../../behavior/worktime/types';
@@ -30,39 +29,35 @@ export const WorktimeFilter = () => {
   };
 
   return (
-    <>
-      <div>
-        <Formik onSubmit={onSubmit} initialValues={initialValues}>
-          <Form>
-            <Row>
-              <Col>
-                <FormGroup>
-                  <FormLabel htmlFor='year'>Year</FormLabel>
-                  <Field name="year" type="number" className="form-control" validate={worktimeYear} mix={1900} />
-                  <ValidationMessage fieldName='year' />
-                </FormGroup>
-              </Col>
-              <Col>
-                <FormGroup>
-                  <FormLabel htmlFor='month'>Month</FormLabel>
-                  <Field as="select" className="form-control" name="month" validate={required}>
-                    {Array.from({ length: 12 }, (_, monthIndex) => (
-                      <option key={monthIndex} value={monthIndex}>
-                        {(new Date(0, monthIndex)).toLocaleString('default', { month: 'long' })}
-                      </option>
-                    ))}
-                  </Field>
-                </FormGroup>
-              </Col>
-              <Col className="d-flex align-items-end">
-                <FormGroup>
-                  <button className="btn btn-primary" type="submit">Apply</button>
-                </FormGroup>
-              </Col>
-            </Row>
-          </Form>
-        </Formik>
-      </div>
-    </>
+    <div>
+      <Formik onSubmit={onSubmit} initialValues={initialValues}>
+        <Form>
+          <Row>
+            <Col>
+              <FormLabel htmlFor='year'>Year</FormLabel>
+              <Field name="year" type="number" className="form-control" validate={worktimeYear} mix={1900} />
+            </Col>
+            <Col>
+              <FormLabel htmlFor='month'>Month</FormLabel>
+              <Field as="select" className="form-control" name="month" validate={required}>
+                {Array.from({ length: 12 }, (_, monthIndex) => (
+                  <option key={monthIndex} value={monthIndex}>
+                    {(new Date(0, monthIndex)).toLocaleString('default', { month: 'long' })}
+                  </option>
+                ))}
+              </Field>
+            </Col>
+            <Col className="d-flex align-items-end">
+              <button className="btn btn-primary" type="submit">Apply</button>
+            </Col>
+          </Row>
+          <Row className="mb-3">
+            <Col>
+              <ValidationMessage fieldName='year' />
+            </Col>
+          </Row>
+        </Form>
+      </Formik>
+    </div>
   );
 };

@@ -11,12 +11,13 @@ public class WorktimeType : ObjectGraphType<DataLayer.Entities.Worktime>
         Field(t => t.Id, type: typeof(GuidGraphType));
         Field(t => t.UserId);
         Field(t => t.StartDate);
-        Field(t => t.FinishDate);
-        Field<StringGraphType>("LastEditor")
-            .Resolve(context => test(context));
+        Field(t => t.FinishDate, nullable: true);
+        Field(t => t.LastEditorId, nullable: true);
+        Field<StringGraphType>("LastEditorName")
+            .Resolve(context => GetLastEditorName(context));
     }
 
-    private string test(IResolveFieldContext context)
+    private string GetLastEditorName(IResolveFieldContext context)
     {
         var worktime = context.Source as DataLayer.Entities.Worktime;
 

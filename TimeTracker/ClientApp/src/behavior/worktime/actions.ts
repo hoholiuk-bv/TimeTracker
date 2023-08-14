@@ -15,15 +15,15 @@ export const worktimeCreated = (worktimeRecord: WorktimeRecord) => ({
 });
 
 export const WORKTIME_RECORDS_REQUESTED = 'WORKTIME_RECORDS_REQUESTED' as const;
-export const requestWorktimeRecords = (sorting: SortingInput, filter: WorktimeFilterType , paging: PagingInput) => ({
+export const requestWorktimeRecords = (sorting?: SortingInput, filter?: WorktimeFilterType , paging?: PagingInput) => ({
   type: WORKTIME_RECORDS_REQUESTED,
   payload: { sorting, filter, paging },
 });
 
 export const WORKTIME_RECORDS_RECEIVED = 'WORKTIME_RECORDS_RECEIVED' as const;
-export const worktimeRecordsReceived = (records: WorktimeRecord[], recordsCount: number, worktimeStats: WorktimeStats) => ({
+export const worktimeRecordsReceived = (records: WorktimeRecord[], recordCount: number, worktimeStats: WorktimeStats) => ({
   type: WORKTIME_RECORDS_RECEIVED,
-  payload: { records, recordsCount, worktimeStats },
+  payload: { records, recordCount, worktimeStats },
 });
 
 export const WORKTIME_UPDATE_REQUESTED = 'WORKTIME_UPDATE_REQUESTED' as const;
@@ -56,8 +56,34 @@ export const changeWorktimeRecordsPaging = (paging: PagingInput) => ({
   payload: { paging }
 });
 
+export const WORKTIME_FINISH_DATE_UPDATE = 'WORKTIME_FINISH_DATE_UPDATE' as const;
+export const updateWorktimeFinishDate = (userId: string) => ({
+  type: WORKTIME_FINISH_DATE_UPDATE,
+  payload: { userId }
+});
+
+export const WORKTIME_FINISH_DATE_UPDATED = 'WORKTIME_FINISH_DATE_UPDATED' as const;
+export const worktimeFinishDateUpdated = (worktimeRecord: WorktimeRecord) => ({
+  type: WORKTIME_FINISH_DATE_UPDATED,
+  payload: { worktimeRecord }
+});
+
+export const UNFINISHED_WORKTIME_RECORD_REQUESTED = 'UNFINISHED_WORKTIME_RECORD_REQUESTED' as const;
+export const requestUnfinishedWorktimeRecord = (userId: string) => ({
+  type: UNFINISHED_WORKTIME_RECORD_REQUESTED,
+  payload: { userId },
+});
+
+export const UNFINISHED_WORKTIME_RECORD_RECEIVED = 'UNFINISHED_WORKTIME_RECORD_RECEIVED' as const;
+export const receiveUnfinishedWorktimeRecord = (unfinishedWorktimeRecord: WorktimeRecord) => ({
+  type: UNFINISHED_WORKTIME_RECORD_RECEIVED,
+  payload: { unfinishedWorktimeRecord },
+});
+
 export type WorktimeCreationAction = ReturnType<typeof worktimeCreation>;
 export type WorktimeCreatedAction = ReturnType<typeof worktimeCreated>;
+export type WorktimeFinishDateUpdatedAction = ReturnType<typeof worktimeFinishDateUpdated>;
+export type UnfinishedWorktimeRecordReceivedAction = ReturnType<typeof receiveUnfinishedWorktimeRecord>;
 export type WorktimeRecordUpdatedAction = ReturnType<typeof worktimeRecordUpdated>;
 export type WorktimeRecordsReceivedAction = ReturnType<typeof worktimeRecordsReceived>;
 export type WorktimeRecordsSortingChangedAction = ReturnType<typeof changeWorktimeRecordsSorting>;
@@ -67,6 +93,7 @@ export type WorktimeRecordsPagingChangedAction = ReturnType<typeof changeWorktim
 export type WorktimeActions = ReturnType<
     | typeof worktimeCreation
     | typeof worktimeCreated
+    | typeof receiveUnfinishedWorktimeRecord
     | typeof requestWorktimeUpdate
     | typeof worktimeRecordUpdated
     | typeof requestWorktimeRecords

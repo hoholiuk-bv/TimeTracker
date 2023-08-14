@@ -1,16 +1,19 @@
 ﻿import React from 'react';
 import { Timer } from './Timer';
 import { UserInfo } from '../../behavior/profile/types';
+import {WorktimeRecord} from '../../behavior/worktime/types';
 
 
 type Props = {
-    users: UserInfo | null;
+    users: UserInfo | null,
+    worktime: WorktimeRecord | null;
 };
 
-export const ListPage = ({ users }: Props) => {
+export const ListPage = ({ users, worktime }: Props) => {
     if (!users) {
         return null;
     }
+   
 
     return (
         <div className="container">
@@ -20,7 +23,7 @@ export const ListPage = ({ users }: Props) => {
                         <div className="timer">
                             <table className="table">
                                 <tbody className="timer-container">
-                                    <Timer user={users} />
+                                    <Timer user={users} worktime={worktime}/>
                                 </tbody>
                             </table>
                         </div>

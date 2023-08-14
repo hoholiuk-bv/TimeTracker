@@ -5,11 +5,17 @@ namespace DataLayer.Providers;
 
 public interface IWorktimeProvider
 {
-    Worktime SaveWorktime(Worktime worktime);
+    int CreateWorktimeRecord(Worktime worktime);
 
-    Worktime UpdateWorktimeRecord(Worktime worktimeRecord);
+    Worktime? GetWorktimeRecordById(Guid id);
+
+    Worktime? GetUnfinishedWorktimeRecordByUserId(string userId);
 
     IEnumerable<Worktime> GetWorktimeRecords(Sorting? sorting, WorktimeFilter? filter, Paging? paging);
+
+    Worktime UpdateFinishDate(DateTime finishDate, string userId);
+
+    int UpdateWorktimeRecord(Worktime worktimeRecord);
    
-    int GetRecordsCount(WorktimeFilter? filter);
+    int GetRecordCount(WorktimeFilter? filter);
 }

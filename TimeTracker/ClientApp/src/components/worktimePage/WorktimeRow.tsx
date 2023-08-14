@@ -10,6 +10,10 @@ type Props = {
 
 export const WorktimeRow = ({ worktimeRecord }: Props) => {
   const [show, setShow] = useState(false);
+
+  if(worktimeRecord.finishDate === null)
+    return null;
+
   const startDate = new Date(worktimeRecord.startDate);
   const finishDate = new Date(worktimeRecord.finishDate);
 
@@ -33,7 +37,7 @@ export const WorktimeRow = ({ worktimeRecord }: Props) => {
           {workedHours === 0 && workedMinutes === 0 && 'no hours yet'}
         </td>
         <td>
-          {worktimeRecord.lastEditor}
+          {worktimeRecord.lastEditorName}
         </td>
         <td className='text-end pe-3'>
           <FontAwesomeIcon icon={faFileLines} onClick={() => setShow(true)} className="details-action" title="Edit" />
