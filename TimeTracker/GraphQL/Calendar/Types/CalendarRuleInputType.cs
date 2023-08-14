@@ -12,7 +12,6 @@ namespace TimeTracker.GraphQL.Calendar.Types
 
             Field<GuidGraphType>("Id");
             Field<NonNullGraphType<StringGraphType>>("Title");
-            Field<NonNullGraphType<BooleanGraphType>>("DisplayTitle");
             Field<NonNullGraphType<EnumerationGraphType<Constants.CalendarRuleSetupType>>>("Type");
             Field<DecimalGraphType>("ShortDayDuration");
             Field<NonNullGraphType<StringGraphType>>("StartDate");
@@ -29,8 +28,6 @@ namespace TimeTracker.GraphQL.Calendar.Types
         public Guid? Id { get; set; }
 
         public string Title { get; set; } = null!;
-
-        public bool DisplayTitle { get; set; }
 
         public Constants.CalendarRuleSetupType Type { get; set; }
 

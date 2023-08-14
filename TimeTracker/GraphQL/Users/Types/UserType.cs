@@ -18,6 +18,7 @@ namespace TimeTracker.GraphQL.Users.Types
             Field(t => t.EmploymentDate);
             Field(t => t.EmploymentType);
             Field(t => t.WorkingHoursCount);
+            Field(t => t.DaysOffCount);
             Field<ListGraphType<DayOffRequestApproverType>>("Approvers")
                 .Resolve(context => daysOffProvider.GetApprovers(context.Source.ApproverIds));
         }

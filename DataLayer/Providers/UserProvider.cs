@@ -40,5 +40,11 @@ namespace DataLayer.Providers
             var userData = Query<UserData>(Queries.Users.GetById, new { Id = id }).FirstOrDefault();
             return userData == null ? null : new User(userData);
         }
+
+        public int GetDaysOffCount(Guid userId)
+            => Query<int>(Queries.Users.GetDaysOffCount, new { Id = userId }).FirstOrDefault();
+
+        public void UpdateDaysOffCount(Guid userId, int daysOffCount)
+            => Execute(Queries.Users.UpdateDaysOffCount, new { Id = userId, DaysOffCount = daysOffCount });
     }
 }

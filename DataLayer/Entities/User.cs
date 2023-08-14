@@ -28,6 +28,8 @@ namespace DataLayer.Entities
 
         public List<Guid> ApproverIds { get; set; } = new List<Guid>();
 
+        public int DaysOffCount { get; set; }
+
         public User() { }
 
         public User(UserData userData)
@@ -44,6 +46,7 @@ namespace DataLayer.Entities
             this.EmploymentType = userData.EmploymentType;
             this.WorkingHoursCount = userData.WorkingHoursCount;
             this.ApproverIds = string.IsNullOrEmpty(userData.ApproverIds) ? new List<Guid>() : userData.ApproverIds.Split(';').Select(id => Guid.Parse(id)).ToList();
+            this.DaysOffCount = userData.DaysOffCount;
         }
 
         public UserData ToData()
@@ -61,6 +64,7 @@ namespace DataLayer.Entities
             EmploymentType = this.EmploymentType,
             WorkingHoursCount = this.WorkingHoursCount,
             ApproverIds = string.Join(';', this.ApproverIds),
+            DaysOffCount = this.DaysOffCount,
         };
     }
 }

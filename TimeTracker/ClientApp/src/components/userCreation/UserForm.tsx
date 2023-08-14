@@ -17,7 +17,7 @@ type Props = {
   properties: UserFormProps;
 }
 
-export const UserForm = ({properties}: Props) => {
+export const UserForm = ({ properties }: Props) => {
   const initialValues = properties.initialValues;
   const onSubmit = properties.onSubmit;
   const selectedApprovers = properties.selectedApprovers;
@@ -26,92 +26,100 @@ export const UserForm = ({properties}: Props) => {
 
   const isFormForUpdate = 'id' in initialValues;
   const updatedUserId = isFormForUpdate ? (properties.initialValues as UserUpdateInput).id : null;
-  
+
   return (
     <>
       <Formik onSubmit={onSubmit} initialValues={initialValues}>
-        {({values}) => (
+        {({ values }) => (
           <Form>
             <Row>
               <Col>
-                <Row>
-                  <FormGroup>
-                    <FormLabel htmlFor='name'>Name</FormLabel>
-                    <Field type="text" className="form-control" name="name" validate={required} />
-                    <ValidationMessage fieldName='name' />
-                  </FormGroup>
-                </Row>
-                <Row>
-                  <FormGroup>
-                    <FormLabel htmlFor='surname'>Surname</FormLabel>
-                    <Field type="text" className="form-control" name="surname" validate={required} />
-                    <ValidationMessage fieldName='surname' />
-                  </FormGroup>
-                </Row>
-                <Row>
-                  <FormGroup>
-                    <FormLabel htmlFor='employmentDate'>Employment date</FormLabel>
-                    <Field name="employmentDate" type="date" className="form-control" validate={required} />
-                    <ValidationMessage fieldName='employmentDate' />
-                  </FormGroup>
-                </Row>
+                <FormGroup>
+                  <FormLabel htmlFor='name'>Name</FormLabel>
+                  <Field type="text" className="form-control" name="name" validate={required} />
+                  <ValidationMessage fieldName='name' />
+                </FormGroup>
               </Col>
               <Col>
-                <Row>
-                  <FormGroup>
-                    <FormLabel htmlFor='email'>Email</FormLabel>
-                    <Field type="email" className="form-control" name="email" validate={validate(
-                      [
-                        { validationFunction: required },
-                        { validationFunction: email },
-                        { validationFunction: maxLength, validationAttributes: { length: 256 } }
-                      ])} />
-                    <ValidationMessage fieldName='email' />
-                  </FormGroup>
-                </Row>
-                <Row>
-                  {!isFormForUpdate && (
-                    <FormGroup>
-                      <FormLabel htmlFor='password'>Password</FormLabel>
-                      <Field type="password" className="form-control" name="password" validate={required} />
-                      <ValidationMessage fieldName='password' />
-                    </FormGroup>
-                  )}
-                </Row>
-                <Row>
-                  <FormGroup>
-                    <FormLabel htmlFor='employmentType'>Employment type</FormLabel>
-                    <Field as="select" className="form-control" name="employmentType" validate={required}>
-                      <option value="">Choose the employment type</option>
-                      {Object.keys(employmentType).map((type: string) => (
-                        <option key={type} value={employmentType[type as keyof typeof employmentType]}>
-                          {employmentTypeForDisplay[type as keyof typeof employmentTypeForDisplay]}
-                        </option>
-                      ))}
-                    </Field>
-                    <ValidationMessage fieldName='employmentType' />
-                  </FormGroup>
-                </Row>
-                {values.employmentType && values.employmentType === employmentType.PartTime && (
-                  <Row>
-                    <Col>
-                      <FormGroup>
-                        <FormLabel htmlFor='hours'>Hours</FormLabel>
-                        <Field type="number" className="form-control" name="hours" validate={required} min={1} max={MaxWorkingHours} />
-                        <ValidationMessage fieldName='hours' />
-                      </FormGroup>
-                    </Col>
-                    <Col>
-                      {values.hours !== MaxWorkingHours && (
-                        <FormGroup>
-                          <FormLabel htmlFor='minutes'>Minutes</FormLabel>
-                          <Field type="number" className="form-control" name="minutes" min={0} step={10} max={50} />
-                        </FormGroup>
-                      )}
-                    </Col>
-                  </Row>
-                )}
+                <FormGroup>
+                  <FormLabel htmlFor='surname'>Surname</FormLabel>
+                  <Field type="text" className="form-control" name="surname" validate={required} />
+                  <ValidationMessage fieldName='surname' />
+                </FormGroup>
               </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='employmentDate'>Employment date</FormLabel>
+                  <Field name="employmentDate" type="date" className="form-control" validate={required} />
+                  <ValidationMessage fieldName='employmentDate' />
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='email'>Email</FormLabel>
+                  <Field type="email" className="form-control" name="email" validate={validate(
+                    [
+                      { validationFunction: required },
+                      { validationFunction: email },
+                      { validationFunction: maxLength, validationAttributes: { length: 256 } }
+                    ])} />
+                  <ValidationMessage fieldName='email' />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='daysOffCount'>Days off count</FormLabel>
+                  <Field name="daysOffCount" type="number" className="form-control" min={0} validate={required} />
+                  <ValidationMessage fieldName='daysOffCount' />
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='employmentType'>Employment type</FormLabel>
+                  <Field as="select" className="form-control" name="employmentType" validate={required}>
+                    <option value="">Choose the employment type</option>
+                    {Object.keys(employmentType).map((type: string) => (
+                      <option key={type} value={employmentType[type as keyof typeof employmentType]}>
+                        {employmentTypeForDisplay[type as keyof typeof employmentTypeForDisplay]}
+                      </option>
+                    ))}
+                  </Field>
+                  <ValidationMessage fieldName='employmentType' />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              {!isFormForUpdate &&
+              <Col>
+                <FormGroup>
+                  <FormLabel htmlFor='password'>Password</FormLabel>
+                  <Field type="password" className="form-control" name="password" validate={required} />
+                  <ValidationMessage fieldName='password' />
+                </FormGroup>
+              </Col>}
+              {values.employmentType && values.employmentType === employmentType.PartTime && (
+                <>
+                  <Col>
+                    <FormGroup>
+                      <FormLabel htmlFor='hours'>Hours</FormLabel>
+                      <Field type="number" className="form-control" name="hours" validate={required} min={1} max={MaxWorkingHours} />
+                      <ValidationMessage fieldName='hours' />
+                    </FormGroup>
+                  </Col>
+                  <Col>
+                    {values.hours !== MaxWorkingHours && (
+                      <FormGroup>
+                        <FormLabel htmlFor='minutes'>Minutes</FormLabel>
+                        <Field type="number" className="form-control" name="minutes" min={0} step={10} max={50} />
+                      </FormGroup>
+                    )}
+                  </Col>
+                </>
+              )}
             </Row>
             <Row>
               <Col className="approvers-group">

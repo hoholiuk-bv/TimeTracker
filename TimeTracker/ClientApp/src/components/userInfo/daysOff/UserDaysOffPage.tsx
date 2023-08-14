@@ -11,7 +11,6 @@ export const UserDaysOffPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { list, requestsCount, sorting, paging, filter } = useSelector((state: RootState) => state.daysOff);
-  const { user } = useSelector((state: RootState) => state.userDetails);
 
   useEffect(() => {
     if (id !== undefined) {
@@ -26,9 +25,11 @@ export const UserDaysOffPage = () => {
   return (
     <>
       <DayOffList requests={list} sorting={sorting} />
-      <div className="d-flex justify-content-end">
-        <Pagination paging={paging} pagingUpdateAction={changeDaysOffListPaging} itemCount={requestsCount} />
-      </div>
+      {requestsCount > 0 && (
+        <div className="d-flex justify-content-end">
+          <Pagination paging={paging} pagingUpdateAction={changeDaysOffListPaging} itemCount={requestsCount} />
+        </div>
+      )}
     </>
   );
 };

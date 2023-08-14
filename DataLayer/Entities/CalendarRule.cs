@@ -8,8 +8,6 @@ public class CalendarRule
 
     public string Title { get; set; } = null!;
 
-    public bool DisplayTitle { get; set; }
-
     public CalendarRuleSetupType Type { get; set; }
 
     public decimal? ShortDayDuration { get; set; }

@@ -35,7 +35,13 @@ namespace TimeTracker.GraphQL.Calendar.Types
 
             Field<BooleanGraphType>("Delete")
                     .Description("Deletes a calendar rule")
-                    .Resolve(context => null);
+                    .Argument<NonNullGraphType<IdGraphType>>("ruleId")
+                    .Resolve(context =>
+                    {
+                        var ruleId = context.GetArgument<Guid>("ruleId");
+                        calendarProvider.DeleteRule(ruleId);
+                        return true;
+                    });
         }
 
         private CalendarRule CreateCalendarRule(CalendarRuleInput input)
@@ -43,7 +49,6 @@ namespace TimeTracker.GraphQL.Calendar.Types
         {
             Id = input.Id ?? Guid.NewGuid(),
             Title = input.Title,
-            DisplayTitle = input.DisplayTitle,
             Type = input.Type,
             ShortDayDuration = input.ShortDayDuration,
             StartDate = DateTime.Parse(input.StartDate),

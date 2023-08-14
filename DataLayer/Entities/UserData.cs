@@ -27,5 +27,7 @@ namespace DataLayer.Entities
         public decimal WorkingHoursCount { get; set; }
 
         public string ApproverIds { get; set; }
+
+        public int DaysOffCount { get; set; }
     }
 }

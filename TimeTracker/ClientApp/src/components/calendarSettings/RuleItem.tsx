@@ -1,10 +1,11 @@
-import { faFileLines } from '@fortawesome/free-solid-svg-icons';
+import { faFileLines, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { CalendarRule, CalendarRuleType } from '../../behavior/calendar/types';
 import { CalendarRuleRecurringPeriodTitle, CalendarRuleTypeTitle } from '../common/helpers';
 import { RuleModal } from './RuleModal';
+import {RuleDeletionModal} from './RuleDeletionModal';
 
 type Props = {
   item: CalendarRule
@@ -12,7 +13,8 @@ type Props = {
 
 export const RuleItem = ({ item }: Props) => {
   const [showRuleModal, setShowRuleModal] = useState(false);
-  const { title, startDate, finishDate, type, isRecurring, recurringFrequency, recurringPeriod, shortDayDuration } = item;
+  const [showDeletionModal, setShowDeletionModal] = useState(false);
+  const { title, startDate, finishDate, type, isRecurring, recurringFrequency, recurringPeriod, shortDayDuration, id } = item;
 
   return (
     <>
@@ -33,7 +35,15 @@ export const RuleItem = ({ item }: Props) => {
           {isRecurring && recurringPeriod && <span>every {`${recurringFrequency} ${CalendarRuleRecurringPeriodTitle[recurringPeriod].toLowerCase()}(s)`}</span>}
         </td>
         <td>
-          <Button variant='Link' className='table-action-button'><FontAwesomeIcon icon={faFileLines} title="Details" onClick={() => setShowRuleModal(true)} /></Button>
+          <Button variant='Link' className='table-action-button'>
+            <FontAwesomeIcon icon={faFileLines} title="Details" onClick={() => setShowRuleModal(true)} />
+          </Button>
+        </td>
+        <td>
+          <Button variant='Link' className='table-action-button'>
+            <FontAwesomeIcon icon={faTrashCan} onClick={() => setShowDeletionModal(true)}/>
+          </Button>
+          <RuleDeletionModal show={showDeletionModal} handleClose={() => setShowDeletionModal(false)} ruleId={id}/>
         </td>
       </tr>
       <RuleModal

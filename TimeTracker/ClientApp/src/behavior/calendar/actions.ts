@@ -37,16 +37,23 @@ export const applyCalendarRules = (year: number, month: number) => ({
   payload: { year, month }
 });
 
+export const CALENDAR_RULE_DELETED = 'CALENDAR_RULE_DELETED' as const;
+export const deleteCalendarRule = (ruleId: string) => ({
+  type: CALENDAR_RULE_DELETED,
+  payload: { ruleId }
+});
 
 export type CalendarRuleCreatedAction = ReturnType<typeof createCalendarRule>;
 export type CalendarRulesRequestedAction = ReturnType<typeof requestCalendarRules>;
 export type CalendarRulesReceivedAction = ReturnType<typeof receiveCalendarRules>;
 export type CalendarRulesSortingChangedAction = ReturnType<typeof changeCalendarRulesSorting>;
 export type CalendarRulesAppliedAction = ReturnType<typeof applyCalendarRules>;
+export type CalendarRulesDeletedAction = ReturnType<typeof deleteCalendarRule>;
 
 export type CalendarActions = ReturnType<
   | typeof createCalendarRule
   | typeof receiveCalendarRules
   | typeof requestCalendarRules
   | typeof applyCalendarRules
-  | typeof changeCalendarRulesSorting>
+  | typeof changeCalendarRulesSorting
+  | typeof deleteCalendarRule>

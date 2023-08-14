@@ -21,12 +21,6 @@ export const RuleForm = () => {
                 name="title" />
             </FormGroup>
           </Col>
-          <Col>
-            <FormGroup>
-              <FormLabel>Display title</FormLabel>
-              <Field as={Form.Check} name="displayTitle" checked={values.displayTitle} />
-            </FormGroup>
-          </Col>
           {values.type === CalendarRuleType.ShortDay &&
             <Col>
               <FormGroup>

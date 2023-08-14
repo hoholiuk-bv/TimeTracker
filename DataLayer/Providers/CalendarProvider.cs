@@ -15,9 +15,7 @@ namespace DataLayer.Providers
             => Execute(CalendarRules.Create, rule);
 
         public void DeleteRule(Guid ruleId)
-        {
-            throw new NotImplementedException();
-        }
+            => Execute(CalendarRules.Delete, new { RuleId = ruleId });
 
         public List<CalendarRule> GetCalendarRules(Sorting sorting, Paging paging)
             => Query<CalendarRule>(CalendarRules.GetList(sorting, paging));

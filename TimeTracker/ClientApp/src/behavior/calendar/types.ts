@@ -15,7 +15,6 @@ export enum CalendarRulePeriod {
 export type CalendarRuleInput = {
   id?: string;
   title: string;
-  displayTitle: boolean;
   type: CalendarRuleType;
   shortDayDuration: number | null;
   startDate: string | null;
@@ -29,7 +28,6 @@ export type CalendarRuleInput = {
 export type CalendarRule = {
   id: string;
   title: string;
-  displayTitle: boolean;
   type: CalendarRuleType;
   shortDayDuration: number | null;
   startDate: string;

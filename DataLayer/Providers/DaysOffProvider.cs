@@ -31,6 +31,9 @@ public class DaysOffProvider : Provider, IDaysOffProvider
     public List<DayOffRequestApproval> GetApprovals(Sorting sorting, Paging paging, Guid approverId)
         => Query<DayOffRequestApproval>(DaysOff.GetApprovals(sorting, paging), new { ApproverId = approverId });
 
+    public int GetApprovalsCount(Guid approverId)
+        => Query<int>(DaysOff.GetApprovalsCount, new { ApproverId = approverId }).First();
+
     public void ChangeApprovalStatus(Guid requestId, Guid approverId, DayOffApprovalStatus status, string declineReason)
         => Execute(DaysOff.ChangeApprovalStatus, new { requestId, approverId, status, declineReason });
 
@@ -42,4 +45,7 @@ public class DaysOffProvider : Provider, IDaysOffProvider
 
     public void DeleteDayOffRequest(Guid requestId)
         => Execute(DaysOff.DeleteDayOffRequest, new { RequestId = requestId });
+
+    public DayOffRequest GetRequest(Guid requestId)
+        => Query<DayOffRequest>(DaysOff.GetById, new { Id = requestId }).FirstOrDefault()!;
 }

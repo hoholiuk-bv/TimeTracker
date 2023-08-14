@@ -64,6 +64,7 @@ export const RuleList = ({ rules, sorting }: Props) => {
             </th>
             <th>Recurring</th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

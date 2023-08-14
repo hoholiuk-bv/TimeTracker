@@ -24,6 +24,7 @@ export const UserCreationPage = () => {
     approversIdList : [],
     hours: null,
     minutes: null,
+    daysOffCount: null
   };
 
   const onSubmit = (values: UserCreationInput) => {

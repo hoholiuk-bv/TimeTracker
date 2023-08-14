@@ -24,7 +24,11 @@ public interface IDaysOffProvider
 
     List<DayOffRequestApproval> GetApprovals(Sorting sorting, Paging paging, Guid approverId);
 
+    int GetApprovalsCount(Guid approverId);
+
     void ChangeApprovalStatus(Guid requestId, Guid approverId, DayOffApprovalStatus status, string declineReason);
 
     void DeleteDayOffRequest(Guid requestId);
+
+    DayOffRequest GetRequest(Guid requestId);
 }

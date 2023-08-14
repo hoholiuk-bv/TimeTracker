@@ -20,10 +20,10 @@ export const DayOffItem = ({ item }: Props) => {
     <>
       <tr>
         <td>
-          {startDate}
+          {new Date(startDate).toLocaleDateString()}
         </td>
         <td>
-          {finishDate}
+          {new Date(finishDate).toLocaleDateString()}
         </td>
         <td>
           {approvals.map(({ approver, status, declineReason }, index) =>

@@ -44,7 +44,8 @@ namespace TimeTracker.GraphQL.Users
                         Surname = input.Surname,
                         Email = input.Email,
                         WorkingHoursCount = input.EmploymentType == Constants.EmploymentType.FullTime ? Constants.MaxWorkingHours : input.WorkingHoursCount,
-                        ApproverIds = input.ApproversIdList
+                        ApproverIds = input.ApproversIdList,
+                        DaysOffCount = input.DaysOffCount,
                     };
 
                     var updatedUser = userProvider.Update(user);
@@ -71,7 +72,8 @@ namespace TimeTracker.GraphQL.Users
                 Email = input.Email,
                 Password = authenticationService.GenerateHash(input.Password, salt),
                 WorkingHoursCount = input.EmploymentType == Constants.EmploymentType.FullTime ? Constants.MaxWorkingHours : input.WorkingHoursCount,
-                ApproverIds = input.ApproversIdList
+                ApproverIds = input.ApproversIdList,
+                DaysOffCount = input.DaysOffCount,
             };
 
             userProvider.Create(user);

@@ -17,6 +17,7 @@ namespace TimeTracker.GraphQL.Users.Types
             Field(t => t.EmploymentType);
             Field(t => t.ApproversIdList);
             Field(t => t.WorkingHoursCount);
+            Field(t => t.DaysOffCount);
         }
     }
 
@@ -41,6 +42,8 @@ namespace TimeTracker.GraphQL.Users.Types
         public List<Guid> ApproversIdList { get; set; } = null!;
 
         public decimal WorkingHoursCount { get; set; }
+
+        public int DaysOffCount { get; set; }
     }
 
 }

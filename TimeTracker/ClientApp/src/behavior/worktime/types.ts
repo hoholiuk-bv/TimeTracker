@@ -20,7 +20,13 @@ export type WorktimeStats = {
     plannedWorkTimeMonthly: number;
 }
 
-export type FilterType = {
+export type WorktimeFilterTypeInput = {
+    userId: string;
+    year: number;
+    month: string;
+}
+
+export type WorktimeFilterType = {
     userId: string;
     year: number;
     month: number;
