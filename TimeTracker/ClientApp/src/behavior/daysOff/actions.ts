@@ -2,9 +2,9 @@ import { PagingInput, SortingInput } from '../common/types';
 import { DayOffRequestInput, DayOffRequest, DayOffRequestFilterInput } from './types';
 
 export const DAY_OFF_REQUESTED = 'DAY_OFF_REQUESTED' as const;
-export const requestDayOff = (input: DayOffRequestInput) => ({
+export const requestDayOff = (input: DayOffRequestInput, userId?: number) => ({
   type: DAY_OFF_REQUESTED,
-  payload: { input }
+  payload: { input, userId }
 });
 
 export const DAYS_OFF_LIST_REQUESTED = 'DAYS_OFF_LIST_REQUESTED' as const;
@@ -43,6 +43,18 @@ export const deleteDayOffRequest = (requestId: string) => ({
   payload: { requestId }
 });
 
+export const DAYS_OFF_COUNT_REQUESTED = 'DAYS_OFF_COUNT_REQUESTED' as const;
+export const requestDaysOffCount = (userId: string) => ({
+  type: DAYS_OFF_COUNT_REQUESTED,
+  payload: { userId }
+});
+
+export const DAYS_OFF_COUNT_RECEIVED = 'DAYS_OFF_COUNT_RECEIVED' as const;
+export const receiveDaysOffCount = (daysOffCount: number) => ({
+  type: DAYS_OFF_COUNT_RECEIVED,
+  payload: { daysOffCount }
+});
+
 export type DaysOffRequestAction = ReturnType<typeof requestDayOff>;
 export type DaysOffListRequestedAction = ReturnType<typeof requestDaysOffList>;
 export type DaysOffListReceivedAction = ReturnType<typeof receiveDaysOffList>;
@@ -50,6 +62,8 @@ export type DaysOffListSortingChangedAction = ReturnType<typeof changeDaysOffLis
 export type DaysOffListPagingChangedAction = ReturnType<typeof changeDaysOffListPaging>;
 export type DaysOffListFilterChangedAction = ReturnType<typeof changeDaysOffListFilter>;
 export type DayOffDeleteAction = ReturnType<typeof deleteDayOffRequest>;
+export type DaysOffCountRequestedAction = ReturnType<typeof requestDaysOffCount>;
+export type DaysOffCountReceivedAction = ReturnType<typeof receiveDaysOffCount>;
 
 export type DayOffActions = ReturnType<
   | typeof requestDaysOffList
@@ -58,4 +72,6 @@ export type DayOffActions = ReturnType<
   | typeof changeDaysOffListSorting
   | typeof changeDaysOffListPaging
   | typeof changeDaysOffListFilter
-  | typeof deleteDayOffRequest>
+  | typeof deleteDayOffRequest
+  | typeof requestDaysOffCount
+  | typeof receiveDaysOffCount>

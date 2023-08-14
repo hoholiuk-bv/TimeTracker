@@ -8,6 +8,7 @@ isActive
 employmentDate
 employmentType
 workingHoursCount
+daysOffCount
 approvers{
   id
   name

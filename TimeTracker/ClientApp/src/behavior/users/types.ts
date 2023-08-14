@@ -11,6 +11,7 @@ export type User = {
   employmentType: string;
   workingHoursCount: number;
   approvers: ApproverInfo[];
+  daysOffCount: number;
 }
 
 export type FilterType = {

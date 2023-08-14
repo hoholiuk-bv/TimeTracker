@@ -4,7 +4,7 @@ import {
   DAYS_OFF_LIST_RECEIVED, DaysOffListReceivedAction,
   DAYS_OFF_LIST_SORTING_CHANGED, DaysOffListSortingChangedAction,
   DAYS_OFF_LIST_PAGING_CHANGED, DaysOffListPagingChangedAction,
-  DAYS_OFF_LIST_FILTER_CHANGED, DaysOffListFilterChangedAction,
+  DAYS_OFF_LIST_FILTER_CHANGED, DaysOffListFilterChangedAction, DaysOffCountReceivedAction, DAYS_OFF_COUNT_RECEIVED,
 } from './actions';
 import { DayOffRequest, DayOffRequestFilterInput } from './types';
 
@@ -13,7 +13,8 @@ export type DaysOffState = {
   requestsCount: number,
   paging: PagingInput,
   sorting: SortingInput,
-  filter: DayOffRequestFilterInput
+  filter: DayOffRequestFilterInput,
+  daysOffCount: number
 };
 
 const initialState: DaysOffState = {
@@ -30,11 +31,13 @@ const initialState: DaysOffState = {
   filter: {
     requestId: null,
     userId: null,
-  }
+  },
+  daysOffCount: 0
 };
 
 export default createReducer(initialState, {
   [DAYS_OFF_LIST_RECEIVED]: onDaysOffReceived,
+  [DAYS_OFF_COUNT_RECEIVED]: onDaysOffCountReceived,
   [DAYS_OFF_LIST_SORTING_CHANGED]: onDaysOffListSortingChanged,
   [DAYS_OFF_LIST_PAGING_CHANGED]: onDaysOffListPagingChanged,
   [DAYS_OFF_LIST_FILTER_CHANGED]: onDaysOffListFilterChanged,
@@ -45,6 +48,12 @@ function onDaysOffReceived(state: DaysOffState, action: DaysOffListReceivedActio
   const { requestsCount } = action.payload;
 
   return { ...state, list, requestsCount };
+}
+
+function onDaysOffCountReceived(state: DaysOffState, action: DaysOffCountReceivedAction) {
+  const { daysOffCount } = action.payload;
+
+  return { ...state, daysOffCount };
 }
 
 function onDaysOffListSortingChanged(state: DaysOffState, action: DaysOffListSortingChangedAction) {

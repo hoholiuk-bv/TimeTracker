@@ -45,4 +45,7 @@ public class DaysOffProvider : Provider, IDaysOffProvider
 
     public void DeleteDayOffRequest(Guid requestId)
         => Execute(DaysOff.DeleteDayOffRequest, new { RequestId = requestId });
+
+    public DayOffRequest GetRequest(Guid requestId)
+        => Query<DayOffRequest>(DaysOff.GetById, new { Id = requestId }).FirstOrDefault()!;
 }

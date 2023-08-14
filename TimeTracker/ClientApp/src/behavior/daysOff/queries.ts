@@ -29,9 +29,16 @@ daysOff {
   }
 }`;
 
-export const deleteDayOffRequest = `
+export const deleteDayOffRequestMutation = `
 mutation($requestId: ID!) {
   daysOff {
     deleteDayOffRequest(requestId: $requestId)
    }
  }`;
+
+export const getDaysOffCountQuery = `
+query($userId: ID!) {
+daysOff {
+  daysOffCount(userId: $userId)
+  }
+}`;

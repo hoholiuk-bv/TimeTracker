@@ -10,6 +10,7 @@ type CommonUserCreationFields = {
     employmentDate: string | null;
     isAdmin: boolean | null;
     approversIdList: string[] | null;
+    daysOffCount: number | null;
 };
 
 export type UserCreationInput = CommonUserCreationFields & {
