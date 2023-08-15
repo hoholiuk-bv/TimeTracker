@@ -23,7 +23,7 @@ export const CalendarSettingsPage = () => {
       <h1>Calendar settigns</h1>
       <Row>
         <Col>
-          <Button className='btn btn-primary my-3' onClick={() => setShowRuleModal(true)}>
+          <Button className='btn btn-primary my-3 me-3' onClick={() => setShowRuleModal(true)}>
             Add new rule
           </Button>
           <Button className='btn btn-primary my-3' onClick={() => setShowCalendarModal(true)}>
