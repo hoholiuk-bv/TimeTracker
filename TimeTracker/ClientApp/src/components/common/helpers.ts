@@ -1,10 +1,17 @@
 import { CalendarRulePeriod, CalendarRuleType } from '../../behavior/calendar/types';
 import { DayOffApprovalStatus } from '../../behavior/common/types';
+import {DayOffRequestReason} from '../../behavior/daysOff/types';
 
 export const DayOffRequestStatusTitle = {
   [DayOffApprovalStatus.Approved]: 'Approved',
   [DayOffApprovalStatus.Declined]: 'Declined',
   [DayOffApprovalStatus.Pending]: 'Pending',
+};
+
+export const DayOffRequestReasonTitle = {
+  [DayOffRequestReason.Vacation]: 'Vacation',
+  [DayOffRequestReason.Absence]: 'Absence',
+  [DayOffRequestReason.SickLeave]: 'Sick leave',
 };
 
 export function getApprovalStatusClass(status: DayOffApprovalStatus) {

@@ -1,7 +1,7 @@
 export const requestMutation = `
-mutation($input: DayOffRequestInput!) {
+mutation($input: DayOffRequestInput!, $userId: ID!) {
   daysOff {
-    requestDayOff(input: $input)
+    requestDayOff(input: $input, userId: $userId)
    }
  }`;
 

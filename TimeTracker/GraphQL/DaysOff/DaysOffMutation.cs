@@ -22,6 +22,7 @@ public class DaysOffMutation : ObjectGraphType
         Field<NonNullGraphType<BooleanGraphType>>("RequestDayOff")
             .Description("Creates a request for a day off.")
             .Argument<NonNullGraphType<DayOffRequestInputType>>("input")
+            .Argument<NonNullGraphType<IdGraphType>>("userId")
             .Resolve(context => ResolveRequest(context));
 
         Field<NonNullGraphType<BooleanGraphType>>("DeleteDayOffRequest")
@@ -43,23 +44,24 @@ public class DaysOffMutation : ObjectGraphType
     private bool ResolveRequest(IResolveFieldContext context)
     {
         var input = context.GetArgument<DayOffRequestInput>("input");
+        var userId = context.GetArgument<Guid>("userId");
         var currentUser = context.RequestServices!.GetRequiredService<UserContext>().User!;
 
         var request = new DayOffRequest()
         {
             Id = Guid.NewGuid(),
-            UserId = currentUser.Id,
+            UserId = userId,
             StartDate = DateTime.Parse(input.StartDate),
             FinishDate = DateTime.Parse(input.FinishDate),
-            Reason = DayOffReason.Vacation
+            Reason = input.Reason
         };
 
-        var daysOffCount = userProvider.GetDaysOffCount(currentUser.Id) - (request.FinishDate - request.StartDate).Days;
+        var daysOffCount = userProvider.GetDaysOffCount(userId) - (request.FinishDate - request.StartDate).Days;
 
         daysOffProvider.CreateRequest(request);
-        userProvider.UpdateDaysOffCount(currentUser.Id, daysOffCount);
+        userProvider.UpdateDaysOffCount(userId, daysOffCount);
 
-        if (currentUser.ApproverIds.Any())
+        if (currentUser.ApproverIds.Any() && request.Reason == DayOffReason.Vacation)
             daysOffProvider.CreateApprovals(currentUser.ApproverIds, request.Id);
 
         return true;

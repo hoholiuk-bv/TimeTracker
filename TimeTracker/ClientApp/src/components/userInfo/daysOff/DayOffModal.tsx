@@ -1,40 +1,40 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { FormLabel, Row, Col, Button } from 'react-bootstrap';
-import { Formik, Form, Field } from 'formik';
-import { FormGroup } from '../common/elements/FormGroup';
-import { DayOffRequestInput, DayOffRequestReason } from '../../behavior/daysOff/types';
-import { useDispatch, useSelector } from 'react-redux';
-import { requestDayOff } from '../../behavior/daysOff/actions';
-import { required } from '../../behavior/validators';
-import { ValidationMessage } from '../common/validation/ValidationMessage';
-import { RootState } from '../../behavior/store';
+import { Formik, Field } from 'formik';
+import { Form as FormikForm } from 'formik';
+import Form from 'react-bootstrap/Form';
+import { FormGroup } from '../../common/elements/FormGroup';
+import { DayOffRequestInput, DayOffRequestReason } from '../../../behavior/daysOff/types';
+import { useDispatch } from 'react-redux';
+import { requestDayOff } from '../../../behavior/daysOff/actions';
+import { required } from '../../../behavior/validators';
+import { ValidationMessage } from '../../common/validation/ValidationMessage';
 
 type Props = {
   show: boolean;
   handleClose: () => void;
+  userId: string;
 }
 
-export const NewRequestModal = ({ show, handleClose }: Props) => {
-  const currentUserId = useSelector((state: RootState) => state.profile.userInfo?.id);
+export const DayOffModal = ({ show, handleClose, userId }: Props) => {
+
   const initialValues: DayOffRequestInput = {
     startDate: '',
     finishDate: '',
-    reason: DayOffRequestReason.Vacation,
+    reason: DayOffRequestReason.Absence,
   };
+
   const dispatch = useDispatch();
-  const onSubmit = (values: DayOffRequestInput) => {
-    if (currentUserId)
-      dispatch(requestDayOff(values, currentUserId));
-  };
+  const onSubmit = (values: DayOffRequestInput) => { dispatch(requestDayOff(values, userId)); };
 
   return (
     <>
       <Modal show={show} onHide={handleClose} backdrop="static">
         <Formik onSubmit={onSubmit} initialValues={initialValues}>
-          <Form>
+          <FormikForm>
             <Modal.Header closeButton>
-              <Modal.Title>Request a day off</Modal.Title>
+              <Modal.Title>Create a day off</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Row>
@@ -55,12 +55,23 @@ export const NewRequestModal = ({ show, handleClose }: Props) => {
                   </FormGroup>
                 </Col>
               </Row>
+              <Row>
+                <Col>
+                  <FormGroup>
+                    <FormLabel>Reason</FormLabel>
+                    <Field as={Form.Select} name="reason">
+                      <option value={DayOffRequestReason.Absence}>Absence</option>
+                      <option value={DayOffRequestReason.SickLeave}>Sick leave</option>
+                    </Field>
+                  </FormGroup>
+                </Col>
+              </Row>
             </Modal.Body>
             <Modal.Footer>
               <Button type='button' variant='secondary' onClick={handleClose}>Close</Button>
               <Button type='submit' onClick={handleClose}>Save</Button>
             </Modal.Footer>
-          </Form>
+          </FormikForm>
         </Formik>
       </Modal>
     </>

@@ -14,7 +14,7 @@
         {
             Vacation,
             SickLeave,
-            DayOff
+            Absence
         }
 
         public enum DayOffApprovalStatus
