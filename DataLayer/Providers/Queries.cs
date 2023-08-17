@@ -193,7 +193,7 @@ namespace DataLayer.Providers
 
             public const string GetUnfinishedWorktimeRecordByUserId = @"
                 SELECT * FROM WorktimeRecords 
-                WHERE userId = @UserId AND finishDate IS NULL
+                WHERE userId = @UserId AND FinishDate IS NULL
             ";
 
             public static string GetWorktimeRecords(Sorting? sorting, WorktimeFilter? filter, Paging? paging)
@@ -230,7 +230,7 @@ namespace DataLayer.Providers
             ";
 
             public static string GetRecordsCount(WorktimeFilter? filter) => $@"
-                SELECT COUNT(*)
+                SELECT COUNT(*) 
                 FROM WorktimeRecords
                 {AddFiltering(filter)}
             ";
@@ -244,6 +244,7 @@ namespace DataLayer.Providers
                     WHERE UserId = '{filter.UserId}'
                     AND YEAR(StartDate) = {filter.Year}
                     AND MONTH(StartDate) = {filter.Month}
+                    AND FinishDate IS NOT NULL
                 ";
             }
         }

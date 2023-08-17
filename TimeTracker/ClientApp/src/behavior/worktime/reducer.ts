@@ -118,7 +118,7 @@ function onWorktimeFinishDateUpdated(state: WorktimeState, action: WorktimeFinis
     updatedRecords = [...state.records, worktimeRecord];
   }
 
-  return { ...state, records: updatedRecords };
+  return { ...state, records: updatedRecords, recordCount: state.recordCount + 1 };
 }
 
 function onWorktimeRecordsSortingChanged(state: WorktimeState, action: WorktimeRecordsSortingChangedAction) {
