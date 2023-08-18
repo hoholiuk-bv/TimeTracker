@@ -151,7 +151,7 @@ namespace DataLayer.Providers
 	                                                ,[Users].Surname as EmployeeSurname
  	                                                ,DayOffRequestApprovals.Status
                                                     ,DayOffRequestApprovals.DeclineReason
-                                                    FROM [TimeTracker].[dbo].[DayOffRequests]
+                                                    FROM DayOffRequests
                                                     JOIN Users on Users.Id = DayOffRequests.UserId 
                                                     JOIN DayOffRequestApprovals on DayOffRequestApprovals.RequestId = DayOffRequests.Id 
 													WHERE DayOffRequestApprovals.ApproverId = @ApproverId

@@ -5,12 +5,11 @@ import { NewRequestModal } from './NewRequestModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeDaysOffListFilter, changeDaysOffListPaging, requestDaysOffCount, requestDaysOffList } from '../../behavior/daysOff/actions';
 import { RootState } from '../../behavior/store';
-import { Pagination } from '../common/elements/Pagination';
 
 export const DaysOffPage = () => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-  const { list, requestsCount, sorting, paging, filter, daysOffCount } = useSelector((state: RootState) => state.daysOff);
+  const { list, sorting, paging, filter, daysOffCount } = useSelector((state: RootState) => state.daysOff);
   const currentUserId = useSelector((state: RootState) => state.profile.userInfo?.id);
 
   useEffect(() => {
@@ -37,11 +36,6 @@ export const DaysOffPage = () => {
       <NewRequestModal show={show} handleClose={() => setShow(false)} />
       <span className="ms-3"><strong>Days off count: {daysOffCount}</strong></span>
       <DayOffList requests={list} sorting={sorting} />
-      {requestsCount > 0 && (
-        <div className="d-flex justify-content-end">
-          <Pagination paging={paging} pagingUpdateAction={changeDaysOffListPaging} itemCount={requestsCount} />
-        </div>
-      )}
     </>
   );
 };

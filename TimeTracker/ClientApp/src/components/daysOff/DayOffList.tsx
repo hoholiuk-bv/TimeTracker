@@ -1,11 +1,13 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SortingInput, SortingOrder } from '../../behavior/common/types';
-import { changeDaysOffListSorting } from '../../behavior/daysOff/actions';
+import { changeDaysOffListPaging, changeDaysOffListSorting } from '../../behavior/daysOff/actions';
 import { DayOffItem } from './DayOffItem';
 import { SortIcon } from '../common/elements/SortIcon';
 import { DayOffRequest } from '../../behavior/daysOff/types';
 import { Alert } from 'react-bootstrap';
+import { Pagination } from '../common/elements/Pagination';
+import { RootState } from '../../behavior/store';
 
 type Props = {
   requests: DayOffRequest[];
@@ -14,8 +16,9 @@ type Props = {
 
 export const DayOffList = ({ requests, sorting }: Props) => {
   const defaultSortingField = 'StartDate';
-
+  const { requestsCount, paging } = useSelector((state: RootState) => state.daysOff);
   const dispatch = useDispatch();
+
   const handleSortingColumnClick = (fieldName: string) => {
     let newSortingField = fieldName;
     let newSortingOrder = sorting.sortingOrder;
@@ -67,6 +70,11 @@ export const DayOffList = ({ requests, sorting }: Props) => {
             />)}
         </tbody>
       </table>
+      {requestsCount > paging.pageSize && (
+        <div className="d-flex justify-content-end mb-4">
+          <Pagination paging={paging} pagingUpdateAction={changeDaysOffListPaging} itemCount={requestsCount} />
+        </div>
+      )}
     </>
   );
 };

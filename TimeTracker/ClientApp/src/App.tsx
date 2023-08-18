@@ -24,7 +24,7 @@ const App = () => {
         <Routes>
           <Route index path={routes.login} element={<LoginPage />} />
           <Route element={<Layout />}>
-            <Route path="/" element={<Navigate to={routes.users.list} />} />
+            <Route path="/" element={<Navigate to={routes.worktime} />} />
             <Route
               path={routes.users.creation}
               element={
