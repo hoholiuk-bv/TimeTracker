@@ -21,6 +21,7 @@ using TimeTracker.GraphQL.Approvals.Types;
 using TimeTracker.GraphQL.Approvals;
 using TimeTracker.GraphQL.Calendar;
 using TimeTracker.GraphQL.Calendar.Types;
+using TimeTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -115,6 +116,7 @@ builder.Services.AddTransient<CalendarRuleType>();
 builder.Services.AddTransient<CalendarRuleInputType>();
 builder.Services.AddGraphQL(a => a.AddSchema<TimeTrackerSchema>().AddSystemTextJson().AddAuthorizationRule());
 
+builder.Services.AddHostedService<DailyActionHostedService>();
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
 
