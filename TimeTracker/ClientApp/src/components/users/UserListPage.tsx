@@ -28,9 +28,11 @@ export const UserListPage = () => {
       {list.length > 0 && (
         <>
           <UserTable userList={list} sorting={sorting} />
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between mb-4">
             <span><strong>Total records: {totalUsersCount}</strong></span>
-            <Pagination paging={paging} pagingUpdateAction={changeUserListPaging} itemCount={totalUsersCount} />
+            {totalUsersCount > paging.pageSize && (
+              <Pagination paging={paging} pagingUpdateAction={changeUserListPaging} itemCount={totalUsersCount} />
+            )}
           </div>
         </>
       )}

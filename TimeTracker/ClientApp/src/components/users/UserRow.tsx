@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileLines, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../behavior/routing';
+import { Button } from 'react-bootstrap';
 
 type Props = {
   user: User;
@@ -32,8 +33,10 @@ export const UserRow = ({ user }: Props) => {
       <td>
         {formattedEmploymentDate}
       </td>
-      <td className='text-end pe-3'>
-        <FontAwesomeIcon icon={faFileLines} className="details-action" title="Details" onClick={handleUserDetailButtonClick} />
+      <td>
+        <Button variant="Link" className="table-action-button" title="Details" onClick={handleUserDetailButtonClick}>
+          <FontAwesomeIcon icon={faFileLines} />
+        </Button>
       </td>
     </tr>
   );
