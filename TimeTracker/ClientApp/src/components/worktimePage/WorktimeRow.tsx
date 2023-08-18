@@ -3,6 +3,7 @@ import { WorktimeRecord } from '../../behavior/worktime/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileLines } from '@fortawesome/free-solid-svg-icons';
 import { WorktimeEditingModal } from './WorktimeEditingModal';
+import { Button } from 'react-bootstrap';
 
 type Props = {
   worktimeRecord: WorktimeRecord;
@@ -39,8 +40,10 @@ export const WorktimeRow = ({ worktimeRecord }: Props) => {
         <td>
           {worktimeRecord.lastEditorName}
         </td>
-        <td className='text-end pe-3'>
-          <FontAwesomeIcon icon={faFileLines} onClick={() => setShow(true)} className="details-action" title="Edit" />
+        <td>
+          <Button variant="Link" className="table-action-button" title="Edit" onClick={() => setShow(true)}>
+            <FontAwesomeIcon icon={faFileLines} />
+          </Button>
         </td>
       </tr>
       <WorktimeEditingModal worktimeRecord={worktimeRecord} show={show} handleClose={() => setShow(false)}/>
