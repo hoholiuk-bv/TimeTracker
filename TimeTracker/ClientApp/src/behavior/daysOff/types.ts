@@ -3,13 +3,13 @@ import { DayOffApprovalStatus } from '../common/types';
 export type DayOffRequestInput = {
   startDate: string;
   finishDate: string;
-  reason: DayOffRequestType;
+  reason: DayOffRequestReason;
 }
 
-export enum DayOffRequestType {
+export enum DayOffRequestReason {
   Vacation = 'VACATION',
   SickLeave = 'SICK_LEAVE',
-  DayOff = 'DAY_OFF'
+  Absence = 'ABSENCE'
 }
 
 type DayOffApprovalType = {
@@ -26,7 +26,7 @@ export type DayOffRequest = {
   id: string;
   startDate: string;
   finishDate: string;
-  reason: DayOffRequestType;
+  reason: DayOffRequestReason;
   approvals: DayOffApprovalType[];
   isEditable: boolean;
 }

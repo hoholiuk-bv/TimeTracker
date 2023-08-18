@@ -2,7 +2,7 @@ import { PagingInput, SortingInput } from '../common/types';
 import { DayOffRequestInput, DayOffRequest, DayOffRequestFilterInput } from './types';
 
 export const DAY_OFF_REQUESTED = 'DAY_OFF_REQUESTED' as const;
-export const requestDayOff = (input: DayOffRequestInput, userId?: number) => ({
+export const requestDayOff = (input: DayOffRequestInput, userId: string) => ({
   type: DAY_OFF_REQUESTED,
   payload: { input, userId }
 });

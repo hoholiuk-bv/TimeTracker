@@ -58,6 +58,7 @@ export const DayOffList = ({ requests, sorting }: Props) => {
               <SortIcon sortingOrder={sorting.sortingField === 'FinishDate' ? sorting.sortingOrder : null} />
             </th>
             <th>Approvals</th>
+            <th>Reason</th>
             <th></th>
           </tr>
         </thead>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DayOffRequest } from '../../behavior/daysOff/types';
-import { DayOffRequestStatusTitle, getApprovalStatusClass } from '../common/helpers';
+import { DayOffRequestStatusTitle, getApprovalStatusClass, DayOffRequestReasonTitle } from '../common/helpers';
 import { Tooltip } from '../common/elements/Tooltip';
 import { DayOffApprovalStatus } from '../../behavior/common/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +13,7 @@ type Props = {
 }
 
 export const DayOffItem = ({ item }: Props) => {
-  const { startDate, finishDate, approvals, isEditable, id } = item;
+  const { startDate, finishDate, approvals, isEditable, reason, id } = item;
   const [show, setShow] = useState(false);
 
   return (
@@ -39,10 +39,13 @@ export const DayOffItem = ({ item }: Props) => {
           )}
         </td>
         <td>
+          <span>{DayOffRequestReasonTitle[reason]}</span>
+        </td>
+        <td>
           <Button variant='Link' className='table-action-button' onClick={() => setShow(true)}>
             <FontAwesomeIcon icon={faTrashCan} />
           </Button>
-          <DeleteRequestModal show={show} handleClose={() => setShow(false)} requestId={id}/>
+          <DeleteRequestModal show={show} handleClose={() => setShow(false)} requestId={id} />
         </td>
       </tr>
     </>
