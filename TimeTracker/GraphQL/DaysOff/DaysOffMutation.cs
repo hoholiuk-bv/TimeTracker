@@ -33,10 +33,12 @@ public class DaysOffMutation : ObjectGraphType
                     var requestId = context.GetArgument<Guid>("requestId");
                     var currentUser = context.RequestServices!.GetRequiredService<UserContext>().User!;
                     var request = daysOffProvider.GetRequest(requestId);
-                    var daysOffCount = userProvider.GetDaysOffCount(currentUser.Id) + (request.FinishDate - request.StartDate).Days;
+                    var daysOffCount = userProvider.GetDaysOffCount(currentUser.Id) + (request.FinishDate - request.StartDate).Days + 1;
 
-                    userProvider.UpdateDaysOffCount(currentUser.Id, daysOffCount);
                     daysOffProvider.DeleteDayOffRequest(requestId);
+
+                    if (request.Reason == DayOffReason.Vacation)
+                        userProvider.UpdateDaysOffCount(currentUser.Id, daysOffCount);
 
                     return true;
                 });
@@ -56,13 +58,15 @@ public class DaysOffMutation : ObjectGraphType
             Reason = input.Reason
         };
 
-        var daysOffCount = userProvider.GetDaysOffCount(userId) - (request.FinishDate - request.StartDate).Days;
+        var daysOffCount = userProvider.GetDaysOffCount(userId) - (request.FinishDate - request.StartDate).Days - 1;
 
         daysOffProvider.CreateRequest(request);
-        userProvider.UpdateDaysOffCount(userId, daysOffCount);
 
         if (currentUser.ApproverIds.Any() && request.Reason == DayOffReason.Vacation)
+        {
+            userProvider.UpdateDaysOffCount(userId, daysOffCount);
             daysOffProvider.CreateApprovals(currentUser.ApproverIds, request.Id);
+        }
 
         return true;
     }

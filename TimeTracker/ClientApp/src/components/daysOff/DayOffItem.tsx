@@ -26,10 +26,6 @@ export const DayOffItem = ({ item }: Props) => {
           {new Date(finishDate).toLocaleDateString()}
         </td>
         <td>
-          {!approvals.length &&
-            <>
-              <span>No approvals</span>
-            </>}
           {approvals.map(({ approver, status, declineReason }, index) =>
             <div key={index}>
               {approver.name} {approver.surname}: <span className={getApprovalStatusClass(status)}>

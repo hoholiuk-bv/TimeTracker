@@ -7,11 +7,10 @@ import {
 } from './actions';
 
 export type userCreationState = {
-  user: User | null,
+  user?: User | null,
 };
 
 const initialState: userCreationState = {
-  user: null,
 };
 
 export default createReducer(initialState, {
