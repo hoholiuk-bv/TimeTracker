@@ -18,8 +18,8 @@ export const ApprovalsPage = () => {
     <>
       <h1 className="mb-3">Approvals</h1>
       <ApprovalList approvals={list} sorting={sorting} />
-      {approvalsCount > 0 && (
-        <div className="d-flex justify-content-end">
+      {approvalsCount > paging.pageSize && (
+        <div className="d-flex justify-content-end mb-4">
           <Pagination paging={paging} pagingUpdateAction={changeApprovalsListPaging} itemCount={approvalsCount} />
         </div>
       )}

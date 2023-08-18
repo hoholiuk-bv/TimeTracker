@@ -27,7 +27,9 @@ export const WorktimeListSection = ({ userId } : Props) => {
       {recordCount > 0 && (
         <div className="d-flex justify-content-between mb-4">
           <WorktimeStats />
-          <Pagination paging={paging} pagingUpdateAction={changeWorktimeRecordsPaging} itemCount={recordCount} />
+          {recordCount > paging.pageSize && (
+            <Pagination paging={paging} pagingUpdateAction={changeWorktimeRecordsPaging} itemCount={recordCount} />
+          )}
         </div>
       )}
     </>
