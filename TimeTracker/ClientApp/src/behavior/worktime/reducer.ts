@@ -11,6 +11,8 @@ import {
   WORKTIME_RECORD_UPDATED, WorktimeRecordUpdatedAction,
   UNFINISHED_WORKTIME_RECORD_RECEIVED, UnfinishedWorktimeRecordReceivedAction,
   WORKTIME_FINISH_DATE_UPDATED, WorktimeFinishDateUpdatedAction,
+  WORKTIME_RECORD_COUNT_RECEIVED, WorktimeRecordCountReceivedAction,
+  WORKTIME_STATS_RECEIVED, WorktimeStatsReceivedAction,
   WORKTIME_STATS_FILE_URL_RECEIVED, WorktimeStatsFileUrlReceivedAction,
 } from './actions';
 
@@ -47,6 +49,8 @@ const initialState: WorktimeState = {
 export default createReducer(initialState, {
   [WORKTIME_CREATED]: onWorktimeRecordCreated,
   [WORKTIME_RECORDS_RECEIVED]: onWorktimeRecordsReceived,
+  [WORKTIME_RECORD_COUNT_RECEIVED]: onWorktimeRecordCountReceived,
+  [WORKTIME_STATS_RECEIVED]: onWorktimeStatsReceived,
   [WORKTIME_RECORDS_SORTING_CHANGED]: onWorktimeRecordsSortingChanged,
   [WORKTIME_RECORDS_FILTERING_CHANGED]: onWorktimeRecordsFilteringChanged,
   [WORKTIME_RECORDS_PAGING_CHANGED]: onWorktimeRecordsPagingChanged,
@@ -56,56 +60,29 @@ export default createReducer(initialState, {
   [WORKTIME_STATS_FILE_URL_RECEIVED]: onWorktimeStatsFileUrlReceived,
 });
 
-function onUnfinishedWorktimeRecordReceived(state: WorktimeState, action: UnfinishedWorktimeRecordReceivedAction): WorktimeState {
-  const worktime = action.payload.unfinishedWorktimeRecord;
-  return { ...state, worktime };
-}
-
 function onWorktimeRecordCreated(state: WorktimeState, action: WorktimeCreatedAction): WorktimeState {
   const { worktimeRecord } = action.payload;
   return {...state, worktime: worktimeRecord};
 }
 
-function onWorktimeFinishDateUpdated(state: WorktimeState, action: WorktimeFinishDateUpdatedAction): WorktimeState {
-  const { worktimeRecord } = action.payload;
-
-  if(state.records === null)
-    return { ...state, records: [worktimeRecord] };
-
-  const existingRecordIndex = state.records.findIndex(record => record.id === worktimeRecord.id);
-
-  let updatedRecords;
-  if (existingRecordIndex !== -1) {
-    updatedRecords = [...state.records];
-    updatedRecords[existingRecordIndex] = worktimeRecord;
-  } else {
-    updatedRecords = [...state.records, worktimeRecord];
-  }
-
-  return { ...state, records: updatedRecords };
-}
-
 function onWorktimeRecordsReceived(state: WorktimeState, action: WorktimeRecordsReceivedAction): WorktimeState {
-  const { records, recordCount, worktimeStats } = action.payload;
-  return { ...state, records, recordCount, worktimeStats };
+  const { records } = action.payload;
+  return { ...state, records };
 }
 
-function onWorktimeRecordsFilteringChanged(state: WorktimeState, action: WorktimeRecordsFilteringChangedAction) {
-  const { filtering } = action.payload;
-  const daysInMonth = new Date(filtering.year, filtering.month, 0).getDate();
-  const paging = { pageNumber: 1, pageSize: daysInMonth };
-
-  return { ...state, records: null, recordCount: 0, worktimeStats: null, filtering, paging };
+function onWorktimeRecordCountReceived(state: WorktimeState, action: WorktimeRecordCountReceivedAction): WorktimeState {
+  const { recordCount } = action.payload;
+  return { ...state, recordCount };
 }
 
-function onWorktimeRecordsSortingChanged(state: WorktimeState, action: WorktimeRecordsSortingChangedAction) {
-  const { sorting } = action.payload;
-  return { ...state, sorting };
+function onWorktimeStatsReceived(state: WorktimeState, action: WorktimeStatsReceivedAction): WorktimeState {
+  const { worktimeStats } = action.payload;
+  return { ...state, worktimeStats };
 }
 
-function onWorktimeRecordsPagingChanged(state: WorktimeState, action: WorktimeRecordsPagingChangedAction) {
-  const { paging } = action.payload;
-  return { ...state, paging };
+function onUnfinishedWorktimeRecordReceived(state: WorktimeState, action: UnfinishedWorktimeRecordReceivedAction): WorktimeState {
+  const worktime = action.payload.unfinishedWorktimeRecord;
+  return { ...state, worktime };
 }
 
 function onWorktimeRecordUpdated(state: WorktimeState, action: WorktimeRecordUpdatedAction) {
@@ -125,6 +102,43 @@ function onWorktimeRecordUpdated(state: WorktimeState, action: WorktimeRecordUpd
     : [...state.records, updatedWorktimeRecord];
 
   return { ...state, records: updatedRecords };
+}
+
+function onWorktimeFinishDateUpdated(state: WorktimeState, action: WorktimeFinishDateUpdatedAction): WorktimeState {
+  const { worktimeRecord } = action.payload;
+
+  if(state.records === null)
+    return { ...state, records: [worktimeRecord] };
+
+  const existingRecordIndex = state.records.findIndex(record => record.id === worktimeRecord.id);
+
+  let updatedRecords;
+  if (existingRecordIndex !== -1) {
+    updatedRecords = [...state.records];
+    updatedRecords[existingRecordIndex] = worktimeRecord;
+  } else {
+    updatedRecords = [...state.records, worktimeRecord];
+  }
+
+  return { ...state, records: updatedRecords, recordCount: state.recordCount + 1 };
+}
+
+function onWorktimeRecordsSortingChanged(state: WorktimeState, action: WorktimeRecordsSortingChangedAction) {
+  const { sorting } = action.payload;
+  return { ...state, sorting };
+}
+
+function onWorktimeRecordsFilteringChanged(state: WorktimeState, action: WorktimeRecordsFilteringChangedAction) {
+  const { filtering } = action.payload;
+  const daysInMonth = new Date(filtering.year, filtering.month, 0).getDate();
+  const paging = { pageNumber: 1, pageSize: daysInMonth };
+
+  return { ...state, records: null, recordCount: 0, worktimeStats: null, filtering, paging };
+}
+
+function onWorktimeRecordsPagingChanged(state: WorktimeState, action: WorktimeRecordsPagingChangedAction) {
+  const { paging } = action.payload;
+  return { ...state, paging };
 }
 
 function onWorktimeStatsFileUrlReceived(state: WorktimeState, action: WorktimeStatsFileUrlReceivedAction): WorktimeState {

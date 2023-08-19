@@ -24,7 +24,7 @@ export const LoginPage = () => {
     return null;
 
   if (authenticated)
-    return (<Navigate to={routes.users.list} />);
+    return (<Navigate to={routes.worktime} />);
 
   return (
     <>

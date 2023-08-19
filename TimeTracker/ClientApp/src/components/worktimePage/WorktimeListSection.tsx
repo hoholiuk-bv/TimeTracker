@@ -2,9 +2,14 @@ import React, { useEffect } from 'react';
 import { RootState } from '../../behavior/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { WorktimeTable } from './WorktimeTable';
-import { requestWorktimeRecords } from '../../behavior/worktime/actions';
+import {
+  changeWorktimeRecordsFiltering,
+  changeWorktimeRecordsPaging,
+  requestWorktimeRecordCount,
+  requestWorktimeRecords,
+  requestWorktimeStats
+} from '../../behavior/worktime/actions';
 import { WorktimeFilter } from './WorktimeFilter';
-import { changeWorktimeRecordsPaging } from '../../behavior/worktime/actions';
 import { Pagination } from '../common/elements/Pagination';
 import { WorktimeStats } from './WorktimeStats';
 
@@ -17,12 +22,25 @@ export const WorktimeListSection = ({ userId } : Props) => {
   const { sorting, filtering, paging, recordCount } = useSelector((state: RootState) => state.worktime);
 
   useEffect(() => {
-    dispatch(requestWorktimeRecords(sorting, { ...filtering, userId: userId }, paging));
+    if (userId !== '')
+      dispatch(changeWorktimeRecordsFiltering({ ...filtering, userId: userId }));
+  }, [dispatch, userId]);
+
+  useEffect(() => {
+    if (filtering.userId !== '')
+      dispatch(requestWorktimeRecords(sorting, filtering, paging));
   }, [dispatch, sorting, filtering, paging]);
+
+  useEffect(() => {
+    if (filtering.userId !== '') {
+      dispatch(requestWorktimeRecordCount(filtering));
+      dispatch(requestWorktimeStats(filtering));
+    }
+  }, [dispatch, filtering]);
 
   return (
     <>
-      <WorktimeFilter />
+      <WorktimeFilter userId={userId} />
       <WorktimeTable />
       {recordCount > 0 && (
         <div className="d-flex justify-content-between mb-4">
