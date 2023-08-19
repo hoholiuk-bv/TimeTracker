@@ -134,6 +134,24 @@ app.UseMiddleware<UserContextMiddleware>();
 app.UseAuthorization();
 app.UseGraphQL();
 
+app.MapGet("/download/{fileName}", async (UserContext userContext, HttpContext context) =>
+{
+    string fileName = context.Request.RouteValues["fileName"] as string;
+    string filePath = Path.Combine(Path.GetTempPath(), fileName);
+
+    //var userContext = context.RequestServices!.GetRequiredService<UserContext>();
+
+    if (System.IO.File.Exists(filePath))
+    {
+        context.Response.Headers.Add("Content-Disposition", $"attachment; filename={fileName}");
+        await context.Response.SendFileAsync(filePath);
+    }
+    else
+    {
+        context.Response.StatusCode = 404;
+    }
+});
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");

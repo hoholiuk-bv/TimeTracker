@@ -8,6 +8,7 @@ import {
   WORKTIME_RECORDS_REQUESTED, worktimeRecordsReceived,
   WORKTIME_FINISH_DATE_UPDATE, worktimeFinishDateUpdated,
   UNFINISHED_WORKTIME_RECORD_REQUESTED, receiveUnfinishedWorktimeRecord,
+  WORKTIME_STATS_FILE_URL_REQUESTED, worktimeStatsFileUrlReceived,
 } from './actions';
 import {
   updateWorktimeRecordMutation,
@@ -15,6 +16,7 @@ import {
   getWorktimeRecordsQuery,
   updateWorktimeFinishDateMutation,
   worktimeCreationMutation,
+  getWorktimeStatsFileUrlQuery,
 } from './queries';
 
 const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
@@ -58,7 +60,15 @@ const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
     ))
   );
 
-  return merge(worktimeCreation$, updateWorktimeRecord$, requestWorktimeRecords$, updateWorktimeFinishDate$, requestUnfinishedWorktimeRecord$);
+  const requestWorktimeStatsFileUrl$ = actions$.pipe(
+    ofType(WORKTIME_STATS_FILE_URL_REQUESTED),
+    map(action => action.payload),
+    mergeMap(({ filter }) => sendRequest(getWorktimeStatsFileUrlQuery, {filter: filter}).pipe(
+      map(({worktime}) => worktimeStatsFileUrlReceived(worktime.urlForDownloadingWorktimeStats))
+    ))
+  );
+  
+  return merge(worktimeCreation$, updateWorktimeRecord$, requestWorktimeRecords$, updateWorktimeFinishDate$, requestUnfinishedWorktimeRecord$, requestWorktimeStatsFileUrl$);
 };
 
 export default epic;

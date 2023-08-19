@@ -6,11 +6,17 @@ import { ValidationMessage } from '../common/validation/ValidationMessage';
 import { RootState } from '../../behavior/store';
 import { WorktimeFilterType, WorktimeFilterTypeInput } from '../../behavior/worktime/types';
 import { required, worktimeYear } from '../../behavior/validators';
-import { changeWorktimeRecordsFiltering } from '../../behavior/worktime/actions';
+import { changeWorktimeRecordsFiltering, requestWorktimeStatsFileUrl } from '../../behavior/worktime/actions';
 
 export const WorktimeFilter = () => {
   const dispatch = useDispatch();
   const { filtering } = useSelector((state: RootState) => state.worktime);
+
+  /////////////////////////////////// TEMP
+
+  const user = useSelector((state: RootState) => state.profile.userInfo);
+
+  /////////////////////////////////// TEMP
 
   const initialValues: WorktimeFilterTypeInput = {
     userId: filtering.userId,
@@ -28,6 +34,11 @@ export const WorktimeFilter = () => {
     dispatch(changeWorktimeRecordsFiltering(newFiltering));
   };
 
+  const exportButtonClick = () => {
+    if(user)
+      dispatch(requestWorktimeStatsFileUrl({...filtering, userId: user.id}));
+  };
+  
   return (
     <div>
       <Formik onSubmit={onSubmit} initialValues={initialValues}>
@@ -47,8 +58,9 @@ export const WorktimeFilter = () => {
                 ))}
               </Field>
             </Col>
-            <Col className="d-flex align-items-end">
+            <Col className="d-flex align-items-end justify-content-between">
               <button className="btn btn-primary" type="submit">Apply</button>
+              <button onClick={exportButtonClick} className="btn btn-primary" type="button">Export as xlsx</button>
             </Col>
           </Row>
           <Row className="mb-3">

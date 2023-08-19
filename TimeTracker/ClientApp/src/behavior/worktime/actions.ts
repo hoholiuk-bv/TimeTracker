@@ -80,6 +80,18 @@ export const receiveUnfinishedWorktimeRecord = (unfinishedWorktimeRecord: Workti
   payload: { unfinishedWorktimeRecord },
 });
 
+export const WORKTIME_STATS_FILE_URL_REQUESTED = 'WORKTIME_STATS_FILE_URL_REQUESTED' as const;
+export const requestWorktimeStatsFileUrl = (filter: WorktimeFilterType) => ({
+  type: WORKTIME_STATS_FILE_URL_REQUESTED,
+  payload: { filter },
+});
+
+export const WORKTIME_STATS_FILE_URL_RECEIVED = 'WORKTIME_STATS_FILE_URL_RECEIVED' as const;
+export const worktimeStatsFileUrlReceived = (urlForDownloadingWorktimeStats: string) => ({
+  type: WORKTIME_STATS_FILE_URL_RECEIVED,
+  payload: { urlForDownloadingWorktimeStats },
+});
+
 export type WorktimeCreationAction = ReturnType<typeof worktimeCreation>;
 export type WorktimeCreatedAction = ReturnType<typeof worktimeCreated>;
 export type WorktimeFinishDateUpdatedAction = ReturnType<typeof worktimeFinishDateUpdated>;
@@ -89,6 +101,7 @@ export type WorktimeRecordsReceivedAction = ReturnType<typeof worktimeRecordsRec
 export type WorktimeRecordsSortingChangedAction = ReturnType<typeof changeWorktimeRecordsSorting>;
 export type WorktimeRecordsFilteringChangedAction = ReturnType<typeof changeWorktimeRecordsFiltering>;
 export type WorktimeRecordsPagingChangedAction = ReturnType<typeof changeWorktimeRecordsPaging>;
+export type WorktimeStatsFileUrlReceivedAction = ReturnType<typeof worktimeStatsFileUrlReceived>;
 
 export type WorktimeActions = ReturnType<
     | typeof worktimeCreation
