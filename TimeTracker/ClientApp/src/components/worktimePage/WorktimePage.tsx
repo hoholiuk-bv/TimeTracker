@@ -2,7 +2,7 @@
 import { RootState } from '../../behavior/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { ListPage } from './ListPage';
-import { requestUnfinishedWorktimeRecord, requestWorktimeRecords } from '../../behavior/worktime/actions';
+import { requestUnfinishedWorktimeRecord, changeWorktimeRecordsFiltering } from '../../behavior/worktime/actions';
 import { Button } from 'react-bootstrap';
 import { WorkCalendarModal } from '../calendar/WorkCalendarModal';
 import { WorktimeListSection } from './WorktimeListSection';
@@ -11,18 +11,15 @@ export const WorktimePage = () => {
   const dispatch = useDispatch();
   const worktime = useSelector((state: RootState)=> state.worktime.worktime);
   const user = useSelector((state: RootState) => state.profile.userInfo);
-  const { sorting, filtering, paging } = useSelector((state: RootState) => state.worktime);
+  const { filtering } = useSelector((state: RootState) => state.worktime);
   const [showCalendarModal, setShowCalendarModal] = useState(false);
 
   useEffect(() => {
-    if(user !== null)
+    if (user !== null) {
       dispatch(requestUnfinishedWorktimeRecord(user.id));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (user !== null)
-      dispatch(requestWorktimeRecords(sorting, { ...filtering, userId: user.id }, paging));
-  }, [dispatch, user, sorting, filtering, paging]);
+      dispatch(changeWorktimeRecordsFiltering({ ...filtering, userId: user.id }));
+    }
+  }, [dispatch, user]);
 
   if (user === null)
     return null;

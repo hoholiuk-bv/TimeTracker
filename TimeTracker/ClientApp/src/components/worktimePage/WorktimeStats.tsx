@@ -9,7 +9,7 @@ export const WorktimeStats = () => {
     return null;
   
   const convertDecimalTime = (decimalTime: number): string => {
-    const wholePart: number = Math.round(decimalTime);
+    const wholePart: number = Math.floor(decimalTime);
     const fractionalPart: number = Math.round((decimalTime % 1) * 100);
     const hours: string = wholePart > 0 ? `${wholePart} hour(s)` : '';
     const minutes: string = fractionalPart > 0 ? `${fractionalPart} minute(s)` : '';
