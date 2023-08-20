@@ -9,7 +9,7 @@ type Props = {
     worktime: WorktimeRecord | null;
 };
 
-export const ListPage = ({ users, worktime }: Props) => {
+export const PartTimerPage = ({ users, worktime }: Props) => {
     if (!users) {
         return null;
     }
@@ -21,7 +21,7 @@ export const ListPage = ({ users, worktime }: Props) => {
                 <div className="row">
                     <div className="col">
                         <div className="timer">
-                            <table className="table">
+                            <table>
                                 <tbody className="timer-container">
                                     <Timer user={users} worktime={worktime}/>
                                 </tbody>

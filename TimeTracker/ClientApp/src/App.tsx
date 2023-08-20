@@ -16,6 +16,7 @@ import { UserDetailsPage } from './components/userInfo/details/UserDetailsPage';
 import { UserDaysOffPage } from './components/userInfo/daysOff/UserDaysOffPage';
 import { CalendarSettingsPage } from './components/calendarSettings';
 import { UserWorktimePage } from './components/userInfo/worktime/UserWorktimePage';
+import {PageForFullTimer} from './components/common/PageForFullTimer';
 
 const App = () => {
   return (
@@ -91,9 +92,9 @@ const App = () => {
               index
               path={routes.worktime}
               element={
-                <Page>
+                <PageForFullTimer worktimePermission={[PermissionType.UseWorktimeTimer]}>
                   <WorktimePage />
-                </Page>
+                </PageForFullTimer>
               }
             />
             <Route

@@ -45,13 +45,9 @@ export const Timer = ({user, worktime}: Props) => {
         if (isRunning && timer) {
             clearInterval(timer);
             const remainingTime = seconds + minutes * 60 + hours * 3600;
-            localStorage.setItem(timerKey, JSON.stringify({isRunning, startTime: Date.now(), remainingTime}));
         }
     };
-    useEffect(() => {
-        localStorage.setItem('seconds', seconds.toString());
-        localStorage.setItem('minutes', minutes.toString());
-    }, [seconds, minutes]);
+
     useEffect(() => {
         if (isRunning && !timer) {
             timer = setInterval(() => {
@@ -135,38 +131,30 @@ export const Timer = ({user, worktime}: Props) => {
         }
     });
 
-
-    useEffect(() => {
-        localStorage.setItem(timerKey, JSON.stringify({isRunning, startTime: Date.now()}));
-    }, [isRunning]);
-
-
-
+    
 
     return (
         <div className="container">
             <Formik onSubmit={toggleTimer} initialValues={initialValues}>
                 <Form>
-                    <div className="row justify-content-center mt-5">
-                        <div className="col-md-4 text-center border rounded p-4">
-                            {/*<h1 className="mb-4">
-                                {hours < 10 ? '0' + hours : hours}:{minutes < 10 ? '0' + minutes : minutes}:{seconds < 10 ? '0' + seconds : seconds}
-                            </h1>*/}
-                            <button className="btn btn-primary" type="submit">
+                    <div>
+                        <div className="start-button">
+                            <button className="btn btn-primary fixed-size-button" type="submit">
                                 {buttonText}
                             </button>
-                            {endMessage && (
-                                <div className='session-start-message'>
-                                    {(worktime?.startDate) && (
-                                        <div className={'alert alert-success text-white rounded mb-0 mt-4'}>
-                                            <p className="m-0 d-flex justify-content-center">
-                                                session start
-                                                at {worktime?.startDate ? new Date(worktime.startDate).toLocaleTimeString() : ''}
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                        </div>
+                        <div className='start-message'>
+                        {endMessage &&
+                            <div className='session-start-message'>{(worktime?.startDate) &&
+                                <div
+                                    className={'alert alert-success text-white rounded d-flex justify-content-between align-items-center'}>
+                                    <p className="m-0">
+                                        session start
+                                        at {worktime?.startDate ? new Date(worktime.startDate).toLocaleTimeString() : ''}
+                                    </p>
+                                </div>}
+                            </div>
+                        }
                         </div>
                     </div>
                 </Form>
