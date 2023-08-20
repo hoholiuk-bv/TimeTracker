@@ -3,9 +3,9 @@ import {useDispatch} from 'react-redux';
 import {WorktimeRecord, WorktimeInput} from '../../behavior/worktime/types';
 import {Form, Formik} from 'formik';
 import {
-    receiveUnfinishedWorktimeRecord,
+    unfinishedWorktimeRecordReceived,
     requestUnfinishedWorktimeRecord,
-    updateWorktimeFinishDate,
+    requestWorktimeFinishDateUpdate,
     worktimeCreation
 } from '../../behavior/worktime/actions';
 import {UserInfo} from '../../behavior/profile/types';
@@ -90,7 +90,7 @@ export const Timer = ({user, worktime}: Props) => {
             // clearInterval(timer!);
             setIsRunning(false);
             setButtonText('Start');
-            dispatch(updateWorktimeFinishDate(user.id));
+            dispatch(requestWorktimeFinishDateUpdate(user.id));
             setStartDate(null);
             setIsStopped(true);
             setSeconds(0);

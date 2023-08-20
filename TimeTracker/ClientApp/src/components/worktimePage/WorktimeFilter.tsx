@@ -8,19 +8,23 @@ import { WorktimeFilterType, WorktimeFilterTypeInput } from '../../behavior/work
 import { required, worktimeYear } from '../../behavior/validators';
 import { changeWorktimeRecordsFiltering } from '../../behavior/worktime/actions';
 
-export const WorktimeFilter = () => {
+type Props = {
+  userId: string;
+}
+
+export const WorktimeFilter = ({ userId } : Props) => {
   const dispatch = useDispatch();
   const { filtering } = useSelector((state: RootState) => state.worktime);
 
   const initialValues: WorktimeFilterTypeInput = {
-    userId: filtering.userId,
+    userId: userId,
     year: filtering.year,
     month: (filtering.month - 1).toString(),
   };
 
   const onSubmit = (values: WorktimeFilterTypeInput) => {
     const newFiltering: WorktimeFilterType = {
-      userId: values.userId,
+      userId: userId,
       year: values.year,
       month: parseInt(values.month) + 1,
     };
