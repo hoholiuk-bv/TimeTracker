@@ -116,17 +116,19 @@ namespace DataLayer.Providers
 
             public const string UpdateDaysOffCount = @"UPDATE Users 
                                                        SET DaysOffCount = @DaysOffCount WHERE Id = @Id;";
+
+            public const string GetAllFullTimerIds = @"SELECT Id FROM Users WHERE EmploymentType = '0'";
         }
 
         public static class DaysOff
         {
             public const string Create = "insert into DayOffRequests values(@Id, @UserId, @StartDate, @FinishDate, @Reason)";
 
-            public static string GetRequests(DayOffRequestFilter filter, Sorting sorting, Paging paging) =>
+            public static string GetRequests(DayOffRequestFilter filter, Sorting? sorting, Paging? paging) =>
                 $@"SELECT * FROM DayOffRequests 
                 WHERE UserId='{filter.UserId}'
-                {AddSorting(sorting)} 
-                {AddPaging(paging)}";
+                {(sorting != null ? AddSorting(sorting) : string.Empty)} 
+                {(paging != null ? AddPaging(paging) : string.Empty)}";
 
             public static string GetActiveRequests =
                 $@"SELECT * FROM DayOffRequests WHERE StartDate > @StartDate";
@@ -187,6 +189,13 @@ namespace DataLayer.Providers
                 VALUES (@Id, @UserId, @StartDate, @FinishDate, @LastEditorId)
             ";
 
+            public static string CreateWorktimeRecords(IEnumerable<Entities.Worktime> worktimeRecords)
+            {
+                return $@"INSERT INTO WorktimeRecords 
+                   VALUES {string.Join(',',
+                worktimeRecords.Select(item => $"('{item.Id}','{item.UserId}','{item.StartDate}','{item.FinishDate}', NULL)"))}";
+            }
+
             public const string GetWorktimeRecordById = @"
                 SELECT * FROM WorktimeRecords WHERE Id = @Id
             ";
@@ -246,6 +255,7 @@ namespace DataLayer.Providers
                     AND MONTH(StartDate) = {filter.Month}
                 ";
             }
+
         }
 
         public static class CalendarRules

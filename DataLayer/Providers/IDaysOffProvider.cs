@@ -8,7 +8,7 @@ public interface IDaysOffProvider
 {
     void CreateRequest(DayOffRequest dayOffRequest);
 
-    List<DayOffRequest> GetRequests(DayOffRequestFilter filter, Sorting sorting, Paging paging);
+    List<DayOffRequest> GetRequests(DayOffRequestFilter filter, Sorting? sorting = null, Paging? paging = null);
 
     List<DayOffRequest> GetActiveRequests(DayOffRequestFilter filter);
 

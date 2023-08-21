@@ -46,5 +46,8 @@ namespace DataLayer.Providers
 
         public void UpdateDaysOffCount(Guid userId, int daysOffCount)
             => Execute(Queries.Users.UpdateDaysOffCount, new { Id = userId, DaysOffCount = daysOffCount });
+
+        public List<Guid> GetAllFullTimerIds()
+            => Query<Guid>(Queries.Users.GetAllFullTimerIds);
     }
 }

@@ -19,7 +19,7 @@ public class DaysOffProvider : Provider, IDaysOffProvider
     public List<DayOffRequestApprover> GetApprovers(IEnumerable<Guid> approverIds)
         => Query<DayOffRequestApprover>(DaysOff.GetApproversByIdList, new { ApproverIds = approverIds });
 
-    public List<DayOffRequest> GetRequests(DayOffRequestFilter filter, Sorting sorting, Paging paging)
+    public List<DayOffRequest> GetRequests(DayOffRequestFilter filter, Sorting? sorting = null, Paging? paging = null)
         => Query<DayOffRequest>(DaysOff.GetRequests(filter, sorting, paging));
 
     public List<DayOffRequest> GetActiveRequests(DayOffRequestFilter filter)
