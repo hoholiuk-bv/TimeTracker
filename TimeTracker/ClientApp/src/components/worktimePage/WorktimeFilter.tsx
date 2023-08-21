@@ -6,7 +6,9 @@ import { ValidationMessage } from '../common/validation/ValidationMessage';
 import { RootState } from '../../behavior/store';
 import { WorktimeFilterType, WorktimeFilterTypeInput } from '../../behavior/worktime/types';
 import { required, worktimeYear } from '../../behavior/validators';
-import { changeWorktimeRecordsFiltering } from '../../behavior/worktime/actions';
+import { changeWorktimeRecordsFiltering, requestWorktimeStatsFileUrl } from '../../behavior/worktime/actions';
+import { useLocation } from 'react-router-dom';
+import { routes } from '../../behavior/routing';
 
 type Props = {
   userId: string;
@@ -14,6 +16,8 @@ type Props = {
 
 export const WorktimeFilter = ({ userId } : Props) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const isExportButtonVisible = location.pathname === routes.users.worktime.replace(':id', userId);
   const { filtering } = useSelector((state: RootState) => state.worktime);
 
   const initialValues: WorktimeFilterTypeInput = {
@@ -32,6 +36,10 @@ export const WorktimeFilter = ({ userId } : Props) => {
     dispatch(changeWorktimeRecordsFiltering(newFiltering));
   };
 
+  const exportButtonClick = () => {
+    dispatch(requestWorktimeStatsFileUrl(filtering));
+  };
+  
   return (
     <div>
       <Formik onSubmit={onSubmit} initialValues={initialValues}>
@@ -51,8 +59,11 @@ export const WorktimeFilter = ({ userId } : Props) => {
                 ))}
               </Field>
             </Col>
-            <Col className="d-flex align-items-end">
+            <Col className="d-flex align-items-end justify-content-between">
               <button className="btn btn-primary" type="submit">Apply</button>
+              {isExportButtonVisible && (
+                <button onClick={exportButtonClick} className="btn btn-primary" type="button">Export as xlsx</button>
+              )}
             </Col>
           </Row>
           <Row className="mb-3">

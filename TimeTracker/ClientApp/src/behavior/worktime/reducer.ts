@@ -13,6 +13,7 @@ import {
   WORKTIME_FINISH_DATE_UPDATED, WorktimeFinishDateUpdatedAction,
   WORKTIME_RECORD_COUNT_RECEIVED, WorktimeRecordCountReceivedAction,
   WORKTIME_STATS_RECEIVED, WorktimeStatsReceivedAction,
+  WORKTIME_STATS_FILE_URL_RECEIVED, WorktimeStatsFileUrlReceivedAction,
 } from './actions';
 
 export type WorktimeState = {
@@ -56,6 +57,7 @@ export default createReducer(initialState, {
   [WORKTIME_RECORD_UPDATED]: onWorktimeRecordUpdated,
   [UNFINISHED_WORKTIME_RECORD_RECEIVED]: onUnfinishedWorktimeRecordReceived,
   [WORKTIME_FINISH_DATE_UPDATED]: onWorktimeFinishDateUpdated,
+  [WORKTIME_STATS_FILE_URL_RECEIVED]: onWorktimeStatsFileUrlReceived,
 });
 
 function onWorktimeRecordCreated(state: WorktimeState, action: WorktimeCreatedAction): WorktimeState {
@@ -137,4 +139,10 @@ function onWorktimeRecordsFilteringChanged(state: WorktimeState, action: Worktim
 function onWorktimeRecordsPagingChanged(state: WorktimeState, action: WorktimeRecordsPagingChangedAction) {
   const { paging } = action.payload;
   return { ...state, paging };
+}
+
+function onWorktimeStatsFileUrlReceived(state: WorktimeState, action: WorktimeStatsFileUrlReceivedAction): WorktimeState {
+  const urlForDownloadingWorktimeStatsFile = action.payload.urlForDownloadingWorktimeStats;
+  window.open(urlForDownloadingWorktimeStatsFile, '_blank');
+  return { ...state };
 }
