@@ -32,8 +32,8 @@ public class DailyActionHostedService : IHostedService
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        //timer = new Timer(ProcessActions, null, GetRunDelay(), runTime);
-        timer = new Timer(ProcessActions, null, 0, 10000);
+        timer = new Timer(ProcessActions, null, GetRunDelay(), runTime);
+        //timer = new Timer(ProcessActions, null, 0, 10000);
         return Task.CompletedTask;
     }
 
