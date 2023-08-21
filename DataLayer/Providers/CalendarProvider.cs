@@ -17,7 +17,7 @@ namespace DataLayer.Providers
         public void DeleteRule(Guid ruleId)
             => Execute(CalendarRules.Delete, new { RuleId = ruleId });
 
-        public List<CalendarRule> GetCalendarRules(Sorting sorting, Paging paging)
+        public List<CalendarRule> GetCalendarRules(Sorting? sorting = null, Paging? paging = null)
             => Query<CalendarRule>(CalendarRules.GetList(sorting, paging));
 
         public void UpdateRule(CalendarRule rule)

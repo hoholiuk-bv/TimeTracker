@@ -28,4 +28,7 @@ public class WorktimeProvider : Provider, IWorktimeProvider
 
     public int GetRecordCount(WorktimeFilter? filter)
         => Query<int>(Queries.Worktime.GetRecordsCount(filter)).First();
+
+    public void CreateWorktimeRecords(IEnumerable<Worktime> worktimeRecords)
+        => Execute(Queries.Worktime.CreateWorktimeRecords(worktimeRecords));
 }
