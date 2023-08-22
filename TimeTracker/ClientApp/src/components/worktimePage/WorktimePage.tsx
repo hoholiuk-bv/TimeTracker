@@ -37,7 +37,7 @@ export const WorktimePage = () => {
       </Button>
       {canUseWorktimeTimer &&
         <div className='worktime-button'>
-        <PartTimerPage users={user} worktime={worktime} />
+        <PartTimerPage user={user} worktime={worktime} />
         </div>
       }
         <WorkCalendarModal show={showCalendarModal} handleClose={() => setShowCalendarModal(false)} />

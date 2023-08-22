@@ -5,16 +5,14 @@ import {WorktimeRecord} from '../../behavior/worktime/types';
 
 
 type Props = {
-    users: UserInfo | null,
+    user: UserInfo | null,
     worktime: WorktimeRecord | null;
 };
 
-export const PartTimerPage = ({ users, worktime }: Props) => {
-    if (!users) {
+export const PartTimerPage = ({ user, worktime }: Props) => {
+    if (!user) {
         return null;
     }
-   
-
     return (
         <div className="container">
             <div className="worktime">
@@ -23,7 +21,7 @@ export const PartTimerPage = ({ users, worktime }: Props) => {
                         <div className="timer">
                             <table>
                                 <tbody className="timer-container">
-                                    <Timer user={users} worktime={worktime}/>
+                                    <Timer user={user} worktime={worktime}/>
                                 </tbody>
                             </table>
                         </div>
