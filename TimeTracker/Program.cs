@@ -21,6 +21,7 @@ using TimeTracker.GraphQL.Approvals.Types;
 using TimeTracker.GraphQL.Approvals;
 using TimeTracker.GraphQL.Calendar;
 using TimeTracker.GraphQL.Calendar.Types;
+using TimeTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -115,6 +116,7 @@ builder.Services.AddTransient<CalendarRuleType>();
 builder.Services.AddTransient<CalendarRuleInputType>();
 builder.Services.AddGraphQL(a => a.AddSchema<TimeTrackerSchema>().AddSystemTextJson().AddAuthorizationRule());
 
+builder.Services.AddHostedService<DailyActionHostedService>();
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
 
@@ -133,6 +135,24 @@ app.UseAuthentication();
 app.UseMiddleware<UserContextMiddleware>();
 app.UseAuthorization();
 app.UseGraphQL();
+
+app.MapGet("/download/{fileName}", async (UserContext userContext, HttpContext context) =>
+{
+    string fileName = context.Request.RouteValues["fileName"] as string;
+    string filePath = Path.Combine(Path.GetTempPath(), fileName);
+
+    //var userContext = context.RequestServices!.GetRequiredService<UserContext>();
+
+    if (System.IO.File.Exists(filePath))
+    {
+        context.Response.Headers.Add("Content-Disposition", $"attachment; filename={fileName}");
+        await context.Response.SendFileAsync(filePath);
+    }
+    else
+    {
+        context.Response.StatusCode = 404;
+    }
+});
 
 app.MapControllerRoute(
     name: "default",

@@ -87,3 +87,10 @@ mutation($userId: String!) {
     }
   }
 }`;
+
+export const getWorktimeStatsFileUrlQuery = `
+query($filter: WorktimeFilterInput) {
+  worktime {
+    urlForDownloadingWorktimeStats(filter: $filter)
+  }
+}`;

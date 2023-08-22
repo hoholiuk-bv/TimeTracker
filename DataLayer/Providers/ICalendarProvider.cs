@@ -5,7 +5,7 @@ namespace DataLayer.Providers
 {
     public interface ICalendarProvider
     {
-        public List<CalendarRule> GetCalendarRules(Sorting sorting, Paging paging);
+        public List<CalendarRule> GetCalendarRules(Sorting? sorting = null, Paging? paging = null);
 
         public void CreateRule(CalendarRule rule);
 

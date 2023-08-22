@@ -5,7 +5,6 @@ import { WorktimeTable } from './WorktimeTable';
 import {
   changeWorktimeRecordsFiltering,
   changeWorktimeRecordsPaging,
-  requestUnfinishedWorktimeRecord,
   requestWorktimeRecordCount,
   requestWorktimeRecords,
   requestWorktimeStats

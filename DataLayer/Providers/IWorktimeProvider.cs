@@ -18,4 +18,6 @@ public interface IWorktimeProvider
     int UpdateWorktimeRecord(Worktime worktimeRecord);
    
     int GetRecordCount(WorktimeFilter? filter);
+
+    public void CreateWorktimeRecords(IEnumerable<Worktime> worktimeRecords);
 }

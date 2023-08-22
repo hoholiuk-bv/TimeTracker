@@ -22,5 +22,7 @@ namespace DataLayer.Providers
         int GetDaysOffCount(Guid userId);
 
         void UpdateDaysOffCount(Guid userId, int daysOffCount);
+
+        List<Guid> GetAllFullTimerIds();
     }
 }

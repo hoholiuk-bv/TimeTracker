@@ -104,6 +104,18 @@ export const changeWorktimeRecordsPaging = (paging: PagingInput) => ({
   payload: { paging }
 });
 
+export const WORKTIME_STATS_FILE_URL_REQUESTED = 'WORKTIME_STATS_FILE_URL_REQUESTED' as const;
+export const requestWorktimeStatsFileUrl = (filter: WorktimeFilterType) => ({
+  type: WORKTIME_STATS_FILE_URL_REQUESTED,
+  payload: { filter },
+});
+
+export const WORKTIME_STATS_FILE_URL_RECEIVED = 'WORKTIME_STATS_FILE_URL_RECEIVED' as const;
+export const worktimeStatsFileUrlReceived = (urlForDownloadingWorktimeStats: string) => ({
+  type: WORKTIME_STATS_FILE_URL_RECEIVED,
+  payload: { urlForDownloadingWorktimeStats },
+});
+
 export type WorktimeCreationAction = ReturnType<typeof worktimeCreation>;
 export type WorktimeCreatedAction = ReturnType<typeof worktimeCreated>;
 export type WorktimeRecordsRequestAction = ReturnType<typeof requestWorktimeRecords>;
@@ -121,6 +133,8 @@ export type WorktimeFinishDateUpdatedAction = ReturnType<typeof worktimeFinishDa
 export type WorktimeRecordsSortingChangedAction = ReturnType<typeof changeWorktimeRecordsSorting>;
 export type WorktimeRecordsFilteringChangedAction = ReturnType<typeof changeWorktimeRecordsFiltering>;
 export type WorktimeRecordsPagingChangedAction = ReturnType<typeof changeWorktimeRecordsPaging>;
+export type WorktimeStatsFileUrlRequestAction = ReturnType<typeof requestWorktimeStatsFileUrl>;
+export type WorktimeStatsFileUrlReceivedAction = ReturnType<typeof worktimeStatsFileUrlReceived>;
 
 export type WorktimeActions = ReturnType<
     | typeof worktimeCreation
@@ -139,4 +153,6 @@ export type WorktimeActions = ReturnType<
     | typeof worktimeFinishDateUpdated
     | typeof changeWorktimeRecordsSorting
     | typeof changeWorktimeRecordsFiltering
-    | typeof changeWorktimeRecordsPaging>
+    | typeof changeWorktimeRecordsPaging
+    | typeof requestWorktimeStatsFileUrl
+    | typeof worktimeStatsFileUrlReceived>
