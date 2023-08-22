@@ -131,7 +131,7 @@ namespace DataLayer.Providers
                 {(paging != null ? AddPaging(paging) : string.Empty)}";
 
             public static string GetActiveRequests =
-                $@"SELECT * FROM DayOffRequests WHERE StartDate > @StartDate";
+                $@"SELECT * FROM DayOffRequests WHERE StartDate > @StartDate AND UserId = @UserId";
 
             public static string GetRequestsCount(DayOffRequestFilter filter) => $@"
                     SELECT COUNT (*)
