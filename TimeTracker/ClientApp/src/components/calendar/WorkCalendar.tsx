@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { Calendar, type CalendarProps } from 'react-calendar';
+import { Calendar } from 'react-calendar';
+import type { CalendarProps } from 'react-calendar';
 import { useDispatch, useSelector } from 'react-redux';
 import { applyCalendarRules, requestCalendarRules } from '../../behavior/calendar/actions';
 import { CalendarRuleType } from '../../behavior/calendar/types';
@@ -13,10 +14,11 @@ type Props = {
 export const WorkCalendar = ({ className, ...props }: Props) => {
   const dispatch = useDispatch();
   const { rules, appliedRules } = useSelector((state: RootState) => state.calendar);
+  const [activeMonth, setActiveMonth] = useState(new Date().getMonth());
 
   useEffect(() => {
     dispatch(requestCalendarRules());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const currentDate = new Date();
@@ -25,12 +27,14 @@ export const WorkCalendar = ({ className, ...props }: Props) => {
   }, [rules, dispatch]);
 
   const handleActiveStartDateChange = useCallback((activeStartDate: Date | null) => {
-    if (rules?.length && activeStartDate != null)
+    if (rules?.length && activeStartDate != null) {
+      setActiveMonth(activeStartDate.getMonth());
       dispatch(applyCalendarRules(activeStartDate.getFullYear(), activeStartDate.getMonth() + 1));
+    }
   }, [rules, dispatch]);
 
   const getTileClassName = ({ date, view }: { date: Date, view: string }) => {
-    if (!appliedRules)
+    if (!appliedRules || date.getMonth() !== activeMonth)
       return '';
 
     const appliedRule = appliedRules[date.getDate()];
@@ -55,7 +59,7 @@ export const WorkCalendar = ({ className, ...props }: Props) => {
     const appliedRule = appliedRules[date.getDate()];
     if (view === 'month' && appliedRule?.title) {
       return (
-        <OverlayTrigger overlay={<Tooltip >{  appliedRule.title}</Tooltip>}>
+        <OverlayTrigger overlay={<Tooltip >{appliedRule.title}</Tooltip>}>
           <span className='calendar-tile-tooltip'></span>
         </OverlayTrigger>
       );
