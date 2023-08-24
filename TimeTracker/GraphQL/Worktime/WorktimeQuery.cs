@@ -1,11 +1,11 @@
-﻿using DataLayer.Providers;
 ﻿using DataLayer.Models;
+using DataLayer.Providers;
 using GraphQL;
 using GraphQL.Types;
-using TimeTracker.GraphQL.Users.Types;
-using TimeTracker.GraphQL.Worktime.Types;
 using OfficeOpenXml;
 using System.Globalization;
+using TimeTracker.GraphQL.Users.Types;
+using TimeTracker.GraphQL.Worktime.Types;
 using OfficeOpenXml.Style;
 
 namespace TimeTracker.GraphQL.Worktime;
@@ -80,13 +80,8 @@ public class WorktimeQuery : ObjectGraphType
         WorktimeFilter? filter = context.GetArgument<WorktimeFilter?>("filter");
 
         var user = userProvider.GetById(filter.UserId.ToString());
-        var worktimeStats = GetWorktimeStats(filter);
-
-        int totalWorktimeHours = (int)worktimeStats.TotalWorkTimeMonthly;
-        int totalWorktimeMinutes = (int)((worktimeStats.TotalWorkTimeMonthly - totalWorktimeHours) * 100);
-
-        int plannedWorktimeHours = (int)worktimeStats.PlannedWorkTimeMonthly;
-        int plannedWorktimeMinutes = (int)((worktimeStats.PlannedWorkTimeMonthly - plannedWorktimeHours) * 100);
+        var worktimeRecords = worktimeProvider.GetWorktimeRecords(null, filter, null).ToList();
+        var sortedWorktimeRecords = worktimeRecords.OrderBy(record => record.FinishDate.Value).ToList();
 
         using (var package = new ExcelPackage())
         {
@@ -95,7 +90,7 @@ public class WorktimeQuery : ObjectGraphType
             var worksheet = package.Workbook.Worksheets.Add("Worktime Stats");
 
             // Formatting for headers
-            var headerStyle = worksheet.Cells["A1:H2"].Style;
+            var headerStyle = worksheet.Cells[$"A1:D1"].Style;
             headerStyle.Font.Size = 14;
             headerStyle.Font.Bold = true;
             headerStyle.Fill.PatternType = ExcelFillStyle.Solid;
@@ -108,7 +103,7 @@ public class WorktimeQuery : ObjectGraphType
             headerStyle.VerticalAlignment = ExcelVerticalAlignment.Center;
 
             // Formatting for data
-            var dataStyle = worksheet.Cells["A3:H3"].Style;
+            var dataStyle = worksheet.Cells[$"A2:D{sortedWorktimeRecords.Count() + 1}"].Style;
             dataStyle.Font.Size = 14;
             dataStyle.Font.Bold = false;
             dataStyle.Fill.PatternType = ExcelFillStyle.Solid;
@@ -120,42 +115,40 @@ public class WorktimeQuery : ObjectGraphType
             dataStyle.HorizontalAlignment = ExcelHorizontalAlignment.Left;
 
             // Headers
-            worksheet.Cells["A1"].Value = "Name";
-            worksheet.Cells["B1"].Value = "Email";
-            worksheet.Cells["C1"].Value = "Year";
-            worksheet.Cells["D1"].Value = "Month";
-            worksheet.Cells["E1"].Value = "Total Work Time";
-            worksheet.Cells["E2"].Value = "Hours";
-            worksheet.Cells["F2"].Value = "Minutes";
-            worksheet.Cells["G1"].Value = "Planned Work Time";
-            worksheet.Cells["G2"].Value = "Hours";
-            worksheet.Cells["H2"].Value = "Minutes";
+            worksheet.Cells["A1"].Value = "Start";
+            worksheet.Cells["B1"].Value = "Finish";
+            worksheet.Cells["C1"].Value = "Worked time";
+            worksheet.Cells["D1"].Value = "Last editor";
 
             // Data
-            worksheet.Cells["A3"].Value = $"{user.Name} {user.Surname}";
-            worksheet.Cells["B3"].Value = user.Email;
-            worksheet.Cells["C3"].Value = filter.Year;
-            worksheet.Cells["D3"].Value = culture.DateTimeFormat.GetMonthName(filter.Month);
-            worksheet.Cells["E3"].Value = totalWorktimeHours;
-            worksheet.Cells["F3"].Value = totalWorktimeMinutes;
-            worksheet.Cells["G3"].Value = plannedWorktimeHours;
-            worksheet.Cells["H3"].Value = plannedWorktimeMinutes;
+            for (int i = 0; i < sortedWorktimeRecords.Count; i++)
+            {
+                string dateFormat = "[$-en-US]m/d/yy h:mm AM/PM;@";
 
-            // Merging cells
-            worksheet.Cells["A1:A2"].Merge = true;
-            worksheet.Cells["B1:B2"].Merge = true;
-            worksheet.Cells["C1:C2"].Merge = true;
-            worksheet.Cells["D1:D2"].Merge = true;
-            worksheet.Cells["E1:F1"].Merge = true;
-            worksheet.Cells["G1:H1"].Merge = true;
+                var lastEditor = userProvider.GetById(sortedWorktimeRecords[i].LastEditorId.ToString());
+
+                worksheet.Cells[$"A{i + 2}"].Style.Numberformat.Format = dateFormat;
+                worksheet.Cells[$"A{i + 2}"].Value = sortedWorktimeRecords[i].StartDate;
+
+                worksheet.Cells[$"B{i + 2}"].Style.Numberformat.Format = dateFormat;
+                worksheet.Cells[$"B{i + 2}"].Value = sortedWorktimeRecords[i].FinishDate;
+
+                worksheet.Cells[$"C{i + 2}"].Style.Numberformat.Format = @"hh\:mm";
+                worksheet.Cells[$"C{i + 2}"].Value = sortedWorktimeRecords[i].FinishDate.Value - sortedWorktimeRecords[i].StartDate;
+
+                worksheet.Cells[$"D{i + 2}"].Value = $"{lastEditor.Name} {lastEditor.Surname}";
+            }
 
             // Column width
             worksheet.Cells.AutoFitColumns();
-            worksheet.Column(6).Width = 20;
-            worksheet.Column(7).Width = 20;
+            worksheet.Column(1).Width += 5;
+            worksheet.Column(2).Width += 5;
+            worksheet.Column(3).Width += 5;
+            worksheet.Column(4).Width += 5;
 
             // Saving the file
-            var tempFilePath = Path.GetTempFileName() + ".xlsx";
+            var tempFileName = $"{Path.GetFileNameWithoutExtension(Path.GetTempFileName())}-{user.Name}-{user.Surname}.xlsx";
+            var tempFilePath = Path.Combine(Path.GetTempPath(), tempFileName);
             package.SaveAs(new FileInfo(tempFilePath));
 
             // Generating URL for the temporary .xlsx file
