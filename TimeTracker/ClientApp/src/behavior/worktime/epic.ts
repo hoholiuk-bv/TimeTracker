@@ -10,7 +10,8 @@ import {
   UNFINISHED_WORKTIME_RECORD_REQUESTED, unfinishedWorktimeRecordReceived,
   WORKTIME_UPDATE_REQUESTED, worktimeRecordUpdated,
   WORKTIME_FINISH_DATE_UPDATE_REQUESTED, worktimeFinishDateUpdated,
-  WORKTIME_STATS_FILE_URL_REQUESTED, worktimeStatsFileUrlReceived,
+  URL_FOR_DOWNLOADING_USER_WORKTIME_RECORDS_REQUESTED, urlForDownloadingUserWorktimeRecorsReceived,
+  URL_FOR_DOWNLOADING_WORKTIME_STATS_REQUESTED, urlForDownloadingWorktimeStatsReceived,
 } from './actions';
 import {
   worktimeCreationMutation,
@@ -20,7 +21,8 @@ import {
   getUnfinishedWorktimeRecordQuery,
   updateWorktimeRecordMutation,
   updateWorktimeFinishDateMutation,
-  getWorktimeStatsFileUrlQuery,
+  getUrlForDownloadingUserWorktimeRecorsQuery,
+  getUrlForDownloadingWorktimeStatsQuery,
 } from './queries';
 
 const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
@@ -86,15 +88,23 @@ const epic: Epic<WorktimeActions | any> = (actions$, state$) => {
     ))
   );
 
-  const requestWorktimeStatsFileUrl$ = actions$.pipe(
-    ofType(WORKTIME_STATS_FILE_URL_REQUESTED),
+  const requestUrlForDownloadingUserWorktimeRecors$ = actions$.pipe(
+    ofType(URL_FOR_DOWNLOADING_USER_WORKTIME_RECORDS_REQUESTED),
     map(action => action.payload),
-    mergeMap(({ filter }) => sendRequest(getWorktimeStatsFileUrlQuery, {filter: filter}).pipe(
-      map(({worktime}) => worktimeStatsFileUrlReceived(worktime.urlForDownloadingWorktimeStats))
+    mergeMap(({ filter }) => sendRequest(getUrlForDownloadingUserWorktimeRecorsQuery, {filter: filter}).pipe(
+      map(({worktime}) => urlForDownloadingUserWorktimeRecorsReceived(worktime.urlForDownloadingUserWorktimeRecors))
     ))
   );
 
-  return merge(worktimeCreation$, requestWorktimeRecords$, requestWorktimeRecordCount$, requestWorktimeStats$, requestUnfinishedWorktimeRecord$, requestWorktimeUpdate$, requestWorktimeFinishDateUpdate$, requestWorktimeStatsFileUrl$);
+  const requestUrlForDownloadingWorktimeStats$ = actions$.pipe(
+    ofType(URL_FOR_DOWNLOADING_WORKTIME_STATS_REQUESTED),
+    map(action => action.payload),
+    mergeMap(({ filter }) => sendRequest(getUrlForDownloadingWorktimeStatsQuery, {filter: filter}).pipe(
+      map(({worktime}) => urlForDownloadingWorktimeStatsReceived(worktime.urlForDownloadingWorktimeStats))
+    ))
+  );
+
+  return merge(worktimeCreation$, requestWorktimeRecords$, requestWorktimeRecordCount$, requestWorktimeStats$, requestUnfinishedWorktimeRecord$, requestWorktimeUpdate$, requestWorktimeFinishDateUpdate$, requestUrlForDownloadingUserWorktimeRecors$, requestUrlForDownloadingWorktimeStats$);
 };
 
 export default epic;

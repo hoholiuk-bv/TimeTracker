@@ -6,7 +6,7 @@ import { ValidationMessage } from '../common/validation/ValidationMessage';
 import { RootState } from '../../behavior/store';
 import { WorktimeFilterType, WorktimeFilterTypeInput } from '../../behavior/worktime/types';
 import { required, worktimeYear } from '../../behavior/validators';
-import { changeWorktimeRecordsFiltering, requestWorktimeStatsFileUrl } from '../../behavior/worktime/actions';
+import { changeWorktimeRecordsFiltering, requestUrlForDownloadingUserWorktimeRecors } from '../../behavior/worktime/actions';
 import { useLocation } from 'react-router-dom';
 import { routes } from '../../behavior/routing';
 
@@ -41,7 +41,7 @@ export const WorktimeFilter = ({ userId } : Props) => {
   };
 
   const exportButtonClick = () => {
-    dispatch(requestWorktimeStatsFileUrl(filtering));
+    dispatch(requestUrlForDownloadingUserWorktimeRecors(filtering));
   };
   
   return (
