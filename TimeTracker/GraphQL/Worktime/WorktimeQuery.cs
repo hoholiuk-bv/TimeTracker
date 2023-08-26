@@ -7,6 +7,7 @@ using TimeTracker.GraphQL.Worktime.Types;
 using OfficeOpenXml;
 using System.Globalization;
 using OfficeOpenXml.Style;
+using BusinessLayer.Helpers;
 
 namespace TimeTracker.GraphQL.Worktime;
 
@@ -14,12 +15,16 @@ public class WorktimeQuery : ObjectGraphType
 {
     private readonly IWorktimeProvider worktimeProvider;
     private readonly IUserProvider userProvider;
+    private readonly ICalendarProvider calendarProvider;
+    private readonly IDaysOffProvider daysOffProvider;
     private readonly IHttpContextAccessor accessor;
 
-    public WorktimeQuery(IWorktimeProvider worktimeProvider, IUserProvider userProvider, IHttpContextAccessor accessor)
+    public WorktimeQuery(IWorktimeProvider worktimeProvider, IUserProvider userProvider, ICalendarProvider calendarProvider, IDaysOffProvider daysOffProvider, IHttpContextAccessor accessor)
     {
         this.worktimeProvider = worktimeProvider;
         this.userProvider = userProvider;
+        this.calendarProvider = calendarProvider;
+        this.daysOffProvider = daysOffProvider;
         this.accessor = accessor;
 
         Field<ListGraphType<WorktimeType>>("Records")
@@ -178,10 +183,17 @@ public class WorktimeQuery : ObjectGraphType
             totalWorkTime += (worktime.FinishDate - worktime.StartDate) ?? TimeSpan.Zero;
         }
 
+        var calendarRules = calendarProvider.GetCalendarRules();
+        var dayOffFilter = new DayOffRequestFilter { UserId = filter.UserId };
+        var userRequests = daysOffProvider.GetRequests(dayOffFilter);
+        var approvals = daysOffProvider.GetApprovals(userRequests.Select(r => r.Id).ToList());
+
+        int WorkingDaysCount = DaysOffHelper.GetWorkingDaysCount(filter.Year, filter.Month, calendarRules, userRequests, approvals);
+
         var worktimeStats = new WorktimeStats()
         {
             TotalWorkTimeMonthly = totalWorkTime.Days * 24 + totalWorkTime.Hours + (decimal)totalWorkTime.Minutes / 100,
-            PlannedWorkTimeMonthly = user.WorkingHoursCount * 20 // [20] Temporary value
+            PlannedWorkTimeMonthly = user.WorkingHoursCount * WorkingDaysCount
         };
 
         return worktimeStats;
