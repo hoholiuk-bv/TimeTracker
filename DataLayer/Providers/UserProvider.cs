@@ -8,7 +8,7 @@ namespace DataLayer.Providers
     {
         public UserProvider(IConfiguration configuration) : base(configuration) { }
 
-        public IEnumerable<User> GetAllUsers(UserFilter? filter, Sorting? sort, Paging? pagination)
+        public IEnumerable<User> GetAllUsers(UserFilter? filter = null, Sorting? sort = null, Paging? pagination = null)
         {
             var usersData = Query<UserData>(Queries.Users.GetAll(filter, sort, pagination), filter);
             return usersData.Select(data => new User(data));
