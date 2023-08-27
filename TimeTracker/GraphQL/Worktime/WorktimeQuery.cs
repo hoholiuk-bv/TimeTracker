@@ -8,6 +8,7 @@ using TimeTracker.GraphQL.Users.Types;
 using TimeTracker.GraphQL.Worktime.Types;
 using OfficeOpenXml.Style;
 using BusinessLayer.Helpers;
+using DataLayer.Entities;
 
 namespace TimeTracker.GraphQL.Worktime;
 
@@ -134,8 +135,7 @@ public class WorktimeQuery : ObjectGraphType
             for (int i = 0; i < sortedWorktimeRecords.Count; i++)
             {
                 string dateFormat = "[$-en-US]m/d/yy h:mm AM/PM;@";
-
-                var lastEditor = userProvider.GetById(sortedWorktimeRecords[i].LastEditorId.ToString());
+                string timeFormat = @"hh\:mm";
 
                 worksheet.Cells[$"A{i + 2}"].Style.Numberformat.Format = dateFormat;
                 worksheet.Cells[$"A{i + 2}"].Value = sortedWorktimeRecords[i].StartDate;
@@ -143,10 +143,12 @@ public class WorktimeQuery : ObjectGraphType
                 worksheet.Cells[$"B{i + 2}"].Style.Numberformat.Format = dateFormat;
                 worksheet.Cells[$"B{i + 2}"].Value = sortedWorktimeRecords[i].FinishDate;
 
-                worksheet.Cells[$"C{i + 2}"].Style.Numberformat.Format = @"hh\:mm";
+                worksheet.Cells[$"C{i + 2}"].Style.Numberformat.Format = timeFormat;
                 worksheet.Cells[$"C{i + 2}"].Value = sortedWorktimeRecords[i].FinishDate.Value - sortedWorktimeRecords[i].StartDate;
 
-                worksheet.Cells[$"D{i + 2}"].Value = $"{lastEditor.Name} {lastEditor.Surname}";
+                bool hasLastEditor = sortedWorktimeRecords[i].LastEditorId != null;
+                User? lastEditor = hasLastEditor ? userProvider.GetById(sortedWorktimeRecords[i].LastEditorId.ToString()) : null;
+                worksheet.Cells[$"D{i + 2}"].Value = hasLastEditor ? $"{lastEditor.Name} {lastEditor.Surname}" : "System";
             }
 
             // Column width
