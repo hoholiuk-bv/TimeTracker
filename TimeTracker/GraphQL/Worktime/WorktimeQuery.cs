@@ -189,11 +189,12 @@ public class WorktimeQuery : ObjectGraphType
         var approvals = daysOffProvider.GetApprovals(userRequests.Select(r => r.Id).ToList());
 
         int WorkingDaysCount = DaysOffHelper.GetWorkingDaysCount(filter.Year, filter.Month, calendarRules, userRequests, approvals);
+        decimal plannedWorktime = WorktimeHelper.GetPlannedWorktime(filter.Year, filter.Month, calendarRules, user.WorkingHoursCount, WorkingDaysCount);
 
         var worktimeStats = new WorktimeStats()
         {
             TotalWorkTimeMonthly = totalWorkTime.Days * 24 + totalWorkTime.Hours + (decimal)totalWorkTime.Minutes / 100,
-            PlannedWorkTimeMonthly = user.WorkingHoursCount * WorkingDaysCount
+            PlannedWorkTimeMonthly = plannedWorktime
         };
 
         return worktimeStats;
