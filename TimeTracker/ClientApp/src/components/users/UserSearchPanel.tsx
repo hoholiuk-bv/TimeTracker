@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { Field, Formik, Form } from 'formik';
@@ -6,7 +6,7 @@ import { employmentType, employmentTypeForDisplay, FilterType } from '../../beha
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../behavior/routing';
 import { changeUserListFiltering } from '../../behavior/users/actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SelectElementOptions } from '../../behavior/common/types';
 import { FormLabel } from 'react-bootstrap';
 import { FormGroup } from '../common/elements/FormGroup';
@@ -14,6 +14,8 @@ import { ActiveUserFilters } from './ActiveUserFilters';
 import Collapse from 'react-bootstrap/Collapse';
 import Select from 'react-select';
 import BootstrapForm from 'react-bootstrap/Form';
+import { RootState } from '../../behavior/store';
+import { requestUrlForDownloadingWorktimeStats } from '../../behavior/worktime/actions';
 
 type Props = {
   filtering: FilterType;
@@ -23,12 +25,18 @@ export const UserSearchPanel = ({filtering}: Props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const { totalUsersCount } = useSelector((state: RootState) => state.users);
+  const [isExportButtonVisible, setIsExportButtonVisible] = useState<boolean>(false);
   const [selectedEmploymentTypes, setSelectedEmploymentTypes] = useState<SelectElementOptions[]>([]);
   const employmentTypesOptions: SelectElementOptions[] = Object.keys(employmentType).map((type: string) => ({
     value: employmentType[type as keyof typeof employmentType],
     label: employmentTypeForDisplay[type as keyof typeof employmentTypeForDisplay]
   }));
 
+  useEffect(() => {
+    setIsExportButtonVisible(totalUsersCount > 0);
+  }, [totalUsersCount]);
+  
   const initialValues: FilterType = {
     searchText: '',
     startEmploymentDate: '',
@@ -47,6 +55,10 @@ export const UserSearchPanel = ({filtering}: Props) => {
     };
 
     dispatch(changeUserListFiltering(newFiltering));
+  };
+
+  const exportButtonClick = () => {
+    dispatch(requestUrlForDownloadingWorktimeStats(filtering));
   };
 
   return (
@@ -124,7 +136,10 @@ export const UserSearchPanel = ({filtering}: Props) => {
           )}
         </Formik>
       </div>
-      <div className="col-4 d-flex justify-content-end align-items-start">
+      <div className="col-4 d-flex justify-content-end align-items-start gap-2">
+        {isExportButtonVisible && (
+          <button onClick={exportButtonClick} className="btn btn-primary" type="button">Export worktime</button>
+        )}
         <input type="button" className="btn btn-primary" onClick={() => navigate(routes.users.creation)} value="Create new" />
       </div>
     </div>

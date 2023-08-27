@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Field, Form, Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row, FormLabel } from 'react-bootstrap';
@@ -6,7 +6,7 @@ import { ValidationMessage } from '../common/validation/ValidationMessage';
 import { RootState } from '../../behavior/store';
 import { WorktimeFilterType, WorktimeFilterTypeInput } from '../../behavior/worktime/types';
 import { required, worktimeYear } from '../../behavior/validators';
-import { changeWorktimeRecordsFiltering, requestWorktimeStatsFileUrl } from '../../behavior/worktime/actions';
+import { changeWorktimeRecordsFiltering, requestUrlForDownloadingUserWorktimeRecors } from '../../behavior/worktime/actions';
 import { useLocation } from 'react-router-dom';
 import { routes } from '../../behavior/routing';
 
@@ -17,8 +17,12 @@ type Props = {
 export const WorktimeFilter = ({ userId } : Props) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const isExportButtonVisible = location.pathname === routes.users.worktime.replace(':id', userId);
-  const { filtering } = useSelector((state: RootState) => state.worktime);
+  const { filtering, recordCount } = useSelector((state: RootState) => state.worktime);
+  const [isExportButtonVisible, setIsExportButtonVisible] = useState(false);
+
+  useEffect(() => {
+    setIsExportButtonVisible(location.pathname === routes.users.worktime.replace(':id', userId) && recordCount > 0);
+  }, [location.pathname, userId, recordCount]);
 
   const initialValues: WorktimeFilterTypeInput = {
     userId: userId,
@@ -37,7 +41,7 @@ export const WorktimeFilter = ({ userId } : Props) => {
   };
 
   const exportButtonClick = () => {
-    dispatch(requestWorktimeStatsFileUrl(filtering));
+    dispatch(requestUrlForDownloadingUserWorktimeRecors(filtering));
   };
   
   return (

@@ -13,7 +13,8 @@ import {
   WORKTIME_FINISH_DATE_UPDATED, WorktimeFinishDateUpdatedAction,
   WORKTIME_RECORD_COUNT_RECEIVED, WorktimeRecordCountReceivedAction,
   WORKTIME_STATS_RECEIVED, WorktimeStatsReceivedAction,
-  WORKTIME_STATS_FILE_URL_RECEIVED, WorktimeStatsFileUrlReceivedAction,
+  URL_FOR_DOWNLOADING_USER_WORKTIME_RECORDS_RECEIVED, UrlForDownloadingUserWorktimeRecorsReceivedAction,
+  URL_FOR_DOWNLOADING_WORKTIME_STATS_RECEIVED, UrlForDownloadingWorktimeStatsReceivedAction,
 } from './actions';
 
 export type WorktimeState = {
@@ -57,7 +58,8 @@ export default createReducer(initialState, {
   [WORKTIME_RECORD_UPDATED]: onWorktimeRecordUpdated,
   [UNFINISHED_WORKTIME_RECORD_RECEIVED]: onUnfinishedWorktimeRecordReceived,
   [WORKTIME_FINISH_DATE_UPDATED]: onWorktimeFinishDateUpdated,
-  [WORKTIME_STATS_FILE_URL_RECEIVED]: onWorktimeStatsFileUrlReceived,
+  [URL_FOR_DOWNLOADING_USER_WORKTIME_RECORDS_RECEIVED]: onUrlForDownloadingUserWorktimeRecorsReceived,
+  [URL_FOR_DOWNLOADING_WORKTIME_STATS_RECEIVED]: onUrlForDownloadingWorktimeStatsReceived,
 });
 
 function onWorktimeRecordCreated(state: WorktimeState, action: WorktimeCreatedAction): WorktimeState {
@@ -141,8 +143,14 @@ function onWorktimeRecordsPagingChanged(state: WorktimeState, action: WorktimeRe
   return { ...state, paging };
 }
 
-function onWorktimeStatsFileUrlReceived(state: WorktimeState, action: WorktimeStatsFileUrlReceivedAction): WorktimeState {
-  const urlForDownloadingWorktimeStatsFile = action.payload.urlForDownloadingWorktimeStats;
-  window.open(urlForDownloadingWorktimeStatsFile, '_blank');
+function onUrlForDownloadingUserWorktimeRecorsReceived(state: WorktimeState, action: UrlForDownloadingUserWorktimeRecorsReceivedAction): WorktimeState {
+  const urlForDownloadingUserWorktimeRecors = action.payload.urlForDownloadingUserWorktimeRecors;
+  window.open(urlForDownloadingUserWorktimeRecors, '_blank');
+  return { ...state };
+}
+
+function onUrlForDownloadingWorktimeStatsReceived(state: WorktimeState, action: UrlForDownloadingWorktimeStatsReceivedAction): WorktimeState {
+  const urlForDownloadingWorktimeStats = action.payload.urlForDownloadingWorktimeStats;
+  window.open(urlForDownloadingWorktimeStats, '_blank');
   return { ...state };
 }
