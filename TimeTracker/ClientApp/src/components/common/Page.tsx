@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { usePermissions } from '../../behavior/hooks';
 import { PermissionType } from '../../behavior/profile/types';

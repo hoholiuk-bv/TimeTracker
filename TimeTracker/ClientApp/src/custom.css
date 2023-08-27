@@ -289,6 +289,36 @@ td.action-buttons {
 
 /*worktime*/
 
+.worktime-button {
+    margin-left: 105px;
+}
+.start-message {
+    margin-left: 165px;
+}
+
+.worktime-container {
+    position: relative;
+    margin-left: 35px;
+}
+
+.fixed-size-button {
+    width: 100px; 
+    height: 36px;
+}
+
+.start-button {
+    position: absolute;
+    top: 172px;
+    transform: translate(-50%, -50%);
+    margin-left: 6rem;
+}
+
+.session-start-message {
+    top: 180px;
+    transform: translate(-50%, -50%);
+    margin-left: 6rem;
+}
+
 .session-start-message .alert {
     background: rgba(46, 139, 87, 0.7);
     padding: 0.2rem;
@@ -297,6 +327,19 @@ td.action-buttons {
 .session-start-message p {
     padding: 0.25rem;
 }
+
+.session-start-message {
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    
+}
+
+.session-start-message .alert {
+    background: rgba(46, 139, 87, 0.7);
+}
+
+
 
 .calendarRuleModal>.modal-dialog {
     max-width: 800px;

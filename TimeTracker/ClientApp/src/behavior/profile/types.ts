@@ -20,5 +20,5 @@ export type UserInfo = {
 export enum PermissionType {
   ManageUsers = 'MANAGE_USERS',
   ConfigureCalendar = 'CONFIGURE_CALENDAR',
-  UseWorktimeTimer = 'UseWorktimeTimer',
+  UseWorktimeTimer = 'USE_WORKTIME_TIMER',
 }

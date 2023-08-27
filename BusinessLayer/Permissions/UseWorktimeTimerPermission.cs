@@ -9,6 +9,11 @@ public class UseWorktimeTimerPermission : IPermission
 
     public bool IsGranted(User? user)
     {
-        return user?.EmploymentType == Constants.EmploymentType.PartTime;
+        if (user != null && user.EmploymentType != null)
+        {
+            return user.EmploymentType == Constants.EmploymentType.PartTime;
+        }
+
+        return false;
     }
 }
