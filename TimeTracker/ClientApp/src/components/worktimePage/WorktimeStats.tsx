@@ -11,8 +11,10 @@ export const WorktimeStats = () => {
   const convertDecimalTime = (decimalTime: number): string => {
     const wholePart: number = Math.floor(decimalTime);
     const fractionalPart: number = Math.round((decimalTime % 1) * 100);
-    const hours: string = wholePart > 0 ? `${wholePart} hour(s)` : '';
-    const minutes: string = fractionalPart > 0 ? `${fractionalPart} minute(s)` : '';
+    const firstMinute: string = fractionalPart === 1 ? `${fractionalPart} minute` : '';
+    const firstHour: string = wholePart === 1 ? `${wholePart} hour` : '';
+    const hours: string = wholePart > 0 ? (wholePart === 1 ? firstHour : `${wholePart} hours`) : '';
+    const minutes: string = fractionalPart > 1 ? `${fractionalPart} minutes` : firstMinute;
     return wholePart > 0 || fractionalPart > 0 ? `${hours} ${minutes}` : 'no hours yet';
   };
   
