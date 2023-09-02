@@ -1,8 +1,9 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { deleteDayOffRequest } from '../../behavior/daysOff/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeDaysOffListPaging, deleteDayOffRequest } from '../../behavior/daysOff/actions';
+import { RootState } from '../../behavior/store';
 
 type Props = {
   show: boolean;
@@ -11,12 +12,15 @@ type Props = {
 }
 
 export const DeleteRequestModal = ({ show, handleClose, requestId }: Props) => {
-
   const dispatch = useDispatch();
+  const { list, paging } = useSelector((state: RootState) => state.daysOff);
 
   const handleRequestDelete = () => {
     handleClose();
     dispatch(deleteDayOffRequest(requestId));
+
+    if (paging.pageNumber > 1 && list?.length === 1)
+      dispatch(changeDaysOffListPaging({ ...paging, pageNumber: paging.pageNumber - 1 }));
   };
 
   return (

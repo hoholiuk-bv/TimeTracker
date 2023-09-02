@@ -40,6 +40,7 @@ public class DailyActionHostedService : IHostedService
     void ProcessActions(object state)
     {
         ResolveWorktimeAction();
+        ResolveDaysOffAction();
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
@@ -91,5 +92,20 @@ public class DailyActionHostedService : IHostedService
             worktimeRecords.Add(newRecord);
         }
         worktimeProvider.CreateWorktimeRecords(worktimeRecords);
+    }
+
+    private void ResolveDaysOffAction()
+    {
+        var users = userProvider.GetAllUsers();
+
+        if (DateTime.Now.Day != 1)
+            return;
+
+        foreach (var user in users) {
+            if (!user.IsActive)
+                continue;
+
+            userProvider.UpdateDaysOffCount(user.Id, 2);
+        }
     }
 }
