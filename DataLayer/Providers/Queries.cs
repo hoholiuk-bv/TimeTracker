@@ -118,6 +118,12 @@ namespace DataLayer.Providers
                                                        SET DaysOffCount = @DaysOffCount WHERE Id = @Id;";
 
             public const string GetAllFullTimerIds = @"SELECT Id FROM Users WHERE EmploymentType = '0'";
+
+            public const string ChangePassword = @"
+                UPDATE Users
+                SET Password = @Password, Salt = @Salt
+                WHERE Id = @Id
+            ";
         }
 
         public static class DaysOff

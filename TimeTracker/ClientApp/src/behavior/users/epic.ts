@@ -1,11 +1,8 @@
 import { mergeMap, map, merge } from 'rxjs';
 import { Epic, ofType } from 'redux-observable';
 import { sendRequest } from '../graphApi';
-import { getUsersQuery } from './queries';
-import {
-  USER_LIST_REQUESTED,
-  userListReceived,
-} from './actions';
+import { changePasswordMutation, getUsersQuery } from './queries';
+import { USER_LIST_REQUESTED, CHANGE_USER_PASSWORD, userListReceived, userPasswordChanged } from './actions';
 
 const epic: Epic<any> = (actions$, state$) => {
   const requestUsers$ = actions$.pipe(
@@ -20,7 +17,18 @@ const epic: Epic<any> = (actions$, state$) => {
     )),
   );
   
-  return merge(requestUsers$);
+  const changeUserPassword$ = actions$.pipe(
+    ofType(CHANGE_USER_PASSWORD),
+    map(action => action.payload),
+    mergeMap(({oldPassword, newPassword}) => sendRequest(changePasswordMutation, {
+      oldPassword: oldPassword,
+      newPassword: newPassword
+    }).pipe(
+      map(({users}) => userPasswordChanged(users.changePassword))
+    )),
+  );
+  
+  return merge(requestUsers$, changeUserPassword$);
 };
 
 export default epic;

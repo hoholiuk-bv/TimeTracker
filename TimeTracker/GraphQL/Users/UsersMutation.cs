@@ -6,6 +6,7 @@ using GraphQL.Types;
 using TimeTracker.GraphQL.Users.Types;
 using DataLayer;
 using DataLayer.Models;
+using BusinessLayer;
 
 namespace TimeTracker.GraphQL.Users
 {
@@ -53,6 +54,30 @@ namespace TimeTracker.GraphQL.Users
                         UpdateDayOffApprovals(user.Id, user.ApproverIds);
 
                     return updatedUser;
+                });
+
+            Field<BooleanGraphType>("ChangePassword")
+                .Description("Change user password")
+                .Argument<StringGraphType>("oldPassword")
+                .Argument<StringGraphType>("newPassword")
+                .Resolve(context =>
+                {
+                    var oldPassword = context.GetArgument<string>("oldPassword");
+                    var newPassword = context.GetArgument<string>("newPassword");
+                    var userContext = context.RequestServices!.GetRequiredService<UserContext>();
+                    var user = userProvider.GetById(userContext.User.Id.ToString());
+                    var hash = authenticationService.GenerateHash(oldPassword, user.Salt);
+
+                    if (user.Password == hash)
+                    {
+                        var salt = authenticationService.GenerateSalt();
+                        var password = authenticationService.GenerateHash(newPassword, salt);
+                        bool isPasswordChanged = userProvider.ChangePassword(user.Id, password, salt) > 0;
+
+                        return isPasswordChanged;
+                    }
+
+                    return false;
                 });
         }
 
