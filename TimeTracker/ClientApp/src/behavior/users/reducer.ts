@@ -7,11 +7,14 @@ import {
   USER_LIST_SORTING_CHANGED, UserListSortingChangedAction,
   USER_LIST_FILTERING_CHANGED, UserListFilteringChangedAction,
   USER_LIST_PAGING_CHANGED, UserListPagingChangedAction,
+  USER_PASSWORD_CHANGED, UserPasswordChangedAction,
+  RESET_PASSWORD_CHANGE_STATUS, ResetPasswordChangeStatusAction,
 } from './actions';
 
 export type UsersState = {
   list: User[] | null;
   totalUsersCount: number;
+  isPasswordChanged: boolean | null;
   paging: PagingInput;
   sorting: SortingInput;
   filtering: FilterType;
@@ -20,6 +23,7 @@ export type UsersState = {
 const initialState: UsersState = {
   list: null,
   totalUsersCount: 0,
+  isPasswordChanged: null,
   paging: {
     pageSize: 10,
     pageNumber: 1
@@ -42,6 +46,8 @@ export default createReducer(initialState, {
   [USER_LIST_SORTING_CHANGED]: onUserListSortingChanged,
   [USER_LIST_FILTERING_CHANGED]: onUserListFilteringChanged,
   [USER_LIST_PAGING_CHANGED]: onUserListPagingChanged,
+  [USER_PASSWORD_CHANGED]: onUserPasswordChanged,
+  [RESET_PASSWORD_CHANGE_STATUS]: onPasswordChangeStatusReset,
 });
 
 function onUsersReceived(state: UsersState, action: UserListReceivedAction): UsersState {
@@ -64,4 +70,13 @@ function onUserListFilteringChanged(state: UsersState, action: UserListFiltering
 function onUserListPagingChanged(state: UsersState, action: UserListPagingChangedAction) {
   const { paging } = action.payload;
   return { ...state, paging };
+}
+
+function onUserPasswordChanged(state: UsersState, action: UserPasswordChangedAction) {
+  const { isPasswordChanged } = action.payload;
+  return { ...state, isPasswordChanged };
+}
+
+function onPasswordChangeStatusReset(state: UsersState, action: ResetPasswordChangeStatusAction) {
+  return { ...state, isPasswordChanged: null };
 }

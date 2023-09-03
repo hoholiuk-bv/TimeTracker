@@ -8,6 +8,7 @@ using DataLayer;
 using DataLayer.Models;
 using BusinessLayer.Email;
 using System.Security.Claims;
+using BusinessLayer;
 
 namespace TimeTracker.GraphQL.Users
 {
@@ -17,17 +18,20 @@ namespace TimeTracker.GraphQL.Users
         private readonly IJwtTokenService jwtTokenService;
         private readonly IDaysOffProvider daysOffProvider;
         private readonly IEmailSender emailSender;
+        private readonly IAuthenticationService authenticationService;
 
         public UsersMutation(
             IUserProvider userProvider,
             IDaysOffProvider daysOffProvider,
             IJwtTokenService jwtTokenService,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IAuthenticationService authenticationService)
         {
             this.userProvider = userProvider;
             this.jwtTokenService = jwtTokenService;
             this.daysOffProvider = daysOffProvider;
             this.emailSender = emailSender;
+            this.authenticationService = authenticationService;
 
             Field<BooleanGraphType>("UserCreation")
                 .Description("Create a new user")
@@ -62,6 +66,31 @@ namespace TimeTracker.GraphQL.Users
 
                     return updatedUser;
                 });
+
+            Field<BooleanGraphType>("ChangePassword")
+                .Description("Change user password")
+                .Argument<StringGraphType>("oldPassword")
+                .Argument<StringGraphType>("newPassword")
+                .Resolve(context =>
+                {
+                    var oldPassword = context.GetArgument<string>("oldPassword");
+                    var newPassword = context.GetArgument<string>("newPassword");
+                    var userContext = context.RequestServices!.GetRequiredService<UserContext>();
+                    var user = userProvider.GetById(userContext.User.Id.ToString());
+                    var hash = authenticationService.GenerateHash(oldPassword, user.Salt);
+
+                    if (user.Password == hash)
+                    {
+                        var salt = authenticationService.GenerateSalt();
+                        var password = authenticationService.GenerateHash(newPassword, salt);
+                        bool isPasswordChanged = userProvider.ChangePassword(user.Id, password, salt) > 0;
+
+                        return isPasswordChanged;
+                    }
+
+                    return false;
+                });
+            this.authenticationService = authenticationService;
         }
 
         private bool ResolveUserCreation(IResolveFieldContext context)

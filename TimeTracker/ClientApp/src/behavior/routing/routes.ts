@@ -1,4 +1,5 @@
 export const routes = {
+  userCabinet: '/user-cabinet',
   login: '/login',
   users: {
     list: '/users',

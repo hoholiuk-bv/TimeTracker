@@ -20,8 +20,10 @@ export const WorktimeRow = ({ worktimeRecord }: Props) => {
 
   const timeDifferenceInMilliseconds = finishDate.getTime() - startDate.getTime();
   const timeDifferenceInMinutes = Math.floor(timeDifferenceInMilliseconds / (1000 * 60));
+  const timeDifferenceInSeconds = Math.floor(timeDifferenceInMilliseconds / 1000);
   const workedHours = Math.floor(timeDifferenceInMinutes / 60);
   const workedMinutes = timeDifferenceInMinutes % 60;
+  const workedSeconds = timeDifferenceInSeconds % 60;
 
   return (
     <>
@@ -35,7 +37,7 @@ export const WorktimeRow = ({ worktimeRecord }: Props) => {
         <td>
           {workedHours > 0 && `${workedHours}h `}
           {workedMinutes > 0 && `${workedMinutes}m `}
-          {workedHours === 0 && workedMinutes === 0 && 'no hours yet'}
+          {workedHours === 0 && workedMinutes === 0 && `${workedSeconds}s `}
         </td>
         <td>
           {worktimeRecord.lastEditorName}

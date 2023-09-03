@@ -66,7 +66,7 @@ export const WorktimeFilter = ({ userId } : Props) => {
             <Col className="d-flex align-items-end justify-content-between">
               <button className="btn btn-primary" type="submit">Apply</button>
               {isExportButtonVisible && (
-                <button onClick={exportButtonClick} className="btn btn-primary" type="button">Export as xlsx</button>
+                <button onClick={exportButtonClick} className="btn btn-primary" type="button">Export to Excel</button>
               )}
             </Col>
           </Row>

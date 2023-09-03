@@ -50,6 +50,9 @@ namespace DataLayer.Providers
         public List<Guid> GetAllFullTimerIds()
             => Query<Guid>(Queries.Users.GetAllFullTimerIds);
 
+        public int ChangePassword(Guid userId, string newPassword, string salt)
+            => Execute(Queries.Users.ChangePassword, new { Id = userId, Password = newPassword, Salt = salt });
+
         public void ActivatePassword(string userId, string password, string salt)
             => Execute(Queries.Users.ActivatePassword, new { Id = userId, Password = password, Salt = salt });
     }

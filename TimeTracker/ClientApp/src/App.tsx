@@ -16,6 +16,7 @@ import { UserDetailsPage } from './components/userInfo/details/UserDetailsPage';
 import { UserDaysOffPage } from './components/userInfo/daysOff/UserDaysOffPage';
 import { CalendarSettingsPage } from './components/calendarSettings';
 import { UserWorktimePage } from './components/userInfo/worktime/UserWorktimePage';
+import { UserCabinetPage } from './components/userCabinet/UserCabinetPage';
 import { CreatePasswordPage } from './components/profile/CreatePasswordPage';
 
 const App = () => {
@@ -27,6 +28,14 @@ const App = () => {
           <Route path={routes.createpassword} element={<CreatePasswordPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to={routes.worktime} />} />
+            <Route
+              path={routes.userCabinet}
+              element={
+                <Page>
+                  <UserCabinetPage />
+                </Page>
+              }
+            />
             <Route
               path={routes.users.creation}
               element={

@@ -136,19 +136,20 @@ public class WorktimeQuery : ObjectGraphType
             {
                 string dateFormat = "[$-en-US]m/d/yy h:mm AM/PM;@";
                 string timeFormat = @"hh\:mm";
+                int rowIndex = i + 2;
 
-                worksheet.Cells[$"A{i + 2}"].Style.Numberformat.Format = dateFormat;
-                worksheet.Cells[$"A{i + 2}"].Value = sortedWorktimeRecords[i].StartDate;
+                worksheet.Cells[$"A{rowIndex}"].Style.Numberformat.Format = dateFormat;
+                worksheet.Cells[$"A{rowIndex}"].Value = sortedWorktimeRecords[i].StartDate;
 
-                worksheet.Cells[$"B{i + 2}"].Style.Numberformat.Format = dateFormat;
-                worksheet.Cells[$"B{i + 2}"].Value = sortedWorktimeRecords[i].FinishDate;
+                worksheet.Cells[$"B{rowIndex}"].Style.Numberformat.Format = dateFormat;
+                worksheet.Cells[$"B{rowIndex}"].Value = sortedWorktimeRecords[i].FinishDate;
 
-                worksheet.Cells[$"C{i + 2}"].Style.Numberformat.Format = timeFormat;
-                worksheet.Cells[$"C{i + 2}"].Value = sortedWorktimeRecords[i].FinishDate.Value - sortedWorktimeRecords[i].StartDate;
+                worksheet.Cells[$"C{rowIndex}"].Style.Numberformat.Format = timeFormat;
+                worksheet.Cells[$"C{rowIndex}"].Value = sortedWorktimeRecords[i].FinishDate.Value - sortedWorktimeRecords[i].StartDate;
 
                 bool hasLastEditor = sortedWorktimeRecords[i].LastEditorId != null;
                 User? lastEditor = hasLastEditor ? userProvider.GetById(sortedWorktimeRecords[i].LastEditorId.ToString()) : null;
-                worksheet.Cells[$"D{i + 2}"].Value = hasLastEditor ? $"{lastEditor.Name} {lastEditor.Surname}" : "System";
+                worksheet.Cells[$"D{rowIndex}"].Value = hasLastEditor ? $"{lastEditor.Name} {lastEditor.Surname}" : "System";
             }
 
             // Column width
@@ -184,7 +185,7 @@ public class WorktimeQuery : ObjectGraphType
             var worksheet = package.Workbook.Worksheets.Add("Worktime Stats");
 
             // Formatting for headers
-            var headerStyle = worksheet.Cells["A1:I2"].Style;
+            var headerStyle = worksheet.Cells["A1:G1"].Style;
             headerStyle.Font.Size = 14;
             headerStyle.Font.Bold = true;
             headerStyle.Fill.PatternType = ExcelFillStyle.Solid;
@@ -197,7 +198,7 @@ public class WorktimeQuery : ObjectGraphType
             headerStyle.VerticalAlignment = ExcelVerticalAlignment.Center;
 
             // Formatting for data
-            var dataStyle = worksheet.Cells[$"A3:I{users.Count() + 2}"].Style;
+            var dataStyle = worksheet.Cells[$"A2:G{users.Count() + 1}"].Style;
             dataStyle.Font.Size = 14;
             dataStyle.Font.Bold = false;
             dataStyle.Fill.PatternType = ExcelFillStyle.Solid;
@@ -213,62 +214,34 @@ public class WorktimeQuery : ObjectGraphType
             worksheet.Cells["B1"].Value = "Email";
             worksheet.Cells["C1"].Value = "Year";
             worksheet.Cells["D1"].Value = "Month";
-            worksheet.Cells["E1"].Value = "Total Work Time";
-            worksheet.Cells["E2"].Value = "Hours";
-            worksheet.Cells["F2"].Value = "Minutes";
-            worksheet.Cells["G1"].Value = "Planned Work Time";
-            worksheet.Cells["G2"].Value = "Hours";
-            worksheet.Cells["H2"].Value = "Minutes";
-            worksheet.Cells["I1"].Value = "Percentage of worked time";
+            worksheet.Cells["E1"].Value = "Actual Work Time";
+            worksheet.Cells["F1"].Value = "Planned Work Time";
+            worksheet.Cells["G1"].Value = "Percentage of Worked Time";
 
             // Data
             for (int i = 0; i < users.Count; i++)
             {
-
                 WorktimeFilter worktimeFilter = new WorktimeFilter {
                     UserId = users[i].Id,
                     Year = DateTime.Now.Year,
                     Month = DateTime.Now.Month,
                 };
 
+                int rowIndex = i + 2;
                 var worktimeStats = GetWorktimeStats(worktimeFilter);
 
-                int totalWorktimeHours = (int)worktimeStats.TotalWorkTimeMonthly;
-                int totalWorktimeMinutes = (int)((worktimeStats.TotalWorkTimeMonthly - totalWorktimeHours) * 100);
-
-                int plannedWorktimeHours = (int)worktimeStats.PlannedWorkTimeMonthly;
-                int plannedWorktimeMinutes = (int)((worktimeStats.PlannedWorkTimeMonthly - plannedWorktimeHours) * 100);
-
-                worksheet.Cells[$"A{i + 3}"].Value = $"{users[i].Name} {users[i].Surname}";
-                worksheet.Cells[$"B{i + 3}"].Value = users[i].Email;
-                worksheet.Cells[$"C{i + 3}"].Value = worktimeFilter.Year;
-                worksheet.Cells[$"D{i + 3}"].Value = culture.DateTimeFormat.GetMonthName(worktimeFilter.Month);
-                worksheet.Cells[$"E{i + 3}"].Value = totalWorktimeHours;
-                worksheet.Cells[$"F{i + 3}"].Value = totalWorktimeMinutes;
-                worksheet.Cells[$"G{i + 3}"].Value = plannedWorktimeHours;
-                worksheet.Cells[$"H{i + 3}"].Value = plannedWorktimeMinutes;
-                worksheet.Cells[$"H{i + 3}"].Value = plannedWorktimeMinutes;
-
-                worksheet.Cells[$"I{i + 3}"].Formula = $"=((E{i + 3}*60+F{i + 3})/(G{i + 3}*60+H{i + 3}))";
-                worksheet.Cells[$"I{i + 3}"].Style.Numberformat.Format = "0.00%";
+                worksheet.Cells[$"A{rowIndex}"].Value = $"{users[i].Name} {users[i].Surname}";
+                worksheet.Cells[$"B{rowIndex}"].Value = users[i].Email;
+                worksheet.Cells[$"C{rowIndex}"].Value = worktimeFilter.Year;
+                worksheet.Cells[$"D{rowIndex}"].Value = culture.DateTimeFormat.GetMonthName(worktimeFilter.Month);
+                worksheet.Cells[$"E{rowIndex}"].Value = CalculateDecimalTime(worktimeStats.TotalWorkTimeMonthly);
+                worksheet.Cells[$"F{rowIndex}"].Value = CalculateDecimalTime(worktimeStats.PlannedWorkTimeMonthly);
+                worksheet.Cells[$"G{rowIndex}"].Formula = $"=E{rowIndex}/F{rowIndex}";
+                worksheet.Cells[$"G{rowIndex}"].Style.Numberformat.Format = "0.00%";
             }
-
-            // Merging cells
-            worksheet.Cells["A1:A2"].Merge = true;
-            worksheet.Cells["B1:B2"].Merge = true;
-            worksheet.Cells["C1:C2"].Merge = true;
-            worksheet.Cells["D1:D2"].Merge = true;
-            worksheet.Cells["E1:F1"].Merge = true;
-            worksheet.Cells["G1:H1"].Merge = true;
-            worksheet.Cells["I1:I2"].Merge = true;
 
             // Column width
             worksheet.Cells.AutoFitColumns();
-            worksheet.Column(5).Width = 15;
-            worksheet.Column(6).Width = 15;
-            worksheet.Column(7).Width = 15;
-            worksheet.Column(8).Width = 15;
-            worksheet.Column(9).Width = 40;
 
             // Saving the file
             var tempFileName = $"{Path.GetFileNameWithoutExtension(Path.GetTempFileName())}-WorktimeStats.xlsx";
@@ -310,5 +283,12 @@ public class WorktimeQuery : ObjectGraphType
         };
 
         return worktimeStats;
+    }
+
+    private double CalculateDecimalTime(decimal time)
+    {
+        int hours = (int)time;
+        int minutes = (int)((time - hours) * 100);
+        return Math.Round(hours + minutes / 60.0, 2);
     }
 }

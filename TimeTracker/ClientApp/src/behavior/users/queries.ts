@@ -25,3 +25,16 @@ query(
     )
   }
 }`;
+
+export const changePasswordMutation = `
+mutation(
+  $oldPassword: String!
+  $newPassword: String!
+) {
+  users {
+    changePassword(
+      oldPassword: $oldPassword
+      newPassword: $newPassword
+    )
+  }
+}`;
