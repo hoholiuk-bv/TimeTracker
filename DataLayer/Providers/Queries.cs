@@ -124,6 +124,9 @@ namespace DataLayer.Providers
                 SET Password = @Password, Salt = @Salt
                 WHERE Id = @Id
             ";
+
+            public const string ActivatePassword = @"UPDATE Users 
+                                                       SET Password = @Password, Salt = @Salt WHERE Id = @Id;";
         }
 
         public static class DaysOff

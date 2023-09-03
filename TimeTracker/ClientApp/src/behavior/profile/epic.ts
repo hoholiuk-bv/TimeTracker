@@ -9,10 +9,11 @@ import {
   receiveFirstUserExistence,
   authenticate as authenticateUser,
   receiveLogin,
+  CREATE_PASSWORD_REQUESTED,
 } from './actions';
 import { Epic, ofType } from 'redux-observable';
 import { sendRequest } from '../graphApi';
-import { loginMutation, registerMutation, firstUserExistenceQuery, authencationMutation, logoutMutation } from './queries';
+import { loginMutation, registerMutation, firstUserExistenceQuery, authencationMutation, logoutMutation, activateAccountMutation } from './queries';
 
 const epic: Epic<ProfileActions | any> = (actions$, state$) => {
   const login$ = actions$.pipe(
@@ -67,7 +68,22 @@ const epic: Epic<ProfileActions | any> = (actions$, state$) => {
     mergeMap(() => sendRequest(logoutMutation)),
   );
 
-  return merge(login$, register$, requestFirstUserExistence$, requestAuthentication$, logout$);
+  const createPassword$ = actions$.pipe(
+    ofType(CREATE_PASSWORD_REQUESTED),
+    map(action => action.payload),
+    switchMap(({ createPasswordInput }) => sendRequest(activateAccountMutation, { input: createPasswordInput }).pipe(
+      mergeMap(({ profile: { activateAccount } }) => {
+        const loginFailed = !activateAccount;
+        const actions: ProfileActions[] = [receiveLogin(loginFailed)];
+        if (!loginFailed)
+          actions.push(authenticateUser(activateAccount.userInfo, activateAccount.token));
+
+        return actions;
+      })
+    ))
+  );
+
+  return merge(login$, register$, requestFirstUserExistence$, requestAuthentication$, logout$, createPassword$);
 };
 
 export default epic;

@@ -26,5 +26,7 @@ namespace DataLayer.Providers
         List<Guid> GetAllFullTimerIds();
 
         int ChangePassword(Guid userId, string newPassword, string salt);
+
+        void ActivatePassword(string userId, string password, string salt);
     }
 }

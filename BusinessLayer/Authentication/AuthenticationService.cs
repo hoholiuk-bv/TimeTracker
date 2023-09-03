@@ -1,4 +1,5 @@
 ﻿using DataLayer.Entities;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -20,7 +21,7 @@ namespace BusinessLayer.Authentication
             token = null;
 
             if (authenticated)
-                token = tokenService.GetToken(user.Id.ToString());
+                token = tokenService.GenerateToken(new Claim[] { new Claim("id", user.Id.ToString()) }, DateTime.UtcNow.AddMinutes(120));
 
             return authenticated;
         }

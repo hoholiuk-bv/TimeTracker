@@ -12,7 +12,7 @@ public class CreateUserInputType : InputObjectGraphType<CreateUserInput>
         Field(t => t.Name);
         Field(t => t.Surname);
         Field(t => t.Email);
-        Field(t => t.Password);
+        Field(t => t.Password, nullable: true);
         Field(t => t.EmploymentDate);
         Field(t => t.IsAdmin, nullable: true);
         Field(t => t.EmploymentType);
@@ -30,7 +30,7 @@ public class CreateUserInput
 
     public string Email { get; set; } = null!;
 
-    public string Password { get; set; } = null!;
+    public string? Password { get; set; }
 
     public string EmploymentDate { get; set; } = null!;
 

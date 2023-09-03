@@ -40,3 +40,13 @@ mutation {
     logOut
   }
 }`;
+
+export const activateAccountMutation = `
+mutation($input: CreatePasswordInput!) {
+  profile {
+    activateAccount(input: $input){
+      ${authenticationSegment}
+    }
+  }
+}
+`;
