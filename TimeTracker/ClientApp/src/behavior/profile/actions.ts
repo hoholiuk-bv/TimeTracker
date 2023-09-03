@@ -1,4 +1,4 @@
-import type { LoginInput, RegisterInput, UserInfo } from '../profile/types';
+import type { CreatePasswordInput, LoginInput, RegisterInput, UserInfo } from '../profile/types';
 
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED' as const;
 export const requestLogin = (loginInput: LoginInput) => ({
@@ -45,16 +45,25 @@ export const logout = () => ({
   type: LOGOUT,
 });
 
+export const CREATE_PASSWORD_REQUESTED = 'CREATE_PASSWORD_REQUESTED' as const;
+export const requestPasswordCreation = (createPasswordInput: CreatePasswordInput) => ({
+  type: CREATE_PASSWORD_REQUESTED,
+  payload: { createPasswordInput }
+});
+
+
 export type LoginRequestAction = ReturnType<typeof requestLogin>;
 export type LoginReceiveAction = ReturnType<typeof receiveLogin>;
 export type AuthenticateAction = ReturnType<typeof authenticate>;
 export type RegisterAction = ReturnType<typeof register>;
 export type FirstUserExistenceReceiveAction = ReturnType<typeof receiveFirstUserExistence>;
 export type LogoutAction = ReturnType<typeof logout>;
+export type CreatePasswordAction = ReturnType<typeof requestPasswordCreation>;
 export type ProfileActions = ReturnType<
   | typeof requestLogin
   | typeof receiveLogin
   | typeof register
   | typeof receiveFirstUserExistence
   | typeof authenticate
-  | typeof logout>
+  | typeof logout
+  | typeof requestPasswordCreation>

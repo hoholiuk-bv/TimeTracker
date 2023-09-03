@@ -6,20 +6,28 @@ using GraphQL.Types;
 using TimeTracker.GraphQL.Users.Types;
 using DataLayer;
 using DataLayer.Models;
+using BusinessLayer.Email;
+using System.Security.Claims;
 
 namespace TimeTracker.GraphQL.Users
 {
     public class UsersMutation : ObjectGraphType
     {
         private readonly IUserProvider userProvider;
-        private readonly IAuthenticationService authenticationService;
+        private readonly IJwtTokenService jwtTokenService;
         private readonly IDaysOffProvider daysOffProvider;
+        private readonly IEmailSender emailSender;
 
-        public UsersMutation(IUserProvider userProvider, IDaysOffProvider daysOffProvider, IAuthenticationService authenticationService)
+        public UsersMutation(
+            IUserProvider userProvider,
+            IDaysOffProvider daysOffProvider,
+            IJwtTokenService jwtTokenService,
+            IEmailSender emailSender)
         {
             this.userProvider = userProvider;
-            this.authenticationService = authenticationService;
+            this.jwtTokenService = jwtTokenService;
             this.daysOffProvider = daysOffProvider;
+            this.emailSender = emailSender;
 
             Field<BooleanGraphType>("UserCreation")
                 .Description("Create a new user")
@@ -59,26 +67,37 @@ namespace TimeTracker.GraphQL.Users
         private bool ResolveUserCreation(IResolveFieldContext context)
         {
             var input = context.GetArgument<CreateUserInput>("input");
-            var salt = authenticationService.GenerateSalt();
+            //var salt = authenticationService.GenerateSalt();
             var user = new User()
             {
                 Id = Guid.NewGuid(),
                 IsAdmin = input.IsAdmin,
                 EmploymentDate = DateTime.Parse(input.EmploymentDate),
-                Salt = salt,
+                Salt = null,
                 EmploymentType = input.EmploymentType,
                 Name = input.Name,
                 Surname = input.Surname,
                 Email = input.Email,
-                Password = authenticationService.GenerateHash(input.Password, salt),
+                Password = null,
                 WorkingHoursCount = input.EmploymentType == Constants.EmploymentType.FullTime ? Constants.MaxWorkingHours : input.WorkingHoursCount,
                 ApproverIds = input.ApproversIdList,
                 DaysOffCount = input.DaysOffCount,
+                IsActive = false
             };
 
             userProvider.Create(user);
+            SendConfirmationEmail(user);
 
             return true;
+        }
+
+        private void SendConfirmationEmail(User user)
+        {
+            var token = jwtTokenService.GenerateToken(new Claim[] { new Claim("id", user.Id.ToString())}, DateTime.UtcNow.AddDays(1));
+            var message = new Message(new string[] { user.Email }, "Activate your account",
+            $"Hi, {user.Name}. Click <a href=\"http://localhost:44477/createpassword?token={token}\">here</a> to complete your account activation.");
+
+            emailSender.SendEmail(message);
         }
 
         private void UpdateDayOffApprovals(Guid userId, List<Guid> newApproverIds)

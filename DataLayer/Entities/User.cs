@@ -12,9 +12,9 @@ namespace DataLayer.Entities
 
         public string Email { get; set; } = null!;
 
-        public string Password { get; set; } = null!;
+        public string? Password { get; set; }
 
-        public string Salt { get; set; } = null!;
+        public string? Salt { get; set; }
 
         public bool IsAdmin { get; set; }
 

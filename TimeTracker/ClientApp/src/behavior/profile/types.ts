@@ -3,6 +3,11 @@ export type LoginInput = {
   password: string | null;
 }
 
+export type CreatePasswordInput = {
+  password: string | null;
+  token: string;
+}
+
 export type RegisterInput = {
   name: string | null;
   surname: string | null;

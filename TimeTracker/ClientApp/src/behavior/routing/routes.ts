@@ -7,6 +7,7 @@ export const routes = {
     daysoff: '/users/:id/daysoff',
     worktime: '/users/:id/worktime',
   },
+  createpassword: '/createpassword',
   worktime: '/worktime',
   daysoff: '/daysoff',
   approvals: '/approvals',

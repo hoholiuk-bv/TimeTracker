@@ -24,5 +24,7 @@ namespace DataLayer.Providers
         void UpdateDaysOffCount(Guid userId, int daysOffCount);
 
         List<Guid> GetAllFullTimerIds();
+
+        void ActivatePassword(string userId, string password, string salt);
     }
 }

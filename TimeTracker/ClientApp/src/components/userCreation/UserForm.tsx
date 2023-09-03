@@ -93,14 +93,6 @@ export const UserForm = ({ properties }: Props) => {
               </Col>
             </Row>
             <Row>
-              {!isFormForUpdate &&
-              <Col>
-                <FormGroup>
-                  <FormLabel htmlFor='password'>Password</FormLabel>
-                  <Field type="password" className="form-control" name="password" validate={required} />
-                  <ValidationMessage fieldName='password' />
-                </FormGroup>
-              </Col>}
               {values.employmentType && values.employmentType === employmentType.PartTime && (
                 <>
                   <Col>

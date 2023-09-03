@@ -5,7 +5,10 @@ using DataLayer.Entities;
 using DataLayer.Providers;
 using GraphQL;
 using GraphQL.Types;
+using Microsoft.AspNetCore.Http;
+using System.IdentityModel.Tokens.Jwt;
 using TimeTracker.GraphQL.Profile.Types;
+using static DataLayer.Providers.Queries;
 
 namespace TimeTracker.GraphQL.Profile
 {
@@ -13,15 +16,18 @@ namespace TimeTracker.GraphQL.Profile
     {
         private readonly IUserProvider userProvider;
         private readonly IAuthenticationService authenticationService;
+        private readonly IJwtTokenService jwtTokenService;
         private readonly IHttpContextAccessor httpContextAccessor;
 
         public ProfileMutation(IUserProvider userProvider,
             IAuthenticationService authenticationService,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IJwtTokenService jwtTokenService)
         {
             this.userProvider = userProvider;
             this.authenticationService = authenticationService;
             this.httpContextAccessor = httpContextAccessor;
+            this.jwtTokenService = jwtTokenService;
 
             Field<AuthenticationResultType>("Login")
                 .Description("Authenticates user. Returns authentication info in case of success.")
@@ -45,6 +51,45 @@ namespace TimeTracker.GraphQL.Profile
                    httpContextAccessor.HttpContext!.Response.Headers.Remove("Authorization");
                    return true;
                });
+
+            Field<AuthenticationResultType>("ActivateAccount")
+                .Description("Activates user account.")
+                .Argument<NonNullGraphType<CreatePasswordInputType>>("input")
+                .Resolve(context =>
+                {
+                    var input = context.GetArgument<CreatePasswordInput>("input");
+                    var httpContext = httpContextAccessor.HttpContext;
+                    JwtSecurityToken? jwtSecurityToken = null;
+                    if (!jwtTokenService.ValidateToken(input.Token, out jwtSecurityToken))
+                        return null;
+
+                    var userId = jwtSecurityToken!.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+                    if(userId == null)
+                        return null;
+
+                    var user = userProvider.GetById(userId);
+                    if (user == null)
+                        return null;
+
+                    var salt = authenticationService.GenerateSalt();
+                    user.Salt = salt;
+                    user.Password = authenticationService.GenerateHash(input.Password, salt);
+                    userProvider.ActivatePassword(userId, user.Password, salt);
+
+                    if (authenticationService.Authenticate(user, input.Password, out var token))
+                    {
+                        var userContext = context.RequestServices!.GetRequiredService<UserContext>();
+                        userContext.User = user;
+
+                        return new AuthenticationResult()
+                        {
+                            UserInfo = InitializeUserInfo(userContext),
+                            Token = token!,
+                        };
+                    }
+
+                    return null;
+                });
         }
 
         private AuthenticationResult? ResolveFirstUserRegister(IResolveFieldContext context)

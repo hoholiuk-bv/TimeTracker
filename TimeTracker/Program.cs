@@ -22,6 +22,7 @@ using TimeTracker.GraphQL.Approvals;
 using TimeTracker.GraphQL.Calendar;
 using TimeTracker.GraphQL.Calendar.Types;
 using TimeTracker.Services;
+using BusinessLayer.Email;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +57,12 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+var emailConfig = builder.Configuration
+        .GetSection("EmailConfiguration")
+        .Get<EmailConfiguration>();
+
+builder.Services.AddSingleton(emailConfig);
+
 builder.Services.AddAuthorization();
 // Add services to the container.
 
@@ -70,6 +77,7 @@ builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<UserContext>();
 builder.Services.AddSingleton<PermissionSet>();
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
 //GraphQL
 
@@ -114,6 +122,7 @@ builder.Services.AddTransient<CalendarRulesQuery>();
 builder.Services.AddTransient<CalendarRulesMutation>();
 builder.Services.AddTransient<CalendarRuleType>();
 builder.Services.AddTransient<CalendarRuleInputType>();
+builder.Services.AddTransient<CreatePasswordInputType>();
 builder.Services.AddGraphQL(a => a.AddSchema<TimeTrackerSchema>().AddSystemTextJson().AddAuthorizationRule());
 
 builder.Services.AddHostedService<DailyActionHostedService>();
