@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Link, Navigate, Outlet } from 'react-router-dom';
 import { requestAuthentication } from '../../behavior/profile';
 import { routes } from '../../behavior/routing';
 import { RootState } from '../../behavior/store';
@@ -31,7 +31,7 @@ export const Layout = () => {
     <>
       <div className="text-end top-panel">
         <Container className='display-flex flex-row top-panel-container align-items-center'>
-          <span className="header-name align-middle ">Hi, {userInfo?.name}</span>
+          <span className="header-name align-middle ">Hi, <Link to={routes.userCabinet} className="btn-link">{userInfo?.name}</Link></span>
           <Button variant="link" onClick={handleLogoutButtonClick}>Logout</Button>
         </Container>
       </div>
