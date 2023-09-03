@@ -64,11 +64,11 @@ namespace TimeTracker.GraphQL.Profile
                         return null;
 
                     var userId = jwtSecurityToken!.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
-                    if(userId == null)
+                    if (userId == null)
                         return null;
 
                     var user = userProvider.GetById(userId);
-                    if (user == null)
+                    if (user == null || user.Password != null)
                         return null;
 
                     var salt = authenticationService.GenerateSalt();
