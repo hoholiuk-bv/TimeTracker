@@ -31,7 +31,7 @@ export const Layout = () => {
     <>
       <div className="text-end top-panel">
         <Container className='display-flex flex-row top-panel-container align-items-center'>
-          <span className="header-name align-middle ">Hi, <Link to={routes.userCabinet} className="btn-link">{userInfo?.name}</Link></span>
+          <span className="header-name align-middle ">Hi, <Link to={routes.userCabinet} className="text-dark">{userInfo?.name}</Link></span>
           <Button variant="link" onClick={handleLogoutButtonClick}>Logout</Button>
         </Container>
       </div>
