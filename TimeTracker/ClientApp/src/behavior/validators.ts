@@ -49,7 +49,15 @@ export function worktimeYear(value: any) {
   return error;
 }
 
-export function validate(validators: Validator[]) : FieldValidator {
+export function confirmationPassword(value: any, { valueToCompare }: ConfirmationPassword) {
+  let error;
+  if (value !== valueToCompare) {
+    error = 'Passwords are not equal!';
+  }
+  return error;
+}
+
+export function validate(validators: Validator[]): FieldValidator {
   return (value: any) => {
     let error;
 
@@ -71,4 +79,8 @@ type Validator = {
 
 type MaxLengthValidatorAttributes = {
   length: number;
+}
+
+type ConfirmationPassword = {
+  valueToCompare: string;
 }

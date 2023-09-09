@@ -5,6 +5,7 @@ export type LoginInput = {
 
 export type CreatePasswordInput = {
   password: string | null;
+  confirmPassword: string | null;
   token: string;
 }
 
