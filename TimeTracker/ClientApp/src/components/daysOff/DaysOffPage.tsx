@@ -3,7 +3,12 @@ import { Button } from 'react-bootstrap';
 import { DayOffList } from './DayOffList';
 import { NewRequestModal } from './NewRequestModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeDaysOffListFilter, changeDaysOffListPaging, requestDaysOffCount, requestDaysOffList } from '../../behavior/daysOff/actions';
+import {
+  changeDaysOffListFilter,
+  requestDaysOffCount,
+  requestDaysOffList,
+  resetDaysOffData
+} from '../../behavior/daysOff/actions';
 import { RootState } from '../../behavior/store';
 
 export const DaysOffPage = () => {
@@ -12,6 +17,10 @@ export const DaysOffPage = () => {
   const { list, sorting, paging, filter, daysOffCount } = useSelector((state: RootState) => state.daysOff);
   const currentUserId = useSelector((state: RootState) => state.profile.userInfo?.id);
 
+  useEffect(() => {
+    dispatch(resetDaysOffData());
+  }, [dispatch]);
+  
   useEffect(() => {
     if (!currentUserId || filter.userId === currentUserId)
       return;

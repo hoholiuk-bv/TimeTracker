@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../behavior/store';
-import { changeDaysOffListFilter, requestDaysOffCount, requestDaysOffList } from '../../../behavior/daysOff/actions';
+import {
+  changeDaysOffListFilter,
+  requestDaysOffCount,
+  requestDaysOffList,
+  resetDaysOffData
+} from '../../../behavior/daysOff/actions';
 import { DayOffList } from '../../daysOff/DayOffList';
 import { Button } from 'react-bootstrap';
 import { DayOffModal } from './DayOffModal';
@@ -11,6 +16,10 @@ export const UserDaysOffPage = () => {
   const [showDayOffModal, setShowDayOffModal] = useState(false);
   const { list, sorting, paging, filter, daysOffCount } = useSelector((state: RootState) => state.daysOff);
   const { user } = useSelector((state: RootState) => state.userDetails);
+
+  useEffect(() => {
+    dispatch(resetDaysOffData());
+  }, [dispatch]);
 
   useEffect(() => {
     if (filter.userId !== user!.id) {

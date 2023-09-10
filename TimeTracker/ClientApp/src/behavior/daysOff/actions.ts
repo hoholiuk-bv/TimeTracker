@@ -55,6 +55,11 @@ export const receiveDaysOffCount = (daysOffCount: number) => ({
   payload: { daysOffCount }
 });
 
+export const RESET_DAYS_OFF_DATA = 'RESET_DAYS_OFF_DATA' as const;
+export const resetDaysOffData = () => ({
+  type: RESET_DAYS_OFF_DATA
+});
+
 export type DaysOffRequestAction = ReturnType<typeof requestDayOff>;
 export type DaysOffListRequestedAction = ReturnType<typeof requestDaysOffList>;
 export type DaysOffListReceivedAction = ReturnType<typeof receiveDaysOffList>;
@@ -64,6 +69,7 @@ export type DaysOffListFilterChangedAction = ReturnType<typeof changeDaysOffList
 export type DayOffDeleteAction = ReturnType<typeof deleteDayOffRequest>;
 export type DaysOffCountRequestedAction = ReturnType<typeof requestDaysOffCount>;
 export type DaysOffCountReceivedAction = ReturnType<typeof receiveDaysOffCount>;
+export type ResetDaysOffDataAction = ReturnType<typeof resetDaysOffData>;
 
 export type DayOffActions = ReturnType<
   | typeof requestDaysOffList
@@ -74,4 +80,5 @@ export type DayOffActions = ReturnType<
   | typeof changeDaysOffListFilter
   | typeof deleteDayOffRequest
   | typeof requestDaysOffCount
-  | typeof receiveDaysOffCount>
+  | typeof receiveDaysOffCount
+  | typeof resetDaysOffData>
