@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SortingInput, SortingOrder } from '../../behavior/common/types';
+import { SortingInput } from '../../behavior/common/types';
 import { changeDaysOffListPaging, changeDaysOffListSorting } from '../../behavior/daysOff/actions';
 import { DayOffItem } from './DayOffItem';
 import { SortIcon } from '../common/elements/SortIcon';
@@ -8,6 +8,7 @@ import { DayOffRequest } from '../../behavior/daysOff/types';
 import { Alert } from 'react-bootstrap';
 import { Pagination } from '../common/elements/Pagination';
 import { RootState } from '../../behavior/store';
+import { getNewSorting } from '../common/helpers';
 
 type Props = {
   requests: DayOffRequest[];
@@ -20,23 +21,8 @@ export const DayOffList = ({ requests, sorting }: Props) => {
   const dispatch = useDispatch();
 
   const handleSortingColumnClick = (fieldName: string) => {
-    let newSortingField = fieldName;
-    let newSortingOrder = sorting.sortingOrder;
-    if (fieldName !== sorting.sortingField) {
-      newSortingField = fieldName;
-      newSortingOrder = SortingOrder.Ascending;
-    }
-    else {
-      switch (sorting.sortingOrder) {
-        case SortingOrder.Ascending:
-          newSortingOrder = SortingOrder.Descending;
-          break;
-        case SortingOrder.Descending:
-          newSortingOrder = SortingOrder.Ascending;
-          newSortingField = defaultSortingField;
-      }
-    }
-    dispatch(changeDaysOffListSorting({ sortingOrder: newSortingOrder, sortingField: newSortingField }));
+    const newSorting = getNewSorting(sorting, fieldName, defaultSortingField);
+    dispatch(changeDaysOffListSorting(newSorting));
   };
 
   if (!requests.length)

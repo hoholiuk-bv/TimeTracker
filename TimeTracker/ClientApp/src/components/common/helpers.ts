@@ -1,6 +1,6 @@
 import { CalendarRulePeriod, CalendarRuleType } from '../../behavior/calendar/types';
-import { DayOffApprovalStatus } from '../../behavior/common/types';
-import {DayOffRequestReason} from '../../behavior/daysOff/types';
+import { DayOffApprovalStatus, SortingInput, SortingOrder } from '../../behavior/common/types';
+import { DayOffRequestReason } from '../../behavior/daysOff/types';
 
 export const DayOffRequestStatusTitle = {
   [DayOffApprovalStatus.Approved]: 'Approved',
@@ -36,4 +36,26 @@ export const CalendarRuleRecurringPeriodTitle = {
   [CalendarRulePeriod.Week]: 'Week',
   [CalendarRulePeriod.Month]: 'Month',
   [CalendarRulePeriod.Year]: 'Year',
+};
+
+export const getNewSorting = (sorting: SortingInput, fieldName: string, defaultSortingField: string): SortingInput => {
+  let newSortingField = fieldName;
+  let newSortingOrder = sorting.sortingOrder;
+
+  if (fieldName !== sorting.sortingField) {
+    newSortingField = fieldName;
+    newSortingOrder = SortingOrder.Ascending;
+  }
+  else {
+    switch (sorting.sortingOrder) {
+      case SortingOrder.Ascending:
+        newSortingOrder = SortingOrder.Descending;
+        break;
+      case SortingOrder.Descending:
+        newSortingOrder = SortingOrder.Ascending;
+        newSortingField = defaultSortingField;
+    }
+  }
+
+  return { sortingOrder: newSortingOrder, sortingField: newSortingField };
 };

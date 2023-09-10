@@ -4,8 +4,8 @@ import { RootState } from '../../behavior/store';
 import { WorktimeRow } from './WorktimeRow';
 import { Alert } from 'react-bootstrap';
 import { SortIcon } from '../common/elements/SortIcon';
-import { SortingOrder } from '../../behavior/common/types';
 import { changeWorktimeRecordsSorting } from '../../behavior/worktime/actions';
+import { getNewSorting } from '../common/helpers';
 
 export const WorktimeTable = () => {
   const dispatch = useDispatch();
@@ -25,24 +25,8 @@ export const WorktimeTable = () => {
     return (<Alert variant='secondary'>Worktime records not found.</Alert>);
 
   const handleSortingColumnClick = (fieldName: string) => {
-    let newSortingField = fieldName;
-    let newSortingOrder = sorting.sortingOrder;
-
-    if (fieldName !== sorting.sortingField) {
-      newSortingField = fieldName;
-      newSortingOrder = SortingOrder.Ascending;
-    } else {
-      switch (sorting.sortingOrder) {
-        case SortingOrder.Ascending:
-          newSortingOrder = SortingOrder.Descending;
-          break;
-        case SortingOrder.Descending:
-          newSortingOrder = SortingOrder.Ascending;
-          newSortingField = defaultSortingField;
-      }
-    }
-
-    dispatch(changeWorktimeRecordsSorting({ sortingOrder: newSortingOrder, sortingField: newSortingField }));
+    const newSorting = getNewSorting(sorting, fieldName, defaultSortingField);
+    dispatch(changeWorktimeRecordsSorting(newSorting));
   };
 
   return (

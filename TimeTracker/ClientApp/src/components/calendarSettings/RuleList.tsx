@@ -1,11 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { SortingInput, SortingOrder } from '../../behavior/common/types';
+import { SortingInput } from '../../behavior/common/types';
 import { SortIcon } from '../common/elements/SortIcon';
 import { Alert } from 'react-bootstrap';
 import { CalendarRule } from '../../behavior/calendar/types';
 import { RuleItem } from './RuleItem';
 import { changeCalendarRulesSorting } from '../../behavior/calendar/actions';
+import { getNewSorting } from '../common/helpers';
 
 type Props = {
   rules: CalendarRule[];
@@ -17,23 +18,8 @@ export const RuleList = ({ rules, sorting }: Props) => {
 
   const dispatch = useDispatch();
   const handleSortingColumnClick = (fieldName: string) => {
-    let newSortingField = fieldName;
-    let newSortingOrder = sorting.sortingOrder;
-    if (fieldName !== sorting.sortingField) {
-      newSortingField = fieldName;
-      newSortingOrder = SortingOrder.Ascending;
-    }
-    else {
-      switch (sorting.sortingOrder) {
-        case SortingOrder.Ascending:
-          newSortingOrder = SortingOrder.Descending;
-          break;
-        case SortingOrder.Descending:
-          newSortingOrder = SortingOrder.Ascending;
-          newSortingField = defaultSortingField;
-      }
-    }
-    dispatch(changeCalendarRulesSorting({ sortingOrder: newSortingOrder, sortingField: newSortingField }));
+    const newSorting = getNewSorting(sorting, fieldName, defaultSortingField);
+    dispatch(changeCalendarRulesSorting(newSorting));
   };
 
   if (!rules.length)
