@@ -1,11 +1,12 @@
 import React from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { useDispatch } from 'react-redux';
-import { SortingInput, SortingOrder } from '../../behavior/common/types';
+import { SortingInput } from '../../behavior/common/types';
 import { ApprovalItem } from './ApprovalItem';
 import { SortIcon } from '../common/elements/SortIcon';
 import { changeApprovalsListSorting } from '../../behavior/approvals/actions';
 import { DayOffApproval } from '../../behavior/approvals/types';
+import { getNewSorting } from '../common/helpers';
 
 type Props = {
   approvals: DayOffApproval[]
@@ -17,23 +18,8 @@ export const ApprovalList = ({ approvals, sorting }: Props) => {
 
   const dispatch = useDispatch();
   const handleSortingColumnClick = (fieldName: string) => {
-    let newSortingField = fieldName;
-    let newSortingOrder = sorting.sortingOrder;
-    if (fieldName !== sorting.sortingField) {
-      newSortingField = fieldName;
-      newSortingOrder = SortingOrder.Ascending;
-    }
-    else {
-      switch (sorting.sortingOrder) {
-        case SortingOrder.Ascending:
-          newSortingOrder = SortingOrder.Descending;
-          break;
-        case SortingOrder.Descending:
-          newSortingOrder = SortingOrder.Ascending;
-          newSortingField = defaultSortingField;
-      }
-    }
-    dispatch(changeApprovalsListSorting({ sortingOrder: newSortingOrder, sortingField: newSortingField }));
+    const newSorting = getNewSorting(sorting, fieldName, defaultSortingField);
+    dispatch(changeApprovalsListSorting(newSorting));
   };
 
   if (!approvals.length)

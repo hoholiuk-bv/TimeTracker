@@ -1,10 +1,11 @@
 import React from 'react';
 import { UserRow } from './UserRow';
 import { User } from '../../behavior/users/types';
-import { SortingInput, SortingOrder } from '../../behavior/common/types';
+import { SortingInput } from '../../behavior/common/types';
 import { SortIcon } from '../common/elements/SortIcon';
 import { useDispatch } from 'react-redux';
 import { changeUserListSorting } from '../../behavior/users/actions';
+import { getNewSorting } from '../common/helpers';
 
 type Props = {
   userList: User[];
@@ -16,24 +17,8 @@ export const UserTable = ({ userList, sorting }: Props) => {
   const defaultSortingField = 'EmploymentDate';
 
   const handleSortingColumnClick = (fieldName: string) => {
-    let newSortingField = fieldName;
-    let newSortingOrder = sorting.sortingOrder;
-
-    if (fieldName !== sorting.sortingField) {
-      newSortingField = fieldName;
-      newSortingOrder = SortingOrder.Ascending;
-    } else {
-      switch (sorting.sortingOrder) {
-        case SortingOrder.Ascending:
-          newSortingOrder = SortingOrder.Descending;
-          break;
-        case SortingOrder.Descending:
-          newSortingOrder = SortingOrder.Ascending;
-          newSortingField = defaultSortingField;
-      }
-    }
-
-    dispatch(changeUserListSorting({ sortingOrder: newSortingOrder, sortingField: newSortingField }));
+    const newSorting = getNewSorting(sorting, fieldName, defaultSortingField);
+    dispatch(changeUserListSorting(newSorting));
   };
 
   return (
