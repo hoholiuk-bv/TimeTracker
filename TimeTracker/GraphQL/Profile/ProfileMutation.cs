@@ -60,6 +60,7 @@ namespace TimeTracker.GraphQL.Profile
                     var input = context.GetArgument<CreatePasswordInput>("input");
                     var httpContext = httpContextAccessor.HttpContext;
                     JwtSecurityToken? jwtSecurityToken = null;
+
                     if (!jwtTokenService.ValidateToken(input.Token, out jwtSecurityToken))
                         return null;
 
