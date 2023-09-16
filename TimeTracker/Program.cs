@@ -23,6 +23,7 @@ using TimeTracker.GraphQL.Calendar;
 using TimeTracker.GraphQL.Calendar.Types;
 using TimeTracker.Services;
 using BusinessLayer.Email;
+using BusinessLayer.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,6 +79,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<UserContext>();
 builder.Services.AddSingleton<PermissionSet>();
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.Services.AddTransient<WorktimeStatisticsHelper>();
 
 //GraphQL
 
