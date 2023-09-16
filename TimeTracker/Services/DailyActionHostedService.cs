@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Helpers;
+﻿using BusinessLayer.Email;
+using BusinessLayer.Helpers;
 using DataLayer.Entities;
 using DataLayer.Models;
 using DataLayer.Providers;
@@ -17,17 +18,23 @@ public class DailyActionHostedService : IHostedService
     private readonly IWorktimeProvider worktimeProvider;
     private readonly ICalendarProvider calendarProvider;
     private readonly IDaysOffProvider daysOffProvider;
+    private readonly IEmailSender emailSender;
+    private readonly WorktimeStatisticsHelper worktimeStatsHelper;
 
     public DailyActionHostedService(
         IUserProvider userProvider,
         IWorktimeProvider worktimeProvider,
         ICalendarProvider calendarProvider,
-        IDaysOffProvider daysOffProvider)
+        IDaysOffProvider daysOffProvider,
+        IEmailSender emailSender,
+        WorktimeStatisticsHelper worktimeStatsHelper)
     {
         this.userProvider = userProvider;
         this.worktimeProvider = worktimeProvider;
         this.calendarProvider = calendarProvider;
         this.daysOffProvider = daysOffProvider;
+        this.emailSender = emailSender;
+        this.worktimeStatsHelper = worktimeStatsHelper;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -41,6 +48,7 @@ public class DailyActionHostedService : IHostedService
     {
         ResolveWorktimeAction();
         ResolveDaysOffAction();
+        ResolveSendWorktimeToEmailAction();
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
@@ -107,5 +115,49 @@ public class DailyActionHostedService : IHostedService
 
             userProvider.UpdateDaysOffCount(user.Id, 2);
         }
+    }
+
+    private void ResolveSendWorktimeToEmailAction()
+    {
+        DateTime currentDate = DateTime.Now;
+        int daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
+        bool isLastDayOfMonth = currentDate.Day == daysInMonth;
+
+        if (isLastDayOfMonth)
+        {
+            var userFilter = new UserFilter { ShowOnlyActiveUsers = true };
+            var users = userProvider.GetAllUsers(userFilter);
+
+            foreach (var user in users)
+            {
+                Message message = GenerateEmailMessageForMonthlyWorktime(user);
+                emailSender.SendEmail(message);
+            }
+        }
+    }
+
+    private Message GenerateEmailMessageForMonthlyWorktime(User user)
+    {
+        var worktimeFilter = new WorktimeFilter
+        {
+            UserId = user.Id,
+            Year = DateTime.Now.Year,
+            Month = DateTime.Now.Month
+        };
+
+        var worktimeStats = worktimeStatsHelper.GetWorktimeStats(worktimeFilter);
+        decimal totalWorkTimeMonthly = worktimeStatsHelper.ConvertToDecimalTime(worktimeStats.TotalWorkTimeMonthly);
+        decimal plannedWorkTimeMonthly = worktimeStatsHelper.ConvertToDecimalTime(worktimeStats.PlannedWorkTimeMonthly);
+        decimal unworkedTime = plannedWorkTimeMonthly - totalWorkTimeMonthly;
+
+        var mailboxAddress = new List<string> { user.Email };
+        string subject = "Monthly work time statistics";
+        string content = $"Dear {user.Name},<br>"
+            + $"Your monthly working time statistics:<br>"
+            + $" - Total work time this month: {totalWorkTimeMonthly} hours<br>"
+            + $" - Planned work time this month: {plannedWorkTimeMonthly} hours<br>"
+            + $" - Unworked time this month: {unworkedTime} hours";
+
+        return new Message(mailboxAddress, subject, content);
     }
 }
