@@ -16,17 +16,15 @@ public class WorktimeQuery : ObjectGraphType
 {
     private readonly IWorktimeProvider worktimeProvider;
     private readonly IUserProvider userProvider;
-    private readonly ICalendarProvider calendarProvider;
-    private readonly IDaysOffProvider daysOffProvider;
     private readonly IHttpContextAccessor accessor;
+    private readonly WorktimeStatisticsHelper worktimeStatsHelper;
 
-    public WorktimeQuery(IWorktimeProvider worktimeProvider, IUserProvider userProvider, ICalendarProvider calendarProvider, IDaysOffProvider daysOffProvider, IHttpContextAccessor accessor)
+    public WorktimeQuery(IWorktimeProvider worktimeProvider, IUserProvider userProvider, IHttpContextAccessor accessor, WorktimeStatisticsHelper worktimeStatsHelper)
     {
         this.worktimeProvider = worktimeProvider;
         this.userProvider = userProvider;
-        this.calendarProvider = calendarProvider;
-        this.daysOffProvider = daysOffProvider;
         this.accessor = accessor;
+        this.worktimeStatsHelper = worktimeStatsHelper;
 
         Field<ListGraphType<WorktimeType>>("Records")
             .Description("Get list of worktime records")
@@ -72,7 +70,7 @@ public class WorktimeQuery : ObjectGraphType
             .Resolve(context =>
             {
                 WorktimeFilter? filter = context.GetArgument<WorktimeFilter?>("filter");
-                return GetWorktimeStats(filter);
+                return worktimeStatsHelper.GetWorktimeStats(filter);
             });
 
         Field<StringGraphType>("UrlForDownloadingUserWorktimeRecors")
@@ -228,14 +226,14 @@ public class WorktimeQuery : ObjectGraphType
                 };
 
                 int rowIndex = i + 2;
-                var worktimeStats = GetWorktimeStats(worktimeFilter);
-
+                var worktimeStats = worktimeStatsHelper.GetWorktimeStats(worktimeFilter);
+                
                 worksheet.Cells[$"A{rowIndex}"].Value = $"{users[i].Name} {users[i].Surname}";
                 worksheet.Cells[$"B{rowIndex}"].Value = users[i].Email;
                 worksheet.Cells[$"C{rowIndex}"].Value = worktimeFilter.Year;
                 worksheet.Cells[$"D{rowIndex}"].Value = culture.DateTimeFormat.GetMonthName(worktimeFilter.Month);
-                worksheet.Cells[$"E{rowIndex}"].Value = CalculateDecimalTime(worktimeStats.TotalWorkTimeMonthly);
-                worksheet.Cells[$"F{rowIndex}"].Value = CalculateDecimalTime(worktimeStats.PlannedWorkTimeMonthly);
+                worksheet.Cells[$"E{rowIndex}"].Value = worktimeStatsHelper.ConvertToDecimalTime(worktimeStats.TotalWorkTimeMonthly);
+                worksheet.Cells[$"F{rowIndex}"].Value = worktimeStatsHelper.ConvertToDecimalTime(worktimeStats.PlannedWorkTimeMonthly);
                 worksheet.Cells[$"G{rowIndex}"].Formula = $"=E{rowIndex}/F{rowIndex}";
                 worksheet.Cells[$"G{rowIndex}"].Style.Numberformat.Format = "0.00%";
             }
@@ -254,41 +252,5 @@ public class WorktimeQuery : ObjectGraphType
 
             return fileUrl;
         }
-    }
-
-    private WorktimeStats GetWorktimeStats(WorktimeFilter filter)
-    {
-        var worktimeRecords = worktimeProvider.GetWorktimeRecords(null, filter, null).ToList();
-        var user = userProvider.GetById(filter.UserId.ToString());
-
-        TimeSpan totalWorkTime = TimeSpan.Zero;
-
-        foreach (var worktime in worktimeRecords)
-        {
-            totalWorkTime += (worktime.FinishDate - worktime.StartDate) ?? TimeSpan.Zero;
-        }
-
-        var calendarRules = calendarProvider.GetCalendarRules();
-        var dayOffFilter = new DayOffRequestFilter { UserId = filter.UserId };
-        var userRequests = daysOffProvider.GetRequests(dayOffFilter);
-        var approvals = daysOffProvider.GetApprovals(userRequests.Select(r => r.Id).ToList());
-
-        int WorkingDaysCount = DaysOffHelper.GetWorkingDaysCount(filter.Year, filter.Month, calendarRules, userRequests, approvals);
-        decimal plannedWorktime = WorktimeHelper.GetPlannedWorktime(filter.Year, filter.Month, calendarRules, user.WorkingHoursCount, WorkingDaysCount);
-
-        var worktimeStats = new WorktimeStats()
-        {
-            TotalWorkTimeMonthly = totalWorkTime.Days * 24 + totalWorkTime.Hours + (decimal)totalWorkTime.Minutes / 100,
-            PlannedWorkTimeMonthly = plannedWorktime
-        };
-
-        return worktimeStats;
-    }
-
-    private double CalculateDecimalTime(decimal time)
-    {
-        int hours = (int)time;
-        int minutes = (int)((time - hours) * 100);
-        return Math.Round(hours + minutes / 60.0, 2);
     }
 }
