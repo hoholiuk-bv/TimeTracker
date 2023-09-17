@@ -10,10 +10,11 @@ import {
   authenticate as authenticateUser,
   receiveLogin,
   CREATE_PASSWORD_REQUESTED,
+  GOOGLE_LOGIN,
 } from './actions';
 import { Epic, ofType } from 'redux-observable';
 import { sendRequest } from '../graphApi';
-import { loginMutation, registerMutation, firstUserExistenceQuery, authencationMutation, logoutMutation, activateAccountMutation } from './queries';
+import { loginMutation, registerMutation, firstUserExistenceQuery, authencationMutation, logoutMutation, activateAccountMutation, googleLoginMutation } from './queries';
 
 const epic: Epic<ProfileActions | any> = (actions$, state$) => {
   const login$ = actions$.pipe(
@@ -83,7 +84,21 @@ const epic: Epic<ProfileActions | any> = (actions$, state$) => {
     ))
   );
 
-  return merge(login$, register$, requestFirstUserExistence$, requestAuthentication$, logout$, createPassword$);
+  const googleLogin$ = actions$.pipe(
+    ofType(GOOGLE_LOGIN),
+    map(action => action.payload),
+    switchMap(({ token }) => sendRequest(googleLoginMutation, { token: token }).pipe(
+      mergeMap(({ profile: { googleLogin } }) => {
+        const loginFailed = !googleLogin;
+        const actions: ProfileActions[] = [receiveLogin(loginFailed)];
+        if (!loginFailed)
+          actions.push(authenticateUser(googleLogin.userInfo, googleLogin.token));
+
+        return actions;
+      })
+    ))
+  );
+  return merge(login$, register$, requestFirstUserExistence$, requestAuthentication$, logout$, createPassword$, googleLogin$);
 };
 
 export default epic;

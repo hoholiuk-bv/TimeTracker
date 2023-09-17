@@ -1,17 +1,23 @@
 ﻿using DataLayer.Entities;
+using DataLayer.Providers;
+using Google.Apis.Auth;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using static DataLayer.Providers.Queries;
 
 namespace BusinessLayer.Authentication
 {
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IJwtTokenService tokenService;
+        private readonly IUserProvider userProvider;
 
-        public AuthenticationService(IJwtTokenService tokenService)
+        public AuthenticationService(IJwtTokenService tokenService, IUserProvider userProvider)
         {
             this.tokenService = tokenService;
+            this.userProvider = userProvider;
         }
 
         public bool Authenticate(User user, string password, out string? token)
@@ -38,6 +44,39 @@ namespace BusinessLayer.Authentication
         {
             var bytes = RandomNumberGenerator.GetBytes(24);
             return Convert.ToBase64String(bytes);
+        }
+
+        public async Task<string?> AuthenticateGoogle(string googleToken)
+        {
+            var payload = await VerifyGoogleTokenId(googleToken);
+
+            if (payload == null)
+                return null;
+
+            var user = userProvider.GetByEmail(payload.Email);
+            if (user == null)
+                return null;
+
+            return tokenService.GenerateToken(new Claim[] { new Claim("id", user.Id.ToString()) }, DateTime.UtcNow.AddMinutes(120));
+        }
+
+       public async Task<GoogleJsonWebSignature.Payload>? VerifyGoogleTokenId(string token)
+        {
+            try
+            {
+                var validationSettings = new GoogleJsonWebSignature.ValidationSettings
+                {
+                    Audience = new string[] { "883802315963-knqiobamdno06qilt1rrpp3djg9s70c2.apps.googleusercontent.com" }
+                };
+
+                GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(token, validationSettings);
+
+                return payload;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
