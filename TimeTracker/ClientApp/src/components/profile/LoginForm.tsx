@@ -8,6 +8,7 @@ import { email, required, validate } from '../../behavior/validators';
 import { ValidationMessage } from '../common/validation/ValidationMessage';
 import { RootState } from '../../behavior/store';
 import { FormGroup } from '../common/elements/FormGroup';
+import { GoogleLoginButton } from './GoogleLoginButton';
 
 export const LoginForm = () => {
   const initialValues: LoginInput = {
@@ -46,7 +47,8 @@ export const LoginForm = () => {
               validate={required} />
             <ValidationMessage fieldName='password' />
           </FormGroup>
-          <button className="btn btn-primary w-100 mt-2" type="submit">Log in</button>
+          <button className="btn btn-primary w-100 mt-2 mb-2" type="submit">Log in</button>
+          <GoogleLoginButton/>
         </Form>
       </Formik>
     </>

@@ -50,3 +50,12 @@ mutation($input: CreatePasswordInput!) {
   }
 }
 `;
+
+export const googleLoginMutation = `
+mutation($token: String!) {
+  profile {
+    googleLogin(token: $token){
+      ${authenticationSegment}
+    }
+   }
+ }`;

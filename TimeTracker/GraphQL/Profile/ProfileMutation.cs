@@ -5,10 +5,8 @@ using DataLayer.Entities;
 using DataLayer.Providers;
 using GraphQL;
 using GraphQL.Types;
-using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using TimeTracker.GraphQL.Profile.Types;
-using static DataLayer.Providers.Queries;
 
 namespace TimeTracker.GraphQL.Profile
 {
@@ -89,6 +87,33 @@ namespace TimeTracker.GraphQL.Profile
                         };
                     }
 
+                    return null;
+                });
+
+            Field<AuthenticationResultType>("GoogleLogin")
+                .Description("Logins user with Google.")
+                .Argument<NonNullGraphType<StringGraphType>>("token")
+                .ResolveAsync(async context =>
+                {
+                    var googleToken = context.GetArgument<string>("token");
+                    var token = await authenticationService.AuthenticateGoogle(googleToken);
+                    var payload = await authenticationService.VerifyGoogleTokenId(googleToken);
+
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        var user = userProvider.GetByEmail(payload.Email);
+                        if (user == null)
+                            return null;
+
+                        var userContext = context.RequestServices!.GetRequiredService<UserContext>();
+                        userContext.User = user;
+
+                        return new AuthenticationResult()
+                        {
+                            UserInfo = InitializeUserInfo(userContext),
+                            Token = token!,
+                        };
+                    }
                     return null;
                 });
         }

@@ -51,6 +51,12 @@ export const requestPasswordCreation = (createPasswordInput: CreatePasswordInput
   payload: { createPasswordInput }
 });
 
+export const GOOGLE_LOGIN = 'GOOGLE_LOGIN' as const;
+export const googleLogin = (token: string | undefined) => ({
+  type: GOOGLE_LOGIN,
+  payload: { token }
+});
+
 
 export type LoginRequestAction = ReturnType<typeof requestLogin>;
 export type LoginReceiveAction = ReturnType<typeof receiveLogin>;
@@ -59,6 +65,7 @@ export type RegisterAction = ReturnType<typeof register>;
 export type FirstUserExistenceReceiveAction = ReturnType<typeof receiveFirstUserExistence>;
 export type LogoutAction = ReturnType<typeof logout>;
 export type CreatePasswordAction = ReturnType<typeof requestPasswordCreation>;
+export type GoogleLoginAction = ReturnType<typeof googleLogin>;
 export type ProfileActions = ReturnType<
   | typeof requestLogin
   | typeof receiveLogin
@@ -66,4 +73,5 @@ export type ProfileActions = ReturnType<
   | typeof receiveFirstUserExistence
   | typeof authenticate
   | typeof logout
-  | typeof requestPasswordCreation>
+  | typeof requestPasswordCreation
+  | typeof googleLogin>
