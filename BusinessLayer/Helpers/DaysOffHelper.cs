@@ -45,5 +45,28 @@ namespace BusinessLayer.Helpers
 
             return workingDaysCount;
         }
+
+        public static DateTime FindLastWorkDayOfMonth(int year, int month, List<CalendarRule>? calendarRules)
+        {
+            int daysCountInMonth = DateTime.DaysInMonth(year, month);
+
+            List<DateTime> dateList = Enumerable.Range(1, daysCountInMonth).Select(day => new DateTime(year, month, day)).ToList();
+            
+            dateList.Reverse();
+
+            DateTime lastWorkDay = dateList.FirstOrDefault(date =>
+            {
+                var ruleForCurrentDay = calendarRules.FirstOrDefault(calendarRule => CalendarHelper.CheckIfDateMatchesRule(date, calendarRule));
+
+                if (ruleForCurrentDay != null && (ruleForCurrentDay.Type == CalendarRuleSetupType.NonWorkingDay || ruleForCurrentDay.Type == CalendarRuleSetupType.Holiday))
+                {
+                    return false;
+                }
+
+                return true;
+            });
+
+            return lastWorkDay;
+        }
     }
 }

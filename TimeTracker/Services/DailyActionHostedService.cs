@@ -120,23 +120,25 @@ public class DailyActionHostedService : IHostedService
     private void ResolveSendWorktimeToEmailAction()
     {
         DateTime currentDate = DateTime.Now;
-        int daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
-        bool isLastDayOfMonth = currentDate.Day == daysInMonth;
+        var lastWorkDayOfMonth = DaysOffHelper.FindLastWorkDayOfMonth(currentDate.Year, currentDate.Month, calendarProvider.GetCalendarRules());
+        bool isLastWorkDayOfMonth = currentDate.Day == lastWorkDayOfMonth.Day;
 
-        if (isLastDayOfMonth)
+        if (isLastWorkDayOfMonth)
         {
             var userFilter = new UserFilter { ShowOnlyActiveUsers = true };
             var users = userProvider.GetAllUsers(userFilter);
 
             foreach (var user in users)
             {
-                Message message = GenerateEmailMessageForMonthlyWorktime(user);
-                emailSender.SendEmail(message);
+                Message? message = GenerateEmailMessageForMonthlyWorktime(user);
+                
+                if (message != null)
+                    emailSender.SendEmail(message);
             }
         }
     }
 
-    private Message GenerateEmailMessageForMonthlyWorktime(User user)
+    private Message? GenerateEmailMessageForMonthlyWorktime(User user)
     {
         var worktimeFilter = new WorktimeFilter
         {
@@ -150,13 +152,13 @@ public class DailyActionHostedService : IHostedService
         decimal plannedWorkTimeMonthly = worktimeStatsHelper.ConvertToDecimalTime(worktimeStats.PlannedWorkTimeMonthly);
         decimal unworkedTime = plannedWorkTimeMonthly - totalWorkTimeMonthly;
 
+        var plannedWorktimeWithoutLastWorkDay = plannedWorkTimeMonthly - worktimeStatsHelper.ConvertToDecimalTime(user.WorkingHoursCount);
+        if (plannedWorktimeWithoutLastWorkDay <= totalWorkTimeMonthly)
+            return null;
+
         var mailboxAddress = new List<string> { user.Email };
         string subject = "Monthly work time statistics";
-        string content = $"Dear {user.Name},<br>"
-            + $"Your monthly working time statistics:<br>"
-            + $" - Total work time this month: {totalWorkTimeMonthly} hours<br>"
-            + $" - Planned work time this month: {plannedWorkTimeMonthly} hours<br>"
-            + $" - Unworked time this month: {unworkedTime} hours";
+        string content = $"Dear {user.Name}. You have unworked hours this month: {unworkedTime} hours";
 
         return new Message(mailboxAddress, subject, content);
     }
