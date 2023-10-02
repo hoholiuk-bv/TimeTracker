@@ -9,6 +9,8 @@ namespace BusinessLayer.Authentication
 
         bool Authenticate(User user, string password, out string? token);
 
+        User? Authenticate(string userEmail, out string? token);
+
         string GenerateSalt();
 
         Task<string> AuthenticateGoogle(string googleToken);

@@ -1,9 +1,11 @@
 import { from, map } from 'rxjs';
+import { default as Cookie } from 'js-cookie';
 
 export const sendRequest = (query: string, variables?: unknown,) => {
   const path = 'http://localhost:5000/graphql';
   const body = JSON.stringify({ query, variables });
-  const token = localStorage.getItem('auth-token');
+  // const token = localStorage.getItem('auth-token');
+  const token = Cookie.get('auth-token');
   const headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer ' + token,

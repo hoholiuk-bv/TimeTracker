@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormLabel } from 'react-bootstrap';
+import { Col, FormLabel, Row } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import type { LoginInput } from '../../behavior/profile/types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,9 +48,16 @@ export const LoginForm = () => {
             <ValidationMessage fieldName='password' />
           </FormGroup>
           <button className="btn btn-primary w-100 mt-2 mb-2" type="submit">Log in</button>
-          <GoogleLoginButton/>
         </Form>
       </Formik>
+      <Row>
+        <Col>
+          <GoogleLoginButton />
+        </Col>
+        <Col>
+          <a className='loginGithubButton' href="https://github.com/login/oauth/authorize?client_id=Iv1.bf82c0c7c72157f8">Login with GitHub</a>
+        </Col>
+      </Row>
     </>
   );
 };

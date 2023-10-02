@@ -292,6 +292,7 @@ td.action-buttons {
 .worktime-button {
     margin-left: 105px;
 }
+
 .start-message {
     margin-left: 165px;
 }
@@ -302,7 +303,7 @@ td.action-buttons {
 }
 
 .fixed-size-button {
-    width: 100px; 
+    width: 100px;
     height: 36px;
 }
 
@@ -332,7 +333,7 @@ td.action-buttons {
     position: absolute;
     display: flex;
     justify-content: flex-end;
-    
+
 }
 
 .session-start-message .alert {
@@ -493,14 +494,19 @@ td.action-buttons {
     border-radius: 12px;
 }
 
-.react-calendar__navigation__arrow{
+.react-calendar__navigation__arrow {
     color: #424242;
     background-color: white;
     padding: 6px 10px;
 }
 
-.react-calendar__navigation__arrow:hover{
+.react-calendar__navigation__arrow:hover {
     color: #64B5F6;
 }
 
 /* react-calendar end*/
+
+.loginGithubButton {
+    text-decoration: none;
+    color: #424242;
+}

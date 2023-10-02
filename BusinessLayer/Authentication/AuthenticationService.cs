@@ -1,11 +1,9 @@
 ﻿using DataLayer.Entities;
 using DataLayer.Providers;
 using Google.Apis.Auth;
-using Org.BouncyCastle.Asn1.Ocsp;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using static DataLayer.Providers.Queries;
 
 namespace BusinessLayer.Authentication
 {
@@ -30,6 +28,18 @@ namespace BusinessLayer.Authentication
                 token = tokenService.GenerateToken(new Claim[] { new Claim("id", user.Id.ToString()) }, DateTime.UtcNow.AddMinutes(120));
 
             return authenticated;
+        }
+
+        public User? Authenticate(string userEmail, out string? token)
+        {
+            var user = userProvider.GetByEmail(userEmail);
+            token = null;
+
+            if (user == null)
+                return null;
+
+            token = tokenService.GenerateToken(new Claim[] { new Claim("id", user.Id.ToString()) }, DateTime.UtcNow.AddMinutes(120));
+            return user;
         }
 
         public string GenerateHash(string password, string salt)
@@ -60,7 +70,7 @@ namespace BusinessLayer.Authentication
             return tokenService.GenerateToken(new Claim[] { new Claim("id", user.Id.ToString()) }, DateTime.UtcNow.AddMinutes(120));
         }
 
-       public async Task<GoogleJsonWebSignature.Payload>? VerifyGoogleTokenId(string token)
+        public async Task<GoogleJsonWebSignature.Payload>? VerifyGoogleTokenId(string token)
         {
             try
             {

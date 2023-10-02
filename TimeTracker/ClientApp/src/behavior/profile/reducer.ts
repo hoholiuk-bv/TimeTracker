@@ -1,4 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { default as Cookie } from 'js-cookie';
 import {
   AuthenticateAction,
   FirstUserExistenceReceiveAction,
@@ -48,10 +49,12 @@ function onUserAuthenticated(state: ProfileState, action: AuthenticateAction) {
   const { userInfo, token } = action.payload;
 
   if (token) {
-    localStorage.setItem('auth-token', token);
+    // localStorage.setItem('auth-token', token);
+    Cookie.set('auth-token', token);
   }
   else {
-    localStorage.removeItem('auth-token');
+    // localStorage.removeItem('auth-token');
+    Cookie.remove('auth-token');
   }
 
   return { ...state, userInfo, authenticated: userInfo != null };
@@ -59,5 +62,6 @@ function onUserAuthenticated(state: ProfileState, action: AuthenticateAction) {
 
 function onLogout(state: ProfileState, action: LogoutAction) {
   localStorage.removeItem('auth-token');
+  Cookie.remove('auth-token');
   return { ...state, authenticated: null, userInfo: null };
 }
